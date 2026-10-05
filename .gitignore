@@ -1,0 +1,9 @@
+target/
+.idea/
+.vscode/
+*.iml
+*.db
+*.db-wal
+*.db-shm
+.DS_Store
+scripts/node_modules/

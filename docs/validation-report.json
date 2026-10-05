@@ -1,0 +1,1445 @@
+{
+  "verifiedOn": "2026-10-05",
+  "paper": "1.21.11 build 132",
+  "result": "PASS",
+  "automatedTests": {
+    "total": 23,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "integrationScenarios": [
+    "Right-side sidebar, health, unique blank lines, and hidden score numbers",
+    "Red OWNER rank and numeric ping visible to other players in Tab",
+    "Existing 24-hour playtime imported; OG announcement broadcast to everyone",
+    "Sidebar objective remains stable during updates",
+    "Connected playtime promotes once; manual OWNER stays protected",
+    "Custom rank creation, color changes, assignment, and reset",
+    "Non-operator cannot assign OWNER",
+    "Personal sidebar toggle leaves Tab formatting active",
+    "Coordinates use block positions, including negative values",
+    "Invalid reload retains working configuration",
+    "All requested and added placeholders resolve on real Paper players",
+    "Restart preserves OWNER, OG, offline custom assignments, hidden sidebar, and announcement markers",
+    "Independent configuration switches release sidebar and Tab ownership"
+  ],
+  "capturedDisplayExamples": [
+    {
+      "label": "default-owner",
+      "name": "OwnerTester",
+      "lines": [
+        {
+          "order": 11,
+          "component": {
+            "color": "dark_gray",
+            "text": "────────────────────"
+          }
+        },
+        {
+          "order": 10,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "Player"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "OwnerTester"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 9,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "Rank"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "bold": 1,
+                "color": "red",
+                "text": "OWNER"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 8,
+          "component": ""
+        },
+        {
+          "order": 7,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "Health"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "red",
+                "text": "♥"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "20.0 / 20.0"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 6,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "XYZ"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "-9, -60, -7"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 5,
+          "component": ""
+        },
+        {
+          "order": 4,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "Online"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "2 / 10"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 3,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "TPS"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "green",
+                "text": "18.5"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 2,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "Uptime"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "0m 30s"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 1,
+          "component": {
+            "color": "dark_gray",
+            "text": "────────────────────"
+          }
+        }
+      ],
+      "title": {
+        "bold": 1,
+        "color": "gold",
+        "text": "My Server"
+      },
+      "tabs": [
+        {
+          "uuid": "216a5928-a617-32ab-89eb-172abb4fc70e",
+          "component": {
+            "extra": [
+              {
+                "bold": 1,
+                "color": "red",
+                "text": "[OWNER]"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "OwnerTester"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "•"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "green",
+                "text": "12"
+              },
+              {
+                "color": "gray",
+                "text": "ms"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "uuid": "2591f13d-d70b-3a87-ae34-ef2bbd8a553c",
+          "component": {
+            "extra": [
+              {
+                "bold": 0,
+                "color": "gray",
+                "text": "[New Player]"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "NewTester"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "•"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "green",
+                "text": "0"
+              },
+              {
+                "color": "gray",
+                "text": "ms"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "uuid": "54caf3f1-d097-31d3-9d3b-b16383bd664d",
+          "component": {
+            "extra": [
+              {
+                "bold": 0,
+                "color": "gold",
+                "text": "[OG Player]"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "VeteranTester"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "•"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "green",
+                "text": "0"
+              },
+              {
+                "color": "gray",
+                "text": "ms"
+              }
+            ],
+            "text": ""
+          }
+        }
+      ]
+    },
+    {
+      "label": "default-new",
+      "name": "NewTester",
+      "lines": [
+        {
+          "order": 11,
+          "component": {
+            "color": "dark_gray",
+            "text": "────────────────────"
+          }
+        },
+        {
+          "order": 10,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "Player"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "NewTester"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 9,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "Rank"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "bold": 0,
+                "color": "gray",
+                "text": "New Player"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 8,
+          "component": ""
+        },
+        {
+          "order": 7,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "Health"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "red",
+                "text": "♥"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "20.0 / 20.0"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 6,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "XYZ"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "9, -60, -8"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 5,
+          "component": ""
+        },
+        {
+          "order": 4,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "Online"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "2 / 10"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 3,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "TPS"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "green",
+                "text": "18.5"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 2,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "Uptime"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "0m 30s"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 1,
+          "component": {
+            "color": "dark_gray",
+            "text": "────────────────────"
+          }
+        }
+      ],
+      "title": {
+        "bold": 1,
+        "color": "gold",
+        "text": "My Server"
+      },
+      "tabs": [
+        {
+          "uuid": "2591f13d-d70b-3a87-ae34-ef2bbd8a553c",
+          "component": {
+            "extra": [
+              {
+                "bold": 0,
+                "color": "gray",
+                "text": "[New Player]"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "NewTester"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "•"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "green",
+                "text": "0"
+              },
+              {
+                "color": "gray",
+                "text": "ms"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "uuid": "216a5928-a617-32ab-89eb-172abb4fc70e",
+          "component": {
+            "extra": [
+              {
+                "bold": 1,
+                "color": "red",
+                "text": "[OWNER]"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "OwnerTester"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "•"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "green",
+                "text": "12"
+              },
+              {
+                "color": "gray",
+                "text": "ms"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "uuid": "54caf3f1-d097-31d3-9d3b-b16383bd664d",
+          "component": {
+            "extra": [
+              {
+                "bold": 0,
+                "color": "gold",
+                "text": "[OG Player]"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "VeteranTester"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "•"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "green",
+                "text": "0"
+              },
+              {
+                "color": "gray",
+                "text": "ms"
+              }
+            ],
+            "text": ""
+          }
+        }
+      ]
+    },
+    {
+      "label": "default-og",
+      "name": "VeteranTester",
+      "lines": [
+        {
+          "order": 11,
+          "component": {
+            "color": "dark_gray",
+            "text": "────────────────────"
+          }
+        },
+        {
+          "order": 10,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "Player"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "VeteranTester"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 9,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "Rank"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "bold": 0,
+                "color": "gold",
+                "text": "OG Player"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 8,
+          "component": ""
+        },
+        {
+          "order": 7,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "Health"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "red",
+                "text": "♥"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "20.0 / 20.0"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 6,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "XYZ"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "0, -60, 10"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 5,
+          "component": ""
+        },
+        {
+          "order": 4,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "Online"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "3 / 10"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 3,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "TPS"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "green",
+                "text": "18.5"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 2,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "Uptime"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "0m 30s"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 1,
+          "component": {
+            "color": "dark_gray",
+            "text": "────────────────────"
+          }
+        }
+      ],
+      "title": {
+        "bold": 1,
+        "color": "gold",
+        "text": "My Server"
+      },
+      "tabs": [
+        {
+          "uuid": "54caf3f1-d097-31d3-9d3b-b16383bd664d",
+          "component": {
+            "extra": [
+              {
+                "bold": 0,
+                "color": "gold",
+                "text": "[OG Player]"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "VeteranTester"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "•"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "green",
+                "text": "0"
+              },
+              {
+                "color": "gray",
+                "text": "ms"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "uuid": "216a5928-a617-32ab-89eb-172abb4fc70e",
+          "component": {
+            "extra": [
+              {
+                "bold": 1,
+                "color": "red",
+                "text": "[OWNER]"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "OwnerTester"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "•"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "green",
+                "text": "12"
+              },
+              {
+                "color": "gray",
+                "text": "ms"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "uuid": "2591f13d-d70b-3a87-ae34-ef2bbd8a553c",
+          "component": {
+            "extra": [
+              {
+                "bold": 0,
+                "color": "gray",
+                "text": "[New Player]"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "NewTester"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "•"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "green",
+                "text": "0"
+              },
+              {
+                "color": "gray",
+                "text": "ms"
+              }
+            ],
+            "text": ""
+          }
+        }
+      ]
+    },
+    {
+      "label": "placeholder-page-0",
+      "name": "OwnerTester",
+      "lines": [
+        {
+          "order": 15,
+          "component": "player_name: OwnerTester"
+        },
+        {
+          "order": 14,
+          "component": "player_displayname: OwnerTester"
+        },
+        {
+          "order": 13,
+          "component": "player_health: 20.0"
+        },
+        {
+          "order": 12,
+          "component": "player_max_health: 20.0"
+        },
+        {
+          "order": 11,
+          "component": "player_food: 20"
+        },
+        {
+          "order": 10,
+          "component": "player_level: 0"
+        },
+        {
+          "order": 9,
+          "component": "player_exp: 0"
+        },
+        {
+          "order": 8,
+          "component": "player_ping: 0"
+        },
+        {
+          "order": 7,
+          "component": {
+            "extra": [
+              {
+                "color": "green",
+                "text": "0"
+              }
+            ],
+            "text": "player_ping_color: "
+          }
+        },
+        {
+          "order": 6,
+          "component": "player_world: world"
+        },
+        {
+          "order": 5,
+          "component": "player_gamemode: SURVIVAL"
+        },
+        {
+          "order": 4,
+          "component": "player_x: -126"
+        },
+        {
+          "order": 3,
+          "component": "player_y: 64"
+        },
+        {
+          "order": 2,
+          "component": "player_z: -321"
+        },
+        {
+          "order": 1,
+          "component": "player_deaths: 0"
+        }
+      ],
+      "title": {
+        "bold": 1,
+        "color": "gold",
+        "text": "My Server"
+      },
+      "tabs": [
+        {
+          "uuid": "216a5928-a617-32ab-89eb-172abb4fc70e",
+          "component": {
+            "extra": [
+              {
+                "bold": 1,
+                "color": "red",
+                "text": "[OWNER]"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "OwnerTester"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "•"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "green",
+                "text": "0"
+              },
+              {
+                "color": "gray",
+                "text": "ms"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "uuid": "2591f13d-d70b-3a87-ae34-ef2bbd8a553c",
+          "component": {
+            "extra": [
+              {
+                "bold": 0,
+                "color": "gold",
+                "text": "[OG Player]"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "NewTester"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "•"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "green",
+                "text": "0"
+              },
+              {
+                "color": "gray",
+                "text": "ms"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "uuid": "54caf3f1-d097-31d3-9d3b-b16383bd664d",
+          "component": {
+            "extra": [
+              {
+                "bold": 0,
+                "color": "gold",
+                "text": "[OG Player]"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "VeteranTester"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "•"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "green",
+                "text": "2"
+              },
+              {
+                "color": "gray",
+                "text": "ms"
+              }
+            ],
+            "text": ""
+          }
+        }
+      ]
+    },
+    {
+      "label": "placeholder-page-1",
+      "name": "OwnerTester",
+      "lines": [
+        {
+          "order": 14,
+          "component": "player_kills: 0"
+        },
+        {
+          "order": 13,
+          "component": "player_blocks_walked: 0.0"
+        },
+        {
+          "order": 12,
+          "component": "player_playtime_hours: 0.00"
+        },
+        {
+          "order": 11,
+          "component": "player_armor: 0.0"
+        },
+        {
+          "order": 10,
+          "component": "player_direction: S"
+        },
+        {
+          "order": 9,
+          "component": "player_item_in_hand: AIR"
+        },
+        {
+          "order": 8,
+          "component": "player_biome: plains"
+        },
+        {
+          "order": 7,
+          "component": {
+            "extra": [
+              {
+                "bold": 1,
+                "color": "red",
+                "text": "OWNER"
+              }
+            ],
+            "text": "player_rank: "
+          }
+        },
+        {
+          "order": 6,
+          "component": {
+            "extra": [
+              {
+                "bold": 1,
+                "color": "red",
+                "text": "[OWNER]"
+              }
+            ],
+            "text": "player_rank_badge: "
+          }
+        },
+        {
+          "order": 5,
+          "component": "server_name: My Server"
+        },
+        {
+          "order": 4,
+          "component": "server_online: 3"
+        },
+        {
+          "order": 3,
+          "component": "server_max_players: 10"
+        },
+        {
+          "order": 2,
+          "component": "server_tps: 19.8"
+        },
+        {
+          "order": 1,
+          "component": "server_uptime: 0m 44s"
+        },
+        {
+          "order": 1,
+          "component": "player_deaths: 0"
+        }
+      ],
+      "title": {
+        "bold": 1,
+        "color": "gold",
+        "text": "My Server"
+      },
+      "tabs": [
+        {
+          "uuid": "216a5928-a617-32ab-89eb-172abb4fc70e",
+          "component": {
+            "extra": [
+              {
+                "bold": 1,
+                "color": "red",
+                "text": "[OWNER]"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "OwnerTester"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "•"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "green",
+                "text": "0"
+              },
+              {
+                "color": "gray",
+                "text": "ms"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "uuid": "2591f13d-d70b-3a87-ae34-ef2bbd8a553c",
+          "component": {
+            "extra": [
+              {
+                "bold": 0,
+                "color": "gold",
+                "text": "[OG Player]"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "NewTester"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "•"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "green",
+                "text": "0"
+              },
+              {
+                "color": "gray",
+                "text": "ms"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "uuid": "54caf3f1-d097-31d3-9d3b-b16383bd664d",
+          "component": {
+            "extra": [
+              {
+                "bold": 0,
+                "color": "gold",
+                "text": "[OG Player]"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "VeteranTester"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "•"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "green",
+                "text": "2"
+              },
+              {
+                "color": "gray",
+                "text": "ms"
+              }
+            ],
+            "text": ""
+          }
+        }
+      ]
+    }
+  ]
+}

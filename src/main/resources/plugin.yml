@@ -1,0 +1,22 @@
+name: MKSidebarRanks
+version: '1.0.0'
+main: io.github.mkonline08.sidebar.MKSidebarPlugin
+api-version: '1.21.11'
+description: Stylish sidebar, Tab ping and ranks, and automatic playtime promotions.
+author: MK
+website: https://github.com/MKonline08/mk-sidebar-ranks
+commands:
+  mksb:
+    description: Sidebar toggle and configuration reload
+    usage: /mksb <toggle|reload>
+  mkrank:
+    description: Manage colored player ranks
+    usage: /mkrank <list|create|color|set|reset|info>
+    permission: mksidebar.admin
+permissions:
+  mksidebar.admin:
+    description: Manage ranks and reload configuration
+    default: op
+  mksidebar.toggle:
+    description: Toggle your own sidebar
+    default: true

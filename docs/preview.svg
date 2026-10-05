@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="560" viewBox="0 0 1100 560">
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101b28"/><stop offset="1" stop-color="#071019"/></linearGradient><linearGradient id="gold" x2="1"><stop stop-color="#ffc35c"/><stop offset="1" stop-color="#f6df98"/></linearGradient></defs>
+<rect width="1100" height="560" rx="24" fill="url(#bg)"/>
+<g opacity=".12" stroke="#55ffff"><path d="M0 470H1100M0 510H1100M0 550H1100M80 430L0 560M240 430L180 560M400 430L380 560M560 430L570 560M720 430L770 560M880 430L970 560M1040 430L1100 510"/></g>
+<g font-family="Segoe UI,Arial,sans-serif"><text x="54" y="66" font-size="13" letter-spacing="4" fill="#55ffff">CREATED BY MK</text><text x="54" y="124" font-size="43" font-weight="800" fill="url(#gold)">SIDEBAR &amp; RANKS</text><text x="54" y="158" font-size="17" fill="#a4b4c6">Your server. Your ranks. Your style.</text>
+<rect x="54" y="198" width="518" height="222" rx="14" fill="#0b141f" stroke="#2b4053"/>
+<text x="78" y="231" font-size="12" letter-spacing="3" fill="#9fb2c8">TAB PLAYER LIST</text><path d="M78 249H548" stroke="#263849"/>
+<g font-family="Consolas,monospace" font-size="18"><text x="78" y="282" fill="#ff5555" font-weight="bold">[OWNER]</text><text x="256" y="282" fill="#fff">MK</text><text x="475" y="282" fill="#55ff55">42ms</text>
+<text x="78" y="325" fill="#ffaa00">[OG Player]</text><text x="256" y="325" fill="#fff">Alex</text><text x="475" y="325" fill="#55ff55">85ms</text>
+<text x="78" y="368" fill="#aaa">[New Player]</text><text x="256" y="368" fill="#fff">Steve</text><text x="465" y="368" fill="#ffff55">156ms</text></g>
+<text x="54" y="460" font-size="16" fill="#a4b4c6">24 hours played <tspan fill="#ffaa00">→ OG Player</tspan></text><text x="54" y="490" font-size="14" fill="#677f95">Paper 1.21.11 · Numeric ping · Persistent ranks</text>
+<rect x="635" y="53" width="411" height="444" rx="14" fill="#10171b" stroke="#31444d"/>
+<g font-family="Consolas,monospace" font-size="19"><text x="748" y="97" font-size="26" font-weight="bold" fill="#ffaa00">My Server</text>
+<path d="M665 118H1014M665 466H1014" stroke="#555"/>
+<text x="665" y="155" fill="#55ffff">Player <tspan fill="#555">»</tspan> <tspan fill="#fff">MK</tspan></text>
+<text x="665" y="190" fill="#55ffff">Rank <tspan fill="#555">»</tspan> <tspan fill="#ff5555" font-weight="bold">OWNER</tspan></text>
+<text x="665" y="246" fill="#55ffff">Health <tspan fill="#555">»</tspan> <tspan fill="#ff5555">♥</tspan> <tspan fill="#fff">20.0 / 20.0</tspan></text>
+<text x="665" y="281" fill="#55ffff">XYZ <tspan fill="#555">»</tspan> <tspan fill="#fff">125, 64, -320</tspan></text>
+<text x="665" y="339" fill="#55ffff">Online <tspan fill="#555">»</tspan> <tspan fill="#fff">8 / 30</tspan></text>
+<text x="665" y="374" fill="#55ffff">TPS <tspan fill="#555">»</tspan> <tspan fill="#55ff55">20.0</tspan></text>
+<text x="665" y="409" fill="#55ffff">Uptime <tspan fill="#555">»</tspan> <tspan fill="#fff">2h 35m 12s</tspan></text></g>
+<text x="1046" y="532" font-size="11" text-anchor="end" letter-spacing="2" fill="#617788">DESIGN PREVIEW</text></g></svg>
