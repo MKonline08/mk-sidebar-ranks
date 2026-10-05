@@ -1,14 +1,15 @@
 # Validation
 
-## Release verification — v1.0.0
+## Release verification — v1.1.0
 
 Verified on October 5, 2026:
 
-- **23 automated tests passed**, with no failures, errors, or skipped tests.
-- **13 real Paper integration scenarios passed** on Paper **1.21.11 build 132**, including three protocol clients and a full server restart.
+- **27 automated tests passed**, with no failures, errors, or skipped tests.
+- **16 real Paper integration scenarios passed** on Paper **1.21.11 build 132**, including three protocol clients and a full server restart.
 - Windows Java **21.0.12** runtime; SQLite **3.53.4.0** bundled with Windows and Linux native libraries.
 - Captured display components and scenario results: [validation-report.json](validation-report.json).
-- Release jar SHA-256: `55d1d431581d9b78bc76737a3d7c8661b3c22b4c1654e09597d1bc6b4ead6093`.
+- Release jar SHA-256: `d6a9c8cc17f6cd2b794101ea170dba2690df06a883bc9f3e16859fda323b93b3`.
+- Verified compact coordinate rows, exact MK/108e footer text, one celebration sound to every online player per promotion, no replay after restart, and automatic v1.0.0 configuration upgrade with a backup.
 
 This verifies the local test server. Installation on the owner's production server is a separate step.
 
@@ -24,6 +25,7 @@ Run `mvn -B clean verify` with Java 21. The test suite covers:
 - Safe placeholder text, rank styles, ping boundaries, compass directions, and uptime formatting.
 - Sidebar objective reuse, unique blank/duplicate entries, restoration, and yielding to competing plugins.
 - Command permissions and personal sidebar toggling.
+- Config upgrade idempotence, preservation of custom layouts/ranks, footer ownership/restoration, and sound validation.
 
 ## Real Paper integration fixture
 

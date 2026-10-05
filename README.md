@@ -10,7 +10,7 @@ A standalone plugin for **Paper 1.21.11 · Java 21**, created by **MK**. Gold an
 
 ## Install
 
-1. Download **`mk-sidebar-ranks-1.0.0.jar`** from the release page.
+1. Download **`mk-sidebar-ranks-1.1.0.jar`** from the release page.
 2. Stop your Paper 1.21.11 server and copy the jar into its **`plugins/`** folder.
 3. Start the server. Settings appear in **`plugins/MKSidebarRanks/config.yml`**.
 4. Run **`/mkrank set YourMinecraftName owner`** after you have joined. Your OWNER label will be bold red in your sidebar and Tab.
@@ -25,6 +25,12 @@ The label does not make someone an operator or grant permissions. Keep using you
 - A server-wide chat announcement when someone earns OG. Existing recorded Minecraft playtime counts once on first join after installation.
 
 Both displays update once per second; rank assignments update immediately. Manually assigned OWNER and custom ranks stay protected from automatic promotion. Names, playtime, earned ranks, manual ranks, and sidebar preferences survive restarts.
+
+**New in v1.1.0:** a narrower sidebar with separate X/Y/Z rows, a celebration sound sent to everyone online at automatic rank-up, and **Credits: MK/108e** in the Tab footer.
+
+### Update from v1.0.0
+
+Stop the server, remove the old plugin jar, install the v1.1.0 jar, and restart. Keep the `MKSidebarRanks` folder so ranks and playtime remain saved. The first startup backs up the old config, adds the sound and footer settings, and replaces the unchanged original sidebar layout with the compact layout. Custom sidebar lines, custom ranks, server name, and promotion settings remain intact.
 
 ## Commands
 
@@ -75,6 +81,10 @@ This is a configuration excerpt; retain the other settings in the generated file
 
 `promotion.hours` defaults to `24`. Already-earned OG ranks remain earned if you raise the threshold. `promotion.import-existing-playtime` controls first-time imports only; changing it does not reset saved players. Set rank `bold: true` for bold labels. Required rank IDs are `new_player`, `og_player`, and `owner`. Custom ranks are manual labels; this version has one automatic promotion step.
 
+`tab.footer` defaults to `<gray>Credits:</gray> <gold><bold>MK/108e</bold></gold>`. Set it to an empty string to remove the credits. The footer uses the same template syntax and placeholders, and preserves an existing Tab header.
+
+`promotion.sound` has `enabled`, `key`, `volume`, and `pitch` settings. The default is `minecraft:ui.toast.challenge_complete`, volume `0.7`, pitch `1.0`. It plays once for every player online when the saved automatic promotion announcement is delivered, regardless of their world or distance. Clients control their own audio volume. Set `enabled: false` to mute it; custom keys must identify an existing Minecraft sound. Volume must be 0–1 and pitch 0.5–2.
+
 The placeholders are built into this plugin’s templates; they are not registered as a PlaceholderAPI expansion. Chat-name prefixes and overhead labels are outside this version.
 
 ## Storage and other plugins
@@ -91,7 +101,7 @@ With JDK 21 and Maven 3.9+:
 mvn -B clean verify
 ```
 
-Installable output: `target/mk-sidebar-ranks-1.0.0.jar`. Do not install the `original-` jar. GitHub Actions builds and tests the project and provides the packaged jar as an artifact.
+Installable output: `target/mk-sidebar-ranks-1.1.0.jar`. Do not install the `original-` jar. GitHub Actions builds and tests the project and provides the packaged jar as an artifact.
 
 For the local Paper integration fixture, see [validation instructions](docs/VALIDATION.md).
 

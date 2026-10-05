@@ -1,16 +1,21 @@
 {
   "verifiedOn": "2026-10-05",
+  "version": "1.1.0",
   "paper": "1.21.11 build 132",
   "result": "PASS",
+  "jarSha256": "d6a9c8cc17f6cd2b794101ea170dba2690df06a883bc9f3e16859fda323b93b3",
   "automatedTests": {
-    "total": 23,
+    "total": 27,
     "failures": 0,
     "errors": 0,
     "skipped": 0
   },
   "integrationScenarios": [
+    "Existing v1.0.0 default config upgraded and backed up automatically",
+    "Compact sidebar uses short separators and separate coordinates; exact MK/108e Tab credits",
     "Right-side sidebar, health, unique blank lines, and hidden score numbers",
     "Red OWNER rank and numeric ping visible to other players in Tab",
+    "Every online player receives the rank-up sound alongside the announcement",
     "Existing 24-hour playtime imported; OG announcement broadcast to everyone",
     "Sidebar objective remains stable during updates",
     "Connected playtime promotes once; manual OWNER stays protected",
@@ -27,21 +32,39 @@
     {
       "label": "default-owner",
       "name": "OwnerTester",
+      "footer": {
+        "extra": [
+          {
+            "color": "gray",
+            "text": "Credits:"
+          },
+          {
+            "": " "
+          },
+          {
+            "bold": 1,
+            "color": "gold",
+            "text": "MK/108e"
+          }
+        ],
+        "text": ""
+      },
+      "promotionSoundCount": 1,
       "lines": [
         {
-          "order": 11,
+          "order": 13,
           "component": {
             "color": "dark_gray",
-            "text": "────────────────────"
+            "text": "────────────"
           }
         },
         {
-          "order": 10,
+          "order": 12,
           "component": {
             "extra": [
               {
                 "color": "aqua",
-                "text": "Player"
+                "text": "Name"
               },
               {
                 "": " "
@@ -62,7 +85,7 @@
           }
         },
         {
-          "order": 9,
+          "order": 11,
           "component": {
             "extra": [
               {
@@ -89,16 +112,35 @@
           }
         },
         {
-          "order": 8,
+          "order": 10,
           "component": ""
         },
         {
-          "order": 7,
+          "order": 9,
+          "component": {
+            "extra": [
+              {
+                "color": "red",
+                "text": "♥"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "20.0/20.0"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 8,
           "component": {
             "extra": [
               {
                 "color": "aqua",
-                "text": "Health"
+                "text": "X"
               },
               {
                 "": " "
@@ -111,15 +153,34 @@
                 "": " "
               },
               {
-                "color": "red",
-                "text": "♥"
+                "color": "white",
+                "text": "-1"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 7,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "Y"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
               },
               {
                 "": " "
               },
               {
                 "color": "white",
-                "text": "20.0 / 20.0"
+                "text": "-60"
               }
             ],
             "text": ""
@@ -131,7 +192,7 @@
             "extra": [
               {
                 "color": "aqua",
-                "text": "XYZ"
+                "text": "Z"
               },
               {
                 "": " "
@@ -145,7 +206,7 @@
               },
               {
                 "color": "white",
-                "text": "-9, -60, -7"
+                "text": "4"
               }
             ],
             "text": ""
@@ -201,7 +262,7 @@
               },
               {
                 "color": "green",
-                "text": "18.5"
+                "text": "18.2"
               }
             ],
             "text": ""
@@ -213,7 +274,7 @@
             "extra": [
               {
                 "color": "aqua",
-                "text": "Uptime"
+                "text": "Up"
               },
               {
                 "": " "
@@ -227,7 +288,7 @@
               },
               {
                 "color": "white",
-                "text": "0m 30s"
+                "text": "0m 22s"
               }
             ],
             "text": ""
@@ -237,7 +298,7 @@
           "order": 1,
           "component": {
             "color": "dark_gray",
-            "text": "────────────────────"
+            "text": "────────────"
           }
         }
       ],
@@ -275,7 +336,7 @@
               },
               {
                 "color": "green",
-                "text": "12"
+                "text": "2"
               },
               {
                 "color": "gray",
@@ -366,21 +427,39 @@
     {
       "label": "default-new",
       "name": "NewTester",
+      "footer": {
+        "extra": [
+          {
+            "color": "gray",
+            "text": "Credits:"
+          },
+          {
+            "": " "
+          },
+          {
+            "bold": 1,
+            "color": "gold",
+            "text": "MK/108e"
+          }
+        ],
+        "text": ""
+      },
+      "promotionSoundCount": 1,
       "lines": [
         {
-          "order": 11,
+          "order": 13,
           "component": {
             "color": "dark_gray",
-            "text": "────────────────────"
+            "text": "────────────"
           }
         },
         {
-          "order": 10,
+          "order": 12,
           "component": {
             "extra": [
               {
                 "color": "aqua",
-                "text": "Player"
+                "text": "Name"
               },
               {
                 "": " "
@@ -401,7 +480,7 @@
           }
         },
         {
-          "order": 9,
+          "order": 11,
           "component": {
             "extra": [
               {
@@ -428,16 +507,35 @@
           }
         },
         {
-          "order": 8,
+          "order": 10,
           "component": ""
         },
         {
-          "order": 7,
+          "order": 9,
+          "component": {
+            "extra": [
+              {
+                "color": "red",
+                "text": "♥"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "20.0/20.0"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 8,
           "component": {
             "extra": [
               {
                 "color": "aqua",
-                "text": "Health"
+                "text": "X"
               },
               {
                 "": " "
@@ -450,15 +548,34 @@
                 "": " "
               },
               {
-                "color": "red",
-                "text": "♥"
+                "color": "white",
+                "text": "-6"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 7,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "Y"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
               },
               {
                 "": " "
               },
               {
                 "color": "white",
-                "text": "20.0 / 20.0"
+                "text": "-60"
               }
             ],
             "text": ""
@@ -470,7 +587,7 @@
             "extra": [
               {
                 "color": "aqua",
-                "text": "XYZ"
+                "text": "Z"
               },
               {
                 "": " "
@@ -484,7 +601,7 @@
               },
               {
                 "color": "white",
-                "text": "9, -60, -8"
+                "text": "7"
               }
             ],
             "text": ""
@@ -540,7 +657,7 @@
               },
               {
                 "color": "green",
-                "text": "18.5"
+                "text": "18.1"
               }
             ],
             "text": ""
@@ -552,7 +669,7 @@
             "extra": [
               {
                 "color": "aqua",
-                "text": "Uptime"
+                "text": "Up"
               },
               {
                 "": " "
@@ -566,7 +683,7 @@
               },
               {
                 "color": "white",
-                "text": "0m 30s"
+                "text": "0m 22s"
               }
             ],
             "text": ""
@@ -576,7 +693,7 @@
           "order": 1,
           "component": {
             "color": "dark_gray",
-            "text": "────────────────────"
+            "text": "────────────"
           }
         }
       ],
@@ -652,7 +769,7 @@
               },
               {
                 "color": "green",
-                "text": "12"
+                "text": "2"
               },
               {
                 "color": "gray",
@@ -705,21 +822,39 @@
     {
       "label": "default-og",
       "name": "VeteranTester",
+      "footer": {
+        "extra": [
+          {
+            "color": "gray",
+            "text": "Credits:"
+          },
+          {
+            "": " "
+          },
+          {
+            "bold": 1,
+            "color": "gold",
+            "text": "MK/108e"
+          }
+        ],
+        "text": ""
+      },
+      "promotionSoundCount": 1,
       "lines": [
         {
-          "order": 11,
+          "order": 13,
           "component": {
             "color": "dark_gray",
-            "text": "────────────────────"
+            "text": "────────────"
           }
         },
         {
-          "order": 10,
+          "order": 12,
           "component": {
             "extra": [
               {
                 "color": "aqua",
-                "text": "Player"
+                "text": "Name"
               },
               {
                 "": " "
@@ -740,7 +875,7 @@
           }
         },
         {
-          "order": 9,
+          "order": 11,
           "component": {
             "extra": [
               {
@@ -767,16 +902,35 @@
           }
         },
         {
-          "order": 8,
+          "order": 10,
           "component": ""
         },
         {
-          "order": 7,
+          "order": 9,
+          "component": {
+            "extra": [
+              {
+                "color": "red",
+                "text": "♥"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "white",
+                "text": "20.0/20.0"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 8,
           "component": {
             "extra": [
               {
                 "color": "aqua",
-                "text": "Health"
+                "text": "X"
               },
               {
                 "": " "
@@ -789,15 +943,34 @@
                 "": " "
               },
               {
-                "color": "red",
-                "text": "♥"
+                "color": "white",
+                "text": "7"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 7,
+          "component": {
+            "extra": [
+              {
+                "color": "aqua",
+                "text": "Y"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "dark_gray",
+                "text": "»"
               },
               {
                 "": " "
               },
               {
                 "color": "white",
-                "text": "20.0 / 20.0"
+                "text": "-60"
               }
             ],
             "text": ""
@@ -809,7 +982,7 @@
             "extra": [
               {
                 "color": "aqua",
-                "text": "XYZ"
+                "text": "Z"
               },
               {
                 "": " "
@@ -823,7 +996,7 @@
               },
               {
                 "color": "white",
-                "text": "0, -60, 10"
+                "text": "-2"
               }
             ],
             "text": ""
@@ -891,7 +1064,7 @@
             "extra": [
               {
                 "color": "aqua",
-                "text": "Uptime"
+                "text": "Up"
               },
               {
                 "": " "
@@ -905,7 +1078,7 @@
               },
               {
                 "color": "white",
-                "text": "0m 30s"
+                "text": "0m 23s"
               }
             ],
             "text": ""
@@ -915,7 +1088,7 @@
           "order": 1,
           "component": {
             "color": "dark_gray",
-            "text": "────────────────────"
+            "text": "────────────"
           }
         }
       ],
@@ -991,7 +1164,7 @@
               },
               {
                 "color": "green",
-                "text": "12"
+                "text": "2"
               },
               {
                 "color": "gray",
@@ -1044,6 +1217,24 @@
     {
       "label": "placeholder-page-0",
       "name": "OwnerTester",
+      "footer": {
+        "extra": [
+          {
+            "color": "gray",
+            "text": "Credits:"
+          },
+          {
+            "": " "
+          },
+          {
+            "bold": 1,
+            "color": "gold",
+            "text": "MK/108e"
+          }
+        ],
+        "text": ""
+      },
+      "promotionSoundCount": 2,
       "lines": [
         {
           "order": 15,
@@ -1239,6 +1430,24 @@
     {
       "label": "placeholder-page-1",
       "name": "OwnerTester",
+      "footer": {
+        "extra": [
+          {
+            "color": "gray",
+            "text": "Credits:"
+          },
+          {
+            "": " "
+          },
+          {
+            "bold": 1,
+            "color": "gold",
+            "text": "MK/108e"
+          }
+        ],
+        "text": ""
+      },
+      "promotionSoundCount": 2,
       "lines": [
         {
           "order": 14,
@@ -1312,7 +1521,7 @@
         },
         {
           "order": 1,
-          "component": "server_uptime: 0m 44s"
+          "component": "server_uptime: 0m 36s"
         },
         {
           "order": 1,

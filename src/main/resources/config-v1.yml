@@ -1,39 +1,30 @@
 # MK Sidebar & Ranks | Created by MK
 # Colors use MiniMessage: <gold>text</gold>, <bold>text</bold>, or <#ff5555>text</#ff5555>.
 # See docs/PLACEHOLDERS.md for all available %placeholders%.
-config-version: 2
 server-name: 'My Server'
 sidebar:
   enabled: true
   title: '<gold><bold>%server_name%</bold></gold>'
   # Minecraft supports at most 15 sidebar lines. Blank/duplicate lines are supported.
   lines:
-    - '<dark_gray>────────────</dark_gray>'
-    - '<aqua>Name</aqua> <dark_gray>»</dark_gray> <white>%player_name%</white>'
+    - '<dark_gray>────────────────────</dark_gray>'
+    - '<aqua>Player</aqua> <dark_gray>»</dark_gray> <white>%player_name%</white>'
     - '<aqua>Rank</aqua> <dark_gray>»</dark_gray> %player_rank%'
     - ''
-    - '<red>♥</red> <white>%player_health%/%player_max_health%</white>'
-    - '<aqua>X</aqua> <dark_gray>»</dark_gray> <white>%player_x%</white>'
-    - '<aqua>Y</aqua> <dark_gray>»</dark_gray> <white>%player_y%</white>'
-    - '<aqua>Z</aqua> <dark_gray>»</dark_gray> <white>%player_z%</white>'
+    - '<aqua>Health</aqua> <dark_gray>»</dark_gray> <red>♥</red> <white>%player_health% / %player_max_health%</white>'
+    - '<aqua>XYZ</aqua> <dark_gray>»</dark_gray> <white>%player_x%, %player_y%, %player_z%</white>'
     - ''
     - '<aqua>Online</aqua> <dark_gray>»</dark_gray> <white>%server_online% / %server_max_players%</white>'
     - '<aqua>TPS</aqua> <dark_gray>»</dark_gray> <green>%server_tps%</green>'
-    - '<aqua>Up</aqua> <dark_gray>»</dark_gray> <white>%server_uptime%</white>'
-    - '<dark_gray>────────────</dark_gray>'
+    - '<aqua>Uptime</aqua> <dark_gray>»</dark_gray> <white>%server_uptime%</white>'
+    - '<dark_gray>────────────────────</dark_gray>'
 tab:
   enabled: true
   format: '%player_rank_badge% <white>%player_name%</white> <dark_gray>•</dark_gray> %player_ping_color%<gray>ms</gray>'
-  footer: '<gray>Credits:</gray> <gold><bold>MK/108e</bold></gold>'
 promotion:
   hours: 24
   import-existing-playtime: true
   announcement: '<gold><bold>RANK UP!</bold></gold> <white>%player_name%</white> <gray>ranked up to</gray> %player_rank%<gray>!</gray>'
-  sound:
-    enabled: true
-    key: 'minecraft:ui.toast.challenge_complete'
-    volume: 0.7
-    pitch: 1.0
 ranks:
   new_player:
     name: 'New Player'

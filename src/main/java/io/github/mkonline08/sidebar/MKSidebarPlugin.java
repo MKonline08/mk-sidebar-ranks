@@ -27,10 +27,16 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
     @Override public void onEnable() {
         try {
             saveDefaultConfig(); configFile=getDataFolder().toPath().resolve("config.yml");
-            settings=Settings.read(readConfig());
+            YamlConfiguration yaml=readConfig(); boolean upgraded=ConfigUpgrade.apply(yaml);
+            settings=Settings.read(yaml);
             store=new PlayerStore();
             players=new Players(store.open(getDataFolder().toPath().resolve("players.db")).join(),System::nanoTime);
             validateAssignedRanks(settings);
+            if(upgraded) {
+                Files.copy(configFile,getDataFolder().toPath().resolve("config-before-v1.1.0-"+System.currentTimeMillis()+".yml"));
+                writeConfig(yaml);
+                getLogger().info("Upgraded configuration to v1.1.0; the previous configuration was backed up.");
+            }
             displays=new Displays(Objects.requireNonNull(getServer().getScoreboardManager()),getLogger());
             Commands commands=new Commands(this);
             for(String name:List.of("mksb","mkrank")) {
@@ -84,7 +90,10 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
             Component message=Templates.render(snapshot.announcement(),values);
             // Save the earned marker before announcing, preventing repeated announcements after restart.
             save(List.of(record)).thenRun(() -> onMain(() -> {
-                for(Player p:getServer().getOnlinePlayers()) p.sendMessage(message);
+                for(Player p:getServer().getOnlinePlayers()) {
+                    p.sendMessage(message);
+                    if(snapshot.promotionSound().enabled()) p.playSound(snapshot.promotionSound().sound());
+                }
                 getServer().getConsoleSender().sendMessage(message);
             }));
         });
@@ -127,13 +136,16 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
         Rank rank=new Rank(id,create?label:settings.ranks().get(id).name(),color,create?false:settings.ranks().get(id).bold());
         yaml.set("ranks."+id+".name",rank.name()); yaml.set("ranks."+id+".color",rank.color()); yaml.set("ranks."+id+".bold",rank.bold());
         Settings candidate=Settings.read(yaml); validateAssignedRanks(candidate);
+        writeConfig(yaml);
+        settings=candidate; refreshAll();
+    }
+    private void writeConfig(YamlConfiguration yaml) throws Exception {
         Path temp=Files.createTempFile(getDataFolder().toPath(),"config-",".tmp");
         try {
             Files.writeString(temp,yaml.saveToString());
             try { Files.move(temp,configFile,StandardCopyOption.ATOMIC_MOVE,StandardCopyOption.REPLACE_EXISTING); }
             catch(AtomicMoveNotSupportedException ignored) { Files.move(temp,configFile,StandardCopyOption.REPLACE_EXISTING); }
         } finally { Files.deleteIfExists(temp); }
-        settings=candidate; refreshAll();
     }
     private YamlConfiguration readConfig() throws Exception { YamlConfiguration yaml=new YamlConfiguration(); yaml.load(configFile.toFile()); return yaml; }
     private void validateAssignedRanks(Settings candidate) {

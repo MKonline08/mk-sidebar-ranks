@@ -8,15 +8,18 @@
 <g font-family="Consolas,monospace" font-size="18"><text x="78" y="282" fill="#ff5555" font-weight="bold">[OWNER]</text><text x="256" y="282" fill="#fff">MK</text><text x="475" y="282" fill="#55ff55">42ms</text>
 <text x="78" y="325" fill="#ffaa00">[OG Player]</text><text x="256" y="325" fill="#fff">Alex</text><text x="475" y="325" fill="#55ff55">85ms</text>
 <text x="78" y="368" fill="#aaa">[New Player]</text><text x="256" y="368" fill="#fff">Steve</text><text x="465" y="368" fill="#ffff55">156ms</text></g>
-<text x="54" y="460" font-size="16" fill="#a4b4c6">24 hours played <tspan fill="#ffaa00">→ OG Player</tspan></text><text x="54" y="490" font-size="14" fill="#677f95">Paper 1.21.11 · Numeric ping · Persistent ranks</text>
-<rect x="635" y="53" width="411" height="444" rx="14" fill="#10171b" stroke="#31444d"/>
-<g font-family="Consolas,monospace" font-size="19"><text x="748" y="97" font-size="26" font-weight="bold" fill="#ffaa00">My Server</text>
-<path d="M665 118H1014M665 466H1014" stroke="#555"/>
-<text x="665" y="155" fill="#55ffff">Player <tspan fill="#555">»</tspan> <tspan fill="#fff">MK</tspan></text>
-<text x="665" y="190" fill="#55ffff">Rank <tspan fill="#555">»</tspan> <tspan fill="#ff5555" font-weight="bold">OWNER</tspan></text>
-<text x="665" y="246" fill="#55ffff">Health <tspan fill="#555">»</tspan> <tspan fill="#ff5555">♥</tspan> <tspan fill="#fff">20.0 / 20.0</tspan></text>
-<text x="665" y="281" fill="#55ffff">XYZ <tspan fill="#555">»</tspan> <tspan fill="#fff">125, 64, -320</tspan></text>
-<text x="665" y="339" fill="#55ffff">Online <tspan fill="#555">»</tspan> <tspan fill="#fff">8 / 30</tspan></text>
-<text x="665" y="374" fill="#55ffff">TPS <tspan fill="#555">»</tspan> <tspan fill="#55ff55">20.0</tspan></text>
-<text x="665" y="409" fill="#55ffff">Uptime <tspan fill="#555">»</tspan> <tspan fill="#fff">2h 35m 12s</tspan></text></g>
+<text x="78" y="401" font-size="14" fill="#aaa">Credits: <tspan fill="#ffaa00" font-weight="bold">MK/108e</tspan></text>
+<text x="54" y="460" font-size="16" fill="#a4b4c6">24 hours played <tspan fill="#ffaa00">→ OG Player + celebration sound</tspan></text><text x="54" y="490" font-size="14" fill="#677f95">Paper 1.21.11 · Numeric ping · Persistent ranks</text>
+<rect x="715" y="53" width="310" height="444" rx="14" fill="#10171b" stroke="#31444d"/>
+<g font-family="Consolas,monospace" font-size="19"><text x="779" y="97" font-size="26" font-weight="bold" fill="#ffaa00">My Server</text>
+<path d="M745 118H985M745 466H985" stroke="#555"/>
+<text x="745" y="153" fill="#55ffff">Name <tspan fill="#555">»</tspan> <tspan fill="#fff">MK</tspan></text>
+<text x="745" y="184" fill="#55ffff">Rank <tspan fill="#555">»</tspan> <tspan fill="#ff5555" font-weight="bold">OWNER</tspan></text>
+<text x="745" y="231" fill="#ff5555">♥ <tspan fill="#fff">20.0/20.0</tspan></text>
+<text x="745" y="261" fill="#55ffff">X <tspan fill="#555">»</tspan> <tspan fill="#fff">125</tspan></text>
+<text x="745" y="291" fill="#55ffff">Y <tspan fill="#555">»</tspan> <tspan fill="#fff">64</tspan></text>
+<text x="745" y="321" fill="#55ffff">Z <tspan fill="#555">»</tspan> <tspan fill="#fff">-320</tspan></text>
+<text x="745" y="367" fill="#55ffff">Online <tspan fill="#555">»</tspan> <tspan fill="#fff">8 / 30</tspan></text>
+<text x="745" y="399" fill="#55ffff">TPS <tspan fill="#555">»</tspan> <tspan fill="#55ff55">20.0</tspan></text>
+<text x="745" y="431" fill="#55ffff">Up <tspan fill="#555">»</tspan> <tspan fill="#fff">2h 35m 12s</tspan></text></g>
 <text x="1046" y="532" font-size="11" text-anchor="end" letter-spacing="2" fill="#617788">DESIGN PREVIEW</text></g></svg>

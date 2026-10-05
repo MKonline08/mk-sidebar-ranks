@@ -12,9 +12,11 @@ public final class Displays {
         Scoreboard originalBoard, board;
         Objective objective;
         Component originalTab, lastTab;
+        Component originalFooter, lastFooter;
+        boolean footerConflict;
         boolean sidebarConflict, tabConflict;
         int lineCount;
-        View(Player p) { originalBoard=p.getScoreboard(); originalTab=p.playerListName(); }
+        View(Player p) { originalBoard=p.getScoreboard(); originalTab=p.playerListName(); originalFooter=p.playerListFooter(); }
     }
     private final Map<UUID,View> views = new HashMap<>();
     private final ScoreboardManager manager;
@@ -57,6 +59,15 @@ public final class Displays {
                 if (!tab.equals(v.lastTab)) { player.playerListName(tab); v.lastTab=tab; }
             }
         }
+        if(settings.tabEnabled() && !v.footerConflict) {
+            if(v.lastFooter!=null && !Objects.equals(player.playerListFooter(),v.lastFooter)) {
+                v.footerConflict=true; v.lastFooter=null;
+                logger.warning("Tab footer replaced by another plugin for "+player.getName()+". Footer updates paused until reconnect.");
+            } else {
+                Component footer=Templates.render(settings.tabFooter(),values);
+                if(!footer.equals(v.lastFooter)) { player.sendPlayerListFooter(footer); v.lastFooter=footer; }
+            }
+        }
     }
     private void releaseSidebar(Player p,View v) {
         if (v.board!=null && ownsSidebar(p,v)) p.setScoreboard(v.originalBoard);
@@ -69,6 +80,8 @@ public final class Displays {
     private void releaseTab(Player p,View v) {
         if (v.lastTab!=null && p.playerListName().equals(v.lastTab)) p.playerListName(v.originalTab);
         v.lastTab=null;
+        if(v.lastFooter!=null && Objects.equals(p.playerListFooter(),v.lastFooter)) p.sendPlayerListFooter(v.originalFooter==null?Component.empty():v.originalFooter);
+        v.lastFooter=null;
     }
     public void resetSidebarConflict(Player p) { View v=views.get(p.getUniqueId()); if(v!=null) v.sidebarConflict=false; }
     public void remove(Player p) {
