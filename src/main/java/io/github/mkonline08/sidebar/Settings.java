@@ -8,7 +8,7 @@ public record Settings(String serverName, boolean sidebarEnabled, String title, 
                        boolean tabEnabled, String tabFormat, String tabFooter, long promotionMillis, boolean importExisting,
                        String announcement, PromotionSound promotionSound, Map<String, Rank> ranks,
                        Map<String, Templates.Compiled> compiled, Set<String> sidebarKeys, Set<String> tabKeys,
-                       int tabPingSeconds, int maxUpdatesPerTick) {
+                       int tabPingSeconds, int maxUpdatesPerTick, boolean nametagsEnabled) {
     public static Settings read(YamlConfiguration yaml) {
         String name = required(yaml, "server-name");
         if (name.length() > 64 || name.codePoints().anyMatch(Character::isISOControl)) throw new IllegalArgumentException("server-name must contain 1–64 printable characters.");
@@ -37,7 +37,7 @@ public record Settings(String serverName, boolean sidebarEnabled, String title, 
         lines.forEach(line->sidebarKeys.addAll(compiled.get(line).keys()));tabKeys.addAll(compiled.get(footer).keys());
         return new Settings(name, bool(yaml, "sidebar.enabled"), title, lines, bool(yaml, "tab.enabled"), tab, footer,
                 millis, bool(yaml, "promotion.import-existing-playtime"), announcement, PromotionSound.read(yaml), Collections.unmodifiableMap(ranks),
-                Map.copyOf(compiled),Set.copyOf(sidebarKeys),Set.copyOf(tabKeys),integer(yaml,"performance.tab-ping-update-seconds",5,1,60),integer(yaml,"performance.max-updates-per-tick",32,1,512));
+                Map.copyOf(compiled),Set.copyOf(sidebarKeys),Set.copyOf(tabKeys),integer(yaml,"performance.tab-ping-update-seconds",5,1,60),integer(yaml,"performance.max-updates-per-tick",32,1,512),bool(yaml,"nametags.enabled"));
     }
     private static int integer(YamlConfiguration yaml,String key,int fallback,int min,int max) {
         if(yaml.contains(key) && !yaml.isInt(key)) throw new IllegalArgumentException(key+" must be an integer.");

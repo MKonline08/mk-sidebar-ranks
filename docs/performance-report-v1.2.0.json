@@ -1,0 +1,247 @@
+{
+  "version": "1.2.0",
+  "result": "PASS",
+  "paper": "1.21.11 build 132",
+  "players": 64,
+  "cpu": "AMD Ryzen 5 9600X 6-Core Processor             ",
+  "javaHeapMiB": 2048,
+  "measurements": [
+    {
+      "scenario": "displays-disabled",
+      "seconds": 30,
+      "players": 64,
+      "samples": [
+        {
+          "avgMs": 0.007,
+          "p95Ms": 0.063,
+          "maxMs": 0.111,
+          "queued": 0,
+          "serverMs": 0.939,
+          "tps": 19.89,
+          "renders": 1926,
+          "tabUpdates": 123,
+          "sidebarUpdates": 1675
+        },
+        {
+          "avgMs": 0.008,
+          "p95Ms": 0.077,
+          "maxMs": 0.128,
+          "queued": 0,
+          "serverMs": 0.924,
+          "tps": 19.9,
+          "renders": 1926,
+          "tabUpdates": 123,
+          "sidebarUpdates": 1675
+        },
+        {
+          "avgMs": 0.008,
+          "p95Ms": 0.077,
+          "maxMs": 0.128,
+          "queued": 0,
+          "serverMs": 0.907,
+          "tps": 19.91,
+          "renders": 1926,
+          "tabUpdates": 123,
+          "sidebarUpdates": 1675
+        },
+        {
+          "avgMs": 0.007,
+          "p95Ms": 0.051,
+          "maxMs": 0.105,
+          "queued": 0,
+          "serverMs": 0.905,
+          "tps": 19.92,
+          "renders": 1926,
+          "tabUpdates": 123,
+          "sidebarUpdates": 1675
+        },
+        {
+          "avgMs": 0.007,
+          "p95Ms": 0.051,
+          "maxMs": 0.087,
+          "queued": 0,
+          "serverMs": 0.885,
+          "tps": 19.93,
+          "renders": 1926,
+          "tabUpdates": 123,
+          "sidebarUpdates": 1675
+        },
+        {
+          "avgMs": 0.007,
+          "p95Ms": 0.051,
+          "maxMs": 0.109,
+          "queued": 0,
+          "serverMs": 0.92,
+          "tps": 19.93,
+          "renders": 1926,
+          "tabUpdates": 123,
+          "sidebarUpdates": 1675
+        }
+      ],
+      "incomingDisplayPacketsAcrossClients": {
+        "scoreboard_score": 0,
+        "player_info": 64,
+        "playerlist_header": 0
+      }
+    },
+    {
+      "scenario": "enabled-static",
+      "seconds": 30,
+      "players": 64,
+      "samples": [
+        {
+          "avgMs": 0.203,
+          "p95Ms": 1.039,
+          "maxMs": 1.114,
+          "queued": 0,
+          "serverMs": 1.077,
+          "tps": 20,
+          "renders": 3768,
+          "tabUpdates": 243,
+          "sidebarUpdates": 3269
+        },
+        {
+          "avgMs": 0.208,
+          "p95Ms": 1.029,
+          "maxMs": 1.206,
+          "queued": 47,
+          "serverMs": 1.051,
+          "tps": 20,
+          "renders": 4122,
+          "tabUpdates": 260,
+          "sidebarUpdates": 3606
+        },
+        {
+          "avgMs": 0.191,
+          "p95Ms": 1.028,
+          "maxMs": 1.206,
+          "queued": 0,
+          "serverMs": 1.056,
+          "tps": 20,
+          "renders": 4509,
+          "tabUpdates": 280,
+          "sidebarUpdates": 3973
+        },
+        {
+          "avgMs": 0.154,
+          "p95Ms": 1.018,
+          "maxMs": 1.054,
+          "queued": 0,
+          "serverMs": 0.943,
+          "tps": 20,
+          "renders": 4834,
+          "tabUpdates": 285,
+          "sidebarUpdates": 4293
+        },
+        {
+          "avgMs": 0.126,
+          "p95Ms": 1.007,
+          "maxMs": 1.053,
+          "queued": 0,
+          "serverMs": 0.901,
+          "tps": 20,
+          "renders": 5178,
+          "tabUpdates": 309,
+          "sidebarUpdates": 4613
+        },
+        {
+          "avgMs": 0.114,
+          "p95Ms": 1.002,
+          "maxMs": 1.054,
+          "queued": 0,
+          "serverMs": 0.871,
+          "tps": 20,
+          "renders": 5513,
+          "tabUpdates": 324,
+          "sidebarUpdates": 4933
+        }
+      ],
+      "incomingDisplayPacketsAcrossClients": {
+        "scoreboard_score": 1984,
+        "player_info": 6464,
+        "playerlist_header": 0
+      }
+    },
+    {
+      "scenario": "enabled-moving",
+      "seconds": 30,
+      "players": 64,
+      "samples": [
+        {
+          "avgMs": 0.124,
+          "p95Ms": 1.004,
+          "maxMs": 1.068,
+          "queued": 0,
+          "serverMs": 1.048,
+          "tps": 20,
+          "renders": 6795,
+          "tabUpdates": 385,
+          "sidebarUpdates": 6154
+        },
+        {
+          "avgMs": 0.162,
+          "p95Ms": 1.014,
+          "maxMs": 3.626,
+          "queued": 0,
+          "serverMs": 1.166,
+          "tps": 20,
+          "renders": 7168,
+          "tabUpdates": 398,
+          "sidebarUpdates": 6514
+        },
+        {
+          "avgMs": 0.171,
+          "p95Ms": 1.02,
+          "maxMs": 3.626,
+          "queued": 0,
+          "serverMs": 1.116,
+          "tps": 20,
+          "renders": 7541,
+          "tabUpdates": 411,
+          "sidebarUpdates": 6874
+        },
+        {
+          "avgMs": 0.151,
+          "p95Ms": 1.019,
+          "maxMs": 1.059,
+          "queued": 0,
+          "serverMs": 1.095,
+          "tps": 20,
+          "renders": 7909,
+          "tabUpdates": 419,
+          "sidebarUpdates": 7234
+        },
+        {
+          "avgMs": 0.158,
+          "p95Ms": 1.019,
+          "maxMs": 1.059,
+          "queued": 46,
+          "serverMs": 1.149,
+          "tps": 20,
+          "renders": 8319,
+          "tabUpdates": 448,
+          "sidebarUpdates": 7615
+        },
+        {
+          "avgMs": 0.167,
+          "p95Ms": 1.029,
+          "maxMs": 1.186,
+          "queued": 0,
+          "serverMs": 1.174,
+          "tps": 20,
+          "renders": 8753,
+          "tabUpdates": 471,
+          "sidebarUpdates": 8026
+        }
+      ],
+      "incomingDisplayPacketsAcrossClients": {
+        "scoreboard_score": 2232,
+        "player_info": 7040,
+        "playerlist_header": 0
+      }
+    }
+  ],
+  "limitations": "Loopback protocol clients in a flat spectator world on the same Windows PC; no production-host or internet-latency guarantee. Metrics cover the scheduled plugin update loop, excluding initial joins, configuration reloads, database worker work, and the diagnostics command itself.",
+  "verifiedOn": "2026-10-05",
+  "jarSha256": "91ee27266369bf624cd40149038a4ade47290234bb9d9011effb17ef67af6139"
+}

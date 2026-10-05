@@ -1,38 +1,47 @@
 {
   "verifiedOn": "2026-10-05",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "paper": "1.21.11 build 132",
   "result": "PASS",
-  "jarSha256": "9a9122effcae6f40698b99fccbf4c370f638f69a0c39afff8a62c7c9f0d62be5",
+  "jarSha256": "176fd520015f4be555ba49263122c956fd2a238e97427b30bb7a7c11ca55f610",
   "automatedTests": {
-    "total": 33,
+    "total": 39,
     "failures": 0,
     "errors": 0,
     "skipped": 0
   },
   "integrationScenarios": [
     "Existing v1.1.1 default config upgraded and backed up automatically",
+    "Default compact sidebar includes the viewing player's hours played",
     "Compact inline label/value rows and single XYZ row; exact MK/108e Tab credits",
     "Right-side sidebar, health, unique blank lines, and hidden score numbers",
+    "Colored OWNER and New Player badges appear beside names on observer scoreboards",
     "Manual rank assignment plays one celebration sound for every online player",
     "Red OWNER rank and numeric ping visible to other players in Tab",
+    "Imported playtime appears as hours; automatic OG rank reaches overhead tags",
     "Every online player receives the rank-up sound alongside the announcement",
     "Existing 24-hour playtime imported; OG announcement broadcast to everyone",
+    "Unchanged overhead tags send no repeated team updates",
     "Sidebar objective remains stable during updates",
     "Connected playtime promotes once; manual OWNER stays protected",
     "Custom rank assignment also sounds for every online player",
     "Reassigning the same rank does not replay the sound",
+    "Custom labels and rank color changes update overhead tags",
     "Reset sounds once when the displayed rank changes; repeat reset stays silent",
     "Custom rank creation, color changes, assignment, and reset",
     "Non-operator cannot assign OWNER",
+    "Hiding the sidebar keeps overhead ranks active on the restored scoreboard",
     "Personal sidebar toggle leaves Tab formatting active",
     "Coordinates use block positions, including negative values",
     "Invalid reload retains working configuration",
     "All requested and added placeholders resolve on real Paper players",
     "Disabling promotion.sound also mutes manual rank changes",
+    "Disconnected player entries are removed from overhead teams",
     "Offline rank changes sound only for the players currently online",
     "Reset triggering an automatic promotion plays one sound without duplication",
+    "Overhead ranks restore after restart, including offline rank assignments",
     "Restart preserves OWNER, OG, offline custom assignments, hidden sidebar, and announcement markers",
+    "Independent nametag switch removes owned teams while retaining sidebar and Tab",
     "Independent configuration switches release sidebar and Tab ownership"
   ],
   "capturedDisplayExamples": [
@@ -57,9 +66,53 @@
         "text": ""
       },
       "promotionSoundCount": 2,
+      "overhead": [
+        {
+          "prefix": {
+            "bold": 1,
+            "color": "red",
+            "extra": [
+              " "
+            ],
+            "text": "[OWNER]"
+          },
+          "players": [
+            "OwnerTester"
+          ],
+          "visibility": "always"
+        },
+        {
+          "prefix": {
+            "bold": 0,
+            "color": "gray",
+            "extra": [
+              " "
+            ],
+            "text": "[New Player]"
+          },
+          "players": [
+            "NewTester"
+          ],
+          "visibility": "always"
+        },
+        {
+          "prefix": {
+            "bold": 0,
+            "color": "gold",
+            "extra": [
+              " "
+            ],
+            "text": "[OG Player]"
+          },
+          "players": [
+            "VeteranTester"
+          ],
+          "visibility": "always"
+        }
+      ],
       "lines": [
         {
-          "order": 8,
+          "order": 9,
           "component": {
             "extra": [
               {
@@ -78,7 +131,7 @@
           }
         },
         {
-          "order": 7,
+          "order": 8,
           "component": {
             "extra": [
               {
@@ -98,7 +151,7 @@
           }
         },
         {
-          "order": 6,
+          "order": 7,
           "component": {
             "extra": [
               {
@@ -117,7 +170,7 @@
           }
         },
         {
-          "order": 5,
+          "order": 6,
           "component": {
             "extra": [
               {
@@ -129,7 +182,26 @@
               },
               {
                 "color": "gray",
-                "text": "-1 -60 -6"
+                "text": "-3 -60 9"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 5,
+          "component": {
+            "extra": [
+              {
+                "color": "white",
+                "text": "Hours:"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "aqua",
+                "text": "0.00"
               }
             ],
             "text": ""
@@ -152,7 +224,7 @@
               },
               {
                 "color": "green",
-                "text": "2/10"
+                "text": "3/10"
               }
             ],
             "text": ""
@@ -171,7 +243,7 @@
               },
               {
                 "color": "green",
-                "text": "18.8"
+                "text": "19.4"
               }
             ],
             "text": ""
@@ -190,7 +262,7 @@
               },
               {
                 "color": "yellow",
-                "text": "0m 19s"
+                "text": "0m 21s"
               }
             ],
             "text": ""
@@ -340,9 +412,53 @@
         "text": ""
       },
       "promotionSoundCount": 2,
+      "overhead": [
+        {
+          "prefix": {
+            "bold": 1,
+            "color": "red",
+            "extra": [
+              " "
+            ],
+            "text": "[OWNER]"
+          },
+          "players": [
+            "OwnerTester"
+          ],
+          "visibility": "always"
+        },
+        {
+          "prefix": {
+            "bold": 0,
+            "color": "gray",
+            "extra": [
+              " "
+            ],
+            "text": "[New Player]"
+          },
+          "players": [
+            "NewTester"
+          ],
+          "visibility": "always"
+        },
+        {
+          "prefix": {
+            "bold": 0,
+            "color": "gold",
+            "extra": [
+              " "
+            ],
+            "text": "[OG Player]"
+          },
+          "players": [
+            "VeteranTester"
+          ],
+          "visibility": "always"
+        }
+      ],
       "lines": [
         {
-          "order": 8,
+          "order": 9,
           "component": {
             "extra": [
               {
@@ -361,7 +477,7 @@
           }
         },
         {
-          "order": 7,
+          "order": 8,
           "component": {
             "extra": [
               {
@@ -381,7 +497,7 @@
           }
         },
         {
-          "order": 6,
+          "order": 7,
           "component": {
             "extra": [
               {
@@ -400,7 +516,7 @@
           }
         },
         {
-          "order": 5,
+          "order": 6,
           "component": {
             "extra": [
               {
@@ -412,7 +528,26 @@
               },
               {
                 "color": "gray",
-                "text": "7 -60 5"
+                "text": "4 -60 5"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 5,
+          "component": {
+            "extra": [
+              {
+                "color": "white",
+                "text": "Hours:"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "aqua",
+                "text": "0.00"
               }
             ],
             "text": ""
@@ -435,7 +570,7 @@
               },
               {
                 "color": "green",
-                "text": "2/10"
+                "text": "3/10"
               }
             ],
             "text": ""
@@ -454,7 +589,7 @@
               },
               {
                 "color": "green",
-                "text": "18.7"
+                "text": "19.4"
               }
             ],
             "text": ""
@@ -473,7 +608,7 @@
               },
               {
                 "color": "yellow",
-                "text": "0m 19s"
+                "text": "0m 21s"
               }
             ],
             "text": ""
@@ -623,9 +758,53 @@
         "text": ""
       },
       "promotionSoundCount": 1,
+      "overhead": [
+        {
+          "prefix": {
+            "bold": 1,
+            "color": "red",
+            "extra": [
+              " "
+            ],
+            "text": "[OWNER]"
+          },
+          "players": [
+            "OwnerTester"
+          ],
+          "visibility": "always"
+        },
+        {
+          "prefix": {
+            "bold": 0,
+            "color": "gray",
+            "extra": [
+              " "
+            ],
+            "text": "[New Player]"
+          },
+          "players": [
+            "NewTester"
+          ],
+          "visibility": "always"
+        },
+        {
+          "prefix": {
+            "bold": 0,
+            "color": "gold",
+            "extra": [
+              " "
+            ],
+            "text": "[OG Player]"
+          },
+          "players": [
+            "VeteranTester"
+          ],
+          "visibility": "always"
+        }
+      ],
       "lines": [
         {
-          "order": 8,
+          "order": 9,
           "component": {
             "extra": [
               {
@@ -644,7 +823,7 @@
           }
         },
         {
-          "order": 7,
+          "order": 8,
           "component": {
             "extra": [
               {
@@ -664,7 +843,7 @@
           }
         },
         {
-          "order": 6,
+          "order": 7,
           "component": {
             "extra": [
               {
@@ -683,7 +862,7 @@
           }
         },
         {
-          "order": 5,
+          "order": 6,
           "component": {
             "extra": [
               {
@@ -695,7 +874,26 @@
               },
               {
                 "color": "gray",
-                "text": "-4 -60 4"
+                "text": "-8 -60 -5"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 5,
+          "component": {
+            "extra": [
+              {
+                "color": "white",
+                "text": "Hours:"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "aqua",
+                "text": "24.00"
               }
             ],
             "text": ""
@@ -737,7 +935,7 @@
               },
               {
                 "color": "green",
-                "text": "19.0"
+                "text": "19.4"
               }
             ],
             "text": ""
@@ -756,7 +954,7 @@
               },
               {
                 "color": "yellow",
-                "text": "0m 20s"
+                "text": "0m 21s"
               }
             ],
             "text": ""
@@ -906,6 +1104,50 @@
         "text": ""
       },
       "promotionSoundCount": 5,
+      "overhead": [
+        {
+          "prefix": {
+            "bold": 1,
+            "color": "red",
+            "extra": [
+              " "
+            ],
+            "text": "[OWNER]"
+          },
+          "players": [
+            "OwnerTester"
+          ],
+          "visibility": "always"
+        },
+        {
+          "prefix": {
+            "bold": 0,
+            "color": "gold",
+            "extra": [
+              " "
+            ],
+            "text": "[OG Player]"
+          },
+          "players": [
+            "NewTester"
+          ],
+          "visibility": "always"
+        },
+        {
+          "prefix": {
+            "bold": 0,
+            "color": "gold",
+            "extra": [
+              " "
+            ],
+            "text": "[OG Player]"
+          },
+          "players": [
+            "VeteranTester"
+          ],
+          "visibility": "always"
+        }
+      ],
       "lines": [
         {
           "order": 15,
@@ -1119,6 +1361,50 @@
         "text": ""
       },
       "promotionSoundCount": 5,
+      "overhead": [
+        {
+          "prefix": {
+            "bold": 1,
+            "color": "red",
+            "extra": [
+              " "
+            ],
+            "text": "[OWNER]"
+          },
+          "players": [
+            "OwnerTester"
+          ],
+          "visibility": "always"
+        },
+        {
+          "prefix": {
+            "bold": 0,
+            "color": "gold",
+            "extra": [
+              " "
+            ],
+            "text": "[OG Player]"
+          },
+          "players": [
+            "NewTester"
+          ],
+          "visibility": "always"
+        },
+        {
+          "prefix": {
+            "bold": 0,
+            "color": "gold",
+            "extra": [
+              " "
+            ],
+            "text": "[OG Player]"
+          },
+          "players": [
+            "VeteranTester"
+          ],
+          "visibility": "always"
+        }
+      ],
       "lines": [
         {
           "order": 14,
@@ -1192,7 +1478,7 @@
         },
         {
           "order": 1,
-          "component": "server_uptime: 0m 34s"
+          "component": "server_uptime: 0m 35s"
         },
         {
           "order": 1,

@@ -10,13 +10,15 @@
 <text x="78" y="368" fill="#aaa">[New Player]</text><text x="256" y="368" fill="#fff">Steve</text><text x="465" y="368" fill="#ffff55">156ms</text></g>
 <text x="78" y="401" font-size="14" fill="#aaa">Credits: <tspan fill="#ffaa00" font-weight="bold">MK/108e</tspan></text>
 <text x="54" y="460" font-size="16" fill="#a4b4c6">24 hours played <tspan fill="#ffaa00">→ OG Player + celebration sound</tspan></text><text x="54" y="490" font-size="14" fill="#677f95">Paper 1.21.11 · Numeric ping · Persistent ranks</text>
-<rect x="715" y="53" width="310" height="332" rx="8" fill="#10171b"/>
+<rect x="715" y="53" width="310" height="360" rx="8" fill="#10171b"/>
 <g font-family="Consolas,monospace" font-size="19"><text x="779" y="97" font-size="26" font-weight="bold" fill="#ffaa00">My Server</text>
 <text x="745" y="147" fill="#fff">Name: <tspan fill="#55ffff">MK</tspan></text>
 <text x="745" y="175" fill="#fff">Rank: <tspan fill="#ff5555" font-weight="bold">OWNER</tspan></text>
 <text x="745" y="203" fill="#fff">Health: <tspan fill="#55ff55">20.0/20.0</tspan></text>
 <text x="745" y="231" fill="#fff">XYZ: <tspan fill="#aaa">125 64 -320</tspan></text>
-<text x="745" y="285" fill="#fff">Online: <tspan fill="#55ff55">8/30</tspan></text>
-<text x="745" y="313" fill="#fff">TPS: <tspan fill="#55ff55">20.0</tspan></text>
-<text x="745" y="341" fill="#fff">Uptime: <tspan fill="#ffff55">2h 35m 12s</tspan></text></g>
+<text x="745" y="259" fill="#fff">Hours: <tspan fill="#55ffff">27.50</tspan></text>
+<text x="745" y="313" fill="#fff">Online: <tspan fill="#55ff55">8/30</tspan></text>
+<text x="745" y="341" fill="#fff">TPS: <tspan fill="#55ff55">20.0</tspan></text>
+<text x="745" y="369" fill="#fff">Uptime: <tspan fill="#ffff55">2h 35m 12s</tspan></text></g>
+<text x="730" y="453" font-size="12" letter-spacing="2" fill="#9fb2c8">ABOVE PLAYER HEADS</text><text x="750" y="485" font-family="Consolas,monospace" font-size="19" fill="#fff"><tspan fill="#ff5555" font-weight="bold">[OWNER]</tspan> MK</text>
 <text x="1046" y="532" font-size="11" text-anchor="end" letter-spacing="2" fill="#617788">DESIGN PREVIEW</text></g></svg>

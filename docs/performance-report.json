@@ -1,9 +1,9 @@
 {
-  "version": "1.2.0",
+  "version": "1.3.0",
   "result": "PASS",
   "paper": "1.21.11 build 132",
   "players": 64,
-  "cpu": "AMD Ryzen 5 9600X 6-Core Processor             ",
+  "cpu": "AMD Ryzen 5 9600X 6-Core Processor",
   "javaHeapMiB": 2048,
   "measurements": [
     {
@@ -12,76 +12,77 @@
       "players": 64,
       "samples": [
         {
-          "avgMs": 0.007,
-          "p95Ms": 0.063,
-          "maxMs": 0.111,
+          "avgMs": 0.017,
+          "p95Ms": 0.155,
+          "maxMs": 0.247,
           "queued": 0,
-          "serverMs": 0.939,
-          "tps": 19.89,
-          "renders": 1926,
-          "tabUpdates": 123,
-          "sidebarUpdates": 1675
+          "serverMs": 0.864,
+          "tps": 19.94,
+          "renders": 1888,
+          "tabUpdates": 122,
+          "sidebarUpdates": 1638
         },
         {
-          "avgMs": 0.008,
-          "p95Ms": 0.077,
-          "maxMs": 0.128,
+          "avgMs": 0.016,
+          "p95Ms": 0.146,
+          "maxMs": 0.233,
           "queued": 0,
-          "serverMs": 0.924,
-          "tps": 19.9,
-          "renders": 1926,
-          "tabUpdates": 123,
-          "sidebarUpdates": 1675
+          "serverMs": 0.804,
+          "tps": 19.95,
+          "renders": 1888,
+          "tabUpdates": 122,
+          "sidebarUpdates": 1638
         },
         {
-          "avgMs": 0.008,
-          "p95Ms": 0.077,
-          "maxMs": 0.128,
+          "avgMs": 0.015,
+          "p95Ms": 0.142,
+          "maxMs": 0.206,
           "queued": 0,
-          "serverMs": 0.907,
-          "tps": 19.91,
-          "renders": 1926,
-          "tabUpdates": 123,
-          "sidebarUpdates": 1675
+          "serverMs": 0.81,
+          "tps": 19.96,
+          "renders": 1888,
+          "tabUpdates": 122,
+          "sidebarUpdates": 1638
         },
         {
-          "avgMs": 0.007,
-          "p95Ms": 0.051,
-          "maxMs": 0.105,
+          "avgMs": 0.015,
+          "p95Ms": 0.141,
+          "maxMs": 0.184,
           "queued": 0,
-          "serverMs": 0.905,
-          "tps": 19.92,
-          "renders": 1926,
-          "tabUpdates": 123,
-          "sidebarUpdates": 1675
+          "serverMs": 0.827,
+          "tps": 19.96,
+          "renders": 1888,
+          "tabUpdates": 122,
+          "sidebarUpdates": 1638
         },
         {
-          "avgMs": 0.007,
-          "p95Ms": 0.051,
-          "maxMs": 0.087,
+          "avgMs": 0.014,
+          "p95Ms": 0.14,
+          "maxMs": 0.195,
           "queued": 0,
-          "serverMs": 0.885,
-          "tps": 19.93,
-          "renders": 1926,
-          "tabUpdates": 123,
-          "sidebarUpdates": 1675
+          "serverMs": 0.774,
+          "tps": 19.96,
+          "renders": 1888,
+          "tabUpdates": 122,
+          "sidebarUpdates": 1638
         },
         {
-          "avgMs": 0.007,
-          "p95Ms": 0.051,
-          "maxMs": 0.109,
-          "queued": 0,
-          "serverMs": 0.92,
-          "tps": 19.93,
-          "renders": 1926,
-          "tabUpdates": 123,
-          "sidebarUpdates": 1675
+          "avgMs": 0.014,
+          "p95Ms": 0.141,
+          "maxMs": 0.193,
+          "queued": 32,
+          "serverMs": 0.791,
+          "tps": 19.97,
+          "renders": 1888,
+          "tabUpdates": 122,
+          "sidebarUpdates": 1638
         }
       ],
       "incomingDisplayPacketsAcrossClients": {
         "scoreboard_score": 0,
         "player_info": 64,
-        "playerlist_header": 0
+        "playerlist_header": 0,
+        "teams": 0
       }
     },
     {
@@ -90,76 +91,77 @@
       "players": 64,
       "samples": [
         {
-          "avgMs": 0.203,
-          "p95Ms": 1.039,
-          "maxMs": 1.114,
-          "queued": 0,
-          "serverMs": 1.077,
+          "avgMs": 0.184,
+          "p95Ms": 1.019,
+          "maxMs": 4.622,
+          "queued": 2,
+          "serverMs": 0.91,
           "tps": 20,
-          "renders": 3768,
-          "tabUpdates": 243,
+          "renders": 3797,
+          "tabUpdates": 272,
           "sidebarUpdates": 3269
         },
         {
-          "avgMs": 0.208,
-          "p95Ms": 1.029,
-          "maxMs": 1.206,
-          "queued": 47,
-          "serverMs": 1.051,
+          "avgMs": 0.134,
+          "p95Ms": 1.01,
+          "maxMs": 1.021,
+          "queued": 0,
+          "serverMs": 0.909,
           "tps": 20,
-          "renders": 4122,
-          "tabUpdates": 260,
-          "sidebarUpdates": 3606
+          "renders": 4139,
+          "tabUpdates": 292,
+          "sidebarUpdates": 3591
         },
         {
-          "avgMs": 0.191,
-          "p95Ms": 1.028,
-          "maxMs": 1.206,
+          "avgMs": 0.127,
+          "p95Ms": 1.013,
+          "maxMs": 1.11,
           "queued": 0,
-          "serverMs": 1.056,
+          "serverMs": 0.883,
           "tps": 20,
-          "renders": 4509,
-          "tabUpdates": 280,
-          "sidebarUpdates": 3973
+          "renders": 4478,
+          "tabUpdates": 311,
+          "sidebarUpdates": 3911
         },
         {
-          "avgMs": 0.154,
-          "p95Ms": 1.018,
-          "maxMs": 1.054,
+          "avgMs": 0.128,
+          "p95Ms": 1.019,
+          "maxMs": 1.114,
           "queued": 0,
-          "serverMs": 0.943,
+          "serverMs": 0.906,
           "tps": 20,
-          "renders": 4834,
-          "tabUpdates": 285,
-          "sidebarUpdates": 4293
+          "renders": 4810,
+          "tabUpdates": 323,
+          "sidebarUpdates": 4231
+        },
+        {
+          "avgMs": 0.129,
+          "p95Ms": 1.011,
+          "maxMs": 1.136,
+          "queued": 0,
+          "serverMs": 0.901,
+          "tps": 20,
+          "renders": 5158,
+          "tabUpdates": 331,
+          "sidebarUpdates": 4571
         },
         {
           "avgMs": 0.126,
           "p95Ms": 1.007,
-          "maxMs": 1.053,
+          "maxMs": 1.136,
           "queued": 0,
-          "serverMs": 0.901,
+          "serverMs": 0.856,
           "tps": 20,
-          "renders": 5178,
-          "tabUpdates": 309,
-          "sidebarUpdates": 4613
-        },
-        {
-          "avgMs": 0.114,
-          "p95Ms": 1.002,
-          "maxMs": 1.054,
-          "queued": 0,
-          "serverMs": 0.871,
-          "tps": 20,
-          "renders": 5513,
-          "tabUpdates": 324,
-          "sidebarUpdates": 4933
+          "renders": 5516,
+          "tabUpdates": 347,
+          "sidebarUpdates": 4913
         }
       ],
       "incomingDisplayPacketsAcrossClients": {
-        "scoreboard_score": 1984,
-        "player_info": 6464,
-        "playerlist_header": 0
+        "scoreboard_score": 2012,
+        "player_info": 6528,
+        "playerlist_header": 0,
+        "teams": 0
       }
     },
     {
@@ -168,80 +170,81 @@
       "players": 64,
       "samples": [
         {
-          "avgMs": 0.124,
-          "p95Ms": 1.004,
-          "maxMs": 1.068,
+          "avgMs": 0.2,
+          "p95Ms": 1.029,
+          "maxMs": 3.955,
           "queued": 0,
-          "serverMs": 1.048,
+          "serverMs": 1.24,
           "tps": 20,
-          "renders": 6795,
-          "tabUpdates": 385,
-          "sidebarUpdates": 6154
+          "renders": 6829,
+          "tabUpdates": 422,
+          "sidebarUpdates": 6151
         },
         {
-          "avgMs": 0.162,
-          "p95Ms": 1.014,
-          "maxMs": 3.626,
+          "avgMs": 0.179,
+          "p95Ms": 1.019,
+          "maxMs": 3.955,
           "queued": 0,
-          "serverMs": 1.166,
+          "serverMs": 1.085,
           "tps": 20,
-          "renders": 7168,
-          "tabUpdates": 398,
-          "sidebarUpdates": 6514
+          "renders": 7207,
+          "tabUpdates": 440,
+          "sidebarUpdates": 6511
         },
         {
-          "avgMs": 0.171,
-          "p95Ms": 1.02,
-          "maxMs": 3.626,
+          "avgMs": 0.14,
+          "p95Ms": 1.016,
+          "maxMs": 1.1,
           "queued": 0,
-          "serverMs": 1.116,
+          "serverMs": 1.013,
           "tps": 20,
-          "renders": 7541,
-          "tabUpdates": 411,
+          "renders": 7605,
+          "tabUpdates": 475,
           "sidebarUpdates": 6874
         },
         {
-          "avgMs": 0.151,
-          "p95Ms": 1.019,
-          "maxMs": 1.059,
+          "avgMs": 0.134,
+          "p95Ms": 1.016,
+          "maxMs": 1.104,
           "queued": 0,
-          "serverMs": 1.095,
+          "serverMs": 1.002,
           "tps": 20,
-          "renders": 7909,
-          "tabUpdates": 419,
-          "sidebarUpdates": 7234
+          "renders": 8082,
+          "tabUpdates": 494,
+          "sidebarUpdates": 7332
         },
         {
-          "avgMs": 0.158,
-          "p95Ms": 1.019,
-          "maxMs": 1.059,
-          "queued": 46,
-          "serverMs": 1.149,
+          "avgMs": 0.126,
+          "p95Ms": 1.013,
+          "maxMs": 1.104,
+          "queued": 0,
+          "serverMs": 0.991,
           "tps": 20,
-          "renders": 8319,
-          "tabUpdates": 448,
-          "sidebarUpdates": 7615
+          "renders": 8468,
+          "tabUpdates": 498,
+          "sidebarUpdates": 7714
         },
         {
-          "avgMs": 0.167,
-          "p95Ms": 1.029,
-          "maxMs": 1.186,
+          "avgMs": 0.125,
+          "p95Ms": 1.013,
+          "maxMs": 1.098,
           "queued": 0,
-          "serverMs": 1.174,
+          "serverMs": 0.998,
           "tps": 20,
-          "renders": 8753,
-          "tabUpdates": 471,
-          "sidebarUpdates": 8026
+          "renders": 8854,
+          "tabUpdates": 511,
+          "sidebarUpdates": 8087
         }
       ],
       "incomingDisplayPacketsAcrossClients": {
-        "scoreboard_score": 2232,
-        "player_info": 7040,
-        "playerlist_header": 0
+        "scoreboard_score": 2296,
+        "player_info": 7360,
+        "playerlist_header": 0,
+        "teams": 0
       }
     }
   ],
   "limitations": "Loopback protocol clients in a flat spectator world on the same Windows PC; no production-host or internet-latency guarantee. Metrics cover the scheduled plugin update loop, excluding initial joins, configuration reloads, database worker work, and the diagnostics command itself.",
   "verifiedOn": "2026-10-05",
-  "jarSha256": "91ee27266369bf624cd40149038a4ade47290234bb9d9011effb17ef67af6139"
+  "jarSha256": "176fd520015f4be555ba49263122c956fd2a238e97427b30bb7a7c11ca55f610"
 }

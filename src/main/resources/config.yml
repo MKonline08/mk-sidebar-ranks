@@ -1,7 +1,7 @@
 # MK Sidebar & Ranks | Created by MK
 # Colors use MiniMessage: <gold>text</gold>, <bold>text</bold>, or <#ff5555>text</#ff5555>.
 # See docs/PLACEHOLDERS.md for all available %placeholders%.
-config-version: 4
+config-version: 5
 server-name: 'My Server'
 sidebar:
   enabled: true
@@ -12,10 +12,13 @@ sidebar:
     - '<white>Rank:</white> %player_rank%'
     - '<white>Health:</white> <green>%player_health%/%player_max_health%</green>'
     - '<white>XYZ:</white> <gray>%player_x% %player_y% %player_z%</gray>'
+    - '<white>Hours:</white> <aqua>%player_playtime_hours%</aqua>'
     - ''
     - '<white>Online:</white> <green>%server_online%/%server_max_players%</green>'
     - '<white>TPS:</white> <green>%server_tps%</green>'
     - '<white>Uptime:</white> <yellow>%server_uptime%</yellow>'
+nametags:
+  enabled: true
 tab:
   enabled: true
   format: '%player_rank_badge% <white>%player_name%</white> <dark_gray>•</dark_gray> %player_ping_color%<gray>ms</gray>'

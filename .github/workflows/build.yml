@@ -22,5 +22,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mk-sidebar-ranks
-          path: target/mk-sidebar-ranks-1.2.1.jar
+          path: target/mk-sidebar-ranks-1.3.0.jar
           if-no-files-found: error

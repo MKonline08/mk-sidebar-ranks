@@ -21,6 +21,7 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
     private Players players;
     private PlayerStore store;
     private Displays displays;
+    private Nametags nametags;
     private volatile boolean stopping;
     private Path configFile;
     private final UpdateQueue updateQueue=new UpdateQueue();
@@ -42,6 +43,7 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
                 getLogger().info("Upgraded configuration to v"+getPluginMeta().getVersion()+"; the previous configuration was backed up.");
             }
             displays=new Displays(Objects.requireNonNull(getServer().getScoreboardManager()),getLogger());
+            nametags=new Nametags(getLogger());
             Commands commands=new Commands(this);
             for(String name:List.of("mksb","mkrank")) {
                 PluginCommand command=Objects.requireNonNull(getCommand(name));
@@ -74,6 +76,7 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
     @Override public void onDisable() {
         stopping=true;
         getServer().getScheduler().cancelTasks(this);
+        if(nametags!=null)nametags.clear();
         if(displays!=null) for(Player p:getServer().getOnlinePlayers()) displays.remove(p);
         if(store!=null) {
             try { if(players!=null) { players.checkpointAll(); store.save(players.snapshot()).join(); } }
@@ -87,7 +90,7 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
         promote(p.getUniqueId()); update(p);
     }
     @EventHandler public void onQuit(PlayerQuitEvent e) {
-        Player p=e.getPlayer(); players.quit(p.getUniqueId()); save(List.of(players.get(p.getUniqueId()))); displays.remove(p);
+        Player p=e.getPlayer(); players.quit(p.getUniqueId()); save(List.of(players.get(p.getUniqueId()))); nametags.remove(p);displays.remove(p);
     }
     boolean promote(UUID id) {
         Optional<PlayerRecord> earned=players.promote(id,settings.promotionMillis());
@@ -133,7 +136,11 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
     }
     private void update(Player player,Map<String,Component> shared) {
         PlayerRecord record=players.get(player.getUniqueId());
-        if(record!=null) displays.update(player,record,settings,Values.of(player,record,settings,getServer(),settings.displayKeys(!record.sidebarHidden()),shared));
+        if(record!=null) {
+            nametags.target(player,settings.rank(record));
+            displays.update(player,record,settings,Values.of(player,record,settings,getServer(),settings.displayKeys(!record.sidebarHidden()),shared));
+            nametags.sync(player,settings.nametagsEnabled());
+        }
     }
     void refreshAll() {sharedValues=new HashMap<>();for(Player p:getServer().getOnlinePlayers())updateQueue.offer(p.getUniqueId());}
     Settings settings() { return settings; }

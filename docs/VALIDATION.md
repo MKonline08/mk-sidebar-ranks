@@ -1,17 +1,18 @@
 # Validation
 
-## Release verification — v1.2.1
+## Release verification — v1.3.0
 
 Verified on October 5, 2026:
 
-- **33 automated tests passed**, with no failures, errors, or skipped tests.
-- **23 real Paper integration scenarios passed** on Paper **1.21.11 build 132**, including three protocol clients and a full server restart.
+- **39 automated tests passed**, with no failures, errors, or skipped tests.
+- **32 real Paper integration scenarios passed** on Paper **1.21.11 build 132**, including three protocol clients and a full server restart.
 - Windows Java **21.0.12** runtime; SQLite **3.53.4.0** bundled with Windows and Linux native libraries.
 - Captured display components and scenario results: [validation-report.json](validation-report.json).
-- Release jar SHA-256: `9a9122effcae6f40698b99fccbf4c370f638f69a0c39afff8a62c7c9f0d62be5`.
+- Release jar SHA-256: `176fd520015f4be555ba49263122c956fd2a238e97427b30bb7a7c11ca55f610`.
 - Verified compact inline label/value rows, one XYZ line, exact MK/108e footer text, one celebration sound to every online player per promotion or effective manual rank change, no replay after restart, and automatic v1.1.0 configuration upgrade with a backup. Unit tests also cover direct upgrades from v1.0.0 and preservation of custom layouts/settings.
 - Manual sound checks cover OWNER/custom assignments, same-rank silence, resets, offline assignments, mute settings, and avoiding a duplicate sound when reset earns OG. No sounds replay after restart.
-- The **v1.2.0 64-client load fixture** remains recorded in [PERFORMANCE.md](PERFORMANCE.md). Those measurements use the previous v1.2.0 jar; v1.2.1 was verified with the automated and real Paper functional checks above.
+- Overhead team packets verify colored labels, automatic/manual/custom changes, sidebar-hidden observers, quit cleanup, feature switches, and restart restoration. The Hours row includes imported playtime. Unit tests also cover shared boards, cache reuse, external team conflicts, and config migration. The fixture verifies transmitted labels rather than a rendered game screenshot.
+- The **64-client load fixture passed** with all displays disabled, enabled/static, and enabled/moving. Nametags sent no repeated team packets during the samples. Both fixtures used this exact packaged jar; see [PERFORMANCE.md](PERFORMANCE.md) for measurements and limits.
 
 This verifies the local test server. Installation on the owner's production server is a separate step.
 
