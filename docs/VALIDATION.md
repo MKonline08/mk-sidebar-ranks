@@ -1,16 +1,17 @@
 # Validation
 
-## Release verification — v1.2.0
+## Release verification — v1.2.1
 
 Verified on October 5, 2026:
 
 - **33 automated tests passed**, with no failures, errors, or skipped tests.
-- **16 real Paper integration scenarios passed** on Paper **1.21.11 build 132**, including three protocol clients and a full server restart.
+- **23 real Paper integration scenarios passed** on Paper **1.21.11 build 132**, including three protocol clients and a full server restart.
 - Windows Java **21.0.12** runtime; SQLite **3.53.4.0** bundled with Windows and Linux native libraries.
 - Captured display components and scenario results: [validation-report.json](validation-report.json).
-- Release jar SHA-256: `91ee27266369bf624cd40149038a4ade47290234bb9d9011effb17ef67af6139`.
-- Verified compact inline label/value rows, one XYZ line, exact MK/108e footer text, one celebration sound to every online player per promotion, no replay after restart, and automatic v1.1.0 configuration upgrade with a backup. Unit tests also cover direct upgrades from v1.0.0 and preservation of custom layouts/settings.
-- **64-client load fixture passed** with displays disabled, enabled/static, and enabled/moving. See [PERFORMANCE.md](PERFORMANCE.md) for measurements and limits. The same packaged jar was used for both fixtures.
+- Release jar SHA-256: `9a9122effcae6f40698b99fccbf4c370f638f69a0c39afff8a62c7c9f0d62be5`.
+- Verified compact inline label/value rows, one XYZ line, exact MK/108e footer text, one celebration sound to every online player per promotion or effective manual rank change, no replay after restart, and automatic v1.1.0 configuration upgrade with a backup. Unit tests also cover direct upgrades from v1.0.0 and preservation of custom layouts/settings.
+- Manual sound checks cover OWNER/custom assignments, same-rank silence, resets, offline assignments, mute settings, and avoiding a duplicate sound when reset earns OG. No sounds replay after restart.
+- The **v1.2.0 64-client load fixture** remains recorded in [PERFORMANCE.md](PERFORMANCE.md). Those measurements use the previous v1.2.0 jar; v1.2.1 was verified with the automated and real Paper functional checks above.
 
 This verifies the local test server. Installation on the owner's production server is a separate step.
 

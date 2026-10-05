@@ -89,8 +89,9 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
     @EventHandler public void onQuit(PlayerQuitEvent e) {
         Player p=e.getPlayer(); players.quit(p.getUniqueId()); save(List.of(players.get(p.getUniqueId()))); displays.remove(p);
     }
-    void promote(UUID id) {
-        players.promote(id,settings.promotionMillis()).ifPresent(record -> {
+    boolean promote(UUID id) {
+        Optional<PlayerRecord> earned=players.promote(id,settings.promotionMillis());
+        earned.ifPresent(record -> {
             Settings snapshot=settings;
             Player online=getServer().getPlayer(id);
             Map<String,Component> values;
@@ -110,6 +111,7 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
                 getServer().getConsoleSender().sendMessage(message);
             }));
         });
+        return earned.isPresent();
     }
     CompletableFuture<Void> save(Collection<PlayerRecord> snapshot) {
         if(snapshot.isEmpty())return CompletableFuture.completedFuture(null);
@@ -175,8 +177,16 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
         PlayerRecord record=players.resolve(target,rank!=null);
         players.checkpoint(record.uuid());
         PlayerRecord current=players.get(record.uuid()); if(current!=null) record=current;
-        record=record.override(rank); players.put(record); save(List.of(record));
-        if(rank==null) promote(record.uuid());
+        String previousRank=record.rankId();
+        record=record.override(rank); players.put(record);
+        CompletableFuture<Void> saved=save(List.of(record));
+        boolean promoted=rank==null && promote(record.uuid());
+        if(!promoted && !previousRank.equals(players.get(record.uuid()).rankId())) {
+            PromotionSound sound=settings.promotionSound();
+            if(sound.enabled()) saved.thenRun(() -> onMain(() -> {
+                for(Player listener:getServer().getOnlinePlayers()) listener.playSound(sound.sound());
+            }));
+        }
         Player p=getServer().getPlayer(record.uuid()); if(p!=null) update(p);
     }
 }

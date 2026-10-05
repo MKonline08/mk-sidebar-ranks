@@ -10,7 +10,7 @@ A standalone plugin for **Paper 1.21.11 · Java 21**, created by **MK**. Compact
 
 ## Install
 
-1. Download **`mk-sidebar-ranks-1.2.0.jar`** from the release page.
+1. Download **`mk-sidebar-ranks-1.2.1.jar`** from the release page.
 2. Stop your Paper 1.21.11 server and copy the jar into its **`plugins/`** folder.
 3. Start the server. Settings appear in **`plugins/MKSidebarRanks/config.yml`**.
 4. Run **`/mkrank set YourMinecraftName owner`** after you have joined. Your OWNER label will be bold red in your sidebar and Tab.
@@ -28,9 +28,11 @@ Sidebar refreshes are queued roughly once per second and spread across ticks. Ta
 
 **New in v1.2.0:** cached display rows, selective placeholder reads, shared server-stat snapshots, bounded update batches, throttled Tab ping updates, and saves limited to changed player records. The compact layout, celebration sound, and **Credits: MK/108e** Tab footer remain included.
 
+**New in v1.2.1:** manual rank assignments and resets play the configured celebration sound for every online player when the effective rank changes. Reassigning the same rank is silent. Offline assignments sound for the current online audience, with no replay when the target joins. A reset that earns OG plays the automatic promotion sound once.
+
 ### Update from an earlier version
 
-Stop the server, remove the old plugin jar, install the v1.2.0 jar, and restart. Keep the `MKSidebarRanks` folder so ranks and playtime remain saved. The first startup backs up the old config and adds missing settings. Older unchanged default layouts become compact; existing compact/custom layouts, custom ranks, server name, and promotion settings remain intact.
+Stop the server, remove the old plugin jar, install the v1.2.1 jar, and restart. Keep the `MKSidebarRanks` folder so ranks and playtime remain saved. Older configurations gain missing settings with a backup; v1.2.0 settings need no migration. Older unchanged default layouts become compact; existing compact/custom layouts, custom ranks, server name, and promotion settings remain intact.
 
 ## Commands
 
@@ -84,7 +86,7 @@ This is a configuration excerpt; retain the other settings in the generated file
 
 `tab.footer` defaults to `<gray>Credits:</gray> <gold><bold>MK/108e</bold></gold>`. Set it to an empty string to remove the credits. The footer uses the same template syntax and placeholders, and preserves an existing Tab header.
 
-`promotion.sound` has `enabled`, `key`, `volume`, and `pitch` settings. The default is `minecraft:ui.toast.challenge_complete`, volume `0.7`, pitch `1.0`. It plays once for every player online when the saved automatic promotion announcement is delivered, regardless of their world or distance. Clients control their own audio volume. Set `enabled: false` to mute it; custom keys must identify an existing Minecraft sound. Volume must be 0–1 and pitch 0.5–2.
+`promotion.sound` has `enabled`, `key`, `volume`, and `pitch` settings. The default is `minecraft:ui.toast.challenge_complete`, volume `0.7`, pitch `1.0`. It plays once for every player online when the saved automatic promotion announcement is delivered, or after a manual assignment/reset changes the player's effective rank and is saved, regardless of world or distance. Manual changes do not add an automatic promotion announcement. Clients control their own audio volume. Set `enabled: false` to mute both automatic and manual rank sounds; custom keys must identify an existing Minecraft sound. Volume must be 0–1 and pitch 0.5–2.
 
 The placeholders are built into this plugin’s templates; they are not registered as a PlaceholderAPI expansion. Chat-name prefixes and overhead labels are outside this version.
 
@@ -114,7 +116,7 @@ With JDK 21 and Maven 3.9+:
 mvn -B clean verify
 ```
 
-Installable output: `target/mk-sidebar-ranks-1.2.0.jar`. Do not install the `original-` jar. GitHub Actions builds and tests the project and provides the packaged jar as an artifact.
+Installable output: `target/mk-sidebar-ranks-1.2.1.jar`. Do not install the `original-` jar. GitHub Actions builds and tests the project and provides the packaged jar as an artifact.
 
 For the local Paper integration fixture, see [validation instructions](docs/VALIDATION.md).
 
