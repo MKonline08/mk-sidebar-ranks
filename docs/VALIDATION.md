@@ -1,15 +1,16 @@
 # Validation
 
-## Release verification — v1.1.1
+## Release verification — v1.2.0
 
 Verified on October 5, 2026:
 
-- **28 automated tests passed**, with no failures, errors, or skipped tests.
+- **33 automated tests passed**, with no failures, errors, or skipped tests.
 - **16 real Paper integration scenarios passed** on Paper **1.21.11 build 132**, including three protocol clients and a full server restart.
 - Windows Java **21.0.12** runtime; SQLite **3.53.4.0** bundled with Windows and Linux native libraries.
 - Captured display components and scenario results: [validation-report.json](validation-report.json).
-- Release jar SHA-256: `9f9dd9589a780b117b5ef936c97056801b2f8082aa51477580776421cc1928f7`.
+- Release jar SHA-256: `91ee27266369bf624cd40149038a4ade47290234bb9d9011effb17ef67af6139`.
 - Verified compact inline label/value rows, one XYZ line, exact MK/108e footer text, one celebration sound to every online player per promotion, no replay after restart, and automatic v1.1.0 configuration upgrade with a backup. Unit tests also cover direct upgrades from v1.0.0 and preservation of custom layouts/settings.
+- **64-client load fixture passed** with displays disabled, enabled/static, and enabled/moving. See [PERFORMANCE.md](PERFORMANCE.md) for measurements and limits. The same packaged jar was used for both fixtures.
 
 This verifies the local test server. Installation on the owner's production server is a separate step.
 
@@ -26,6 +27,7 @@ Run `mvn -B clean verify` with Java 21. The test suite covers:
 - Sidebar objective reuse, unique blank/duplicate entries, restoration, and yielding to competing plugins.
 - Command permissions and personal sidebar toggling.
 - Config upgrade idempotence, preservation of custom layouts/ranks, footer ownership/restoration, and sound validation.
+- Selective placeholder reads, shared server snapshots, unchanged display caching, Tab ping throttling with immediate rank changes, dirty-save acknowledgements, bounded queues, and performance configuration validation.
 
 ## Real Paper integration fixture
 

@@ -9,20 +9,22 @@ import java.util.function.LongSupplier;
 public final class Players {
     private final Map<UUID, PlayerRecord> records;
     private final Map<UUID, Long> sessions = new HashMap<>();
+    private final Set<UUID> dirty=new HashSet<>();
     private final LongSupplier nanos;
     public Players(Map<UUID, PlayerRecord> initial, LongSupplier nanos) { records = new HashMap<>(initial); this.nanos = nanos; }
     public void join(Player player, Settings settings) {
         UUID id = player.getUniqueId();
         PlayerRecord r = records.getOrDefault(id, new PlayerRecord(id, player.getName(), 0, null, false, false, false)).named(player.getName());
         if (!r.playtimeImported()) r = r.imported(settings.importExisting() ? Math.max(0L, player.getStatistic(Statistic.PLAY_ONE_MINUTE)) * 50L : 0);
-        records.put(id, r); sessions.put(id, nanos.getAsLong());
+        put(r); sessions.put(id, nanos.getAsLong());
     }
     public void checkpoint(UUID id) {
         Long previous = sessions.get(id);
         if (previous == null) return;
         long now = nanos.getAsLong();
         long millis = Math.max(0, (now - previous) / 1_000_000L);
-        records.put(id, records.get(id).addTime(millis));
+        if(millis==0) return;
+        put(records.get(id).addTime(millis));
         sessions.put(id, previous + millis * 1_000_000L);
     }
     public void checkpointAll() { for (UUID id : List.copyOf(sessions.keySet())) checkpoint(id); }
@@ -31,12 +33,16 @@ public final class Players {
         checkpoint(id);
         PlayerRecord r = records.get(id);
         if (r != null && r.eligible(threshold)) {
-            r = r.promoted(); records.put(id, r); return Optional.of(r);
+            r = r.promoted(); put(r); return Optional.of(r);
         }
         return Optional.empty();
     }
     public PlayerRecord get(UUID id) { return records.get(id); }
     public Collection<PlayerRecord> snapshot() { return List.copyOf(records.values()); }
+    public List<PlayerRecord> dirtySnapshot() {return dirty.stream().map(records::get).toList();}
+    public void saved(Collection<PlayerRecord> snapshot) {
+        for(PlayerRecord record:snapshot) if(record.equals(records.get(record.uuid()))) dirty.remove(record.uuid());
+    }
     public PlayerRecord resolve(String input, boolean allowNewUuid) {
         try {
             UUID id = UUID.fromString(input);
@@ -51,5 +57,5 @@ public final class Players {
         if (matches.size() != 1) throw new IllegalArgumentException(matches.isEmpty() ? "Unknown player. They must join first, or use their UUID." : "That name matches multiple records. Use a UUID.");
         return matches.getFirst();
     }
-    public void put(PlayerRecord record) { records.put(record.uuid(), record); }
+    public void put(PlayerRecord record) { records.put(record.uuid(), record);dirty.add(record.uuid()); }
 }

@@ -19,8 +19,9 @@ public final class Commands implements CommandExecutor,TabCompleter {
                 if(args.length==1&&args[0].equalsIgnoreCase("reload")) {
                     require(sender,"mksidebar.admin"); plugin.reloadSettings(); success(sender,"Configuration reloaded."); return true;
                 }
+                if(args.length==1&&args[0].equalsIgnoreCase("performance")) {require(sender,"mksidebar.admin");info(sender,plugin.performanceReport());return true;}
                 info(sender,"/mksb toggle — show/hide your sidebar");
-                if(sender.hasPermission("mksidebar.admin")) info(sender,"/mksb reload — validate and reload settings");
+                if(sender.hasPermission("mksidebar.admin")) {info(sender,"/mksb reload — validate and reload settings");info(sender,"/mksb performance — check plugin and server tick time");}
                 return true;
             }
             require(sender,"mksidebar.admin");
@@ -59,7 +60,7 @@ public final class Commands implements CommandExecutor,TabCompleter {
     @Override public List<String> onTabComplete(CommandSender sender,Command command,String alias,String[] args) {
         List<String> options=new ArrayList<>();
         if(command.getName().equalsIgnoreCase("mksb")) {
-            if(args.length==1) { if(sender instanceof Player&&sender.hasPermission("mksidebar.toggle")) options.add("toggle"); if(sender.hasPermission("mksidebar.admin")) options.add("reload"); }
+            if(args.length==1) { if(sender instanceof Player&&sender.hasPermission("mksidebar.toggle")) options.add("toggle"); if(sender.hasPermission("mksidebar.admin")) options.addAll(List.of("reload","performance")); }
         } else if(sender.hasPermission("mksidebar.admin")) {
             if(args.length==1) options.addAll(List.of("list","create","color","set","reset","info"));
             else if(args.length==2) {

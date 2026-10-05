@@ -1,17 +1,17 @@
 {
   "verifiedOn": "2026-10-05",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "paper": "1.21.11 build 132",
   "result": "PASS",
-  "jarSha256": "9f9dd9589a780b117b5ef936c97056801b2f8082aa51477580776421cc1928f7",
+  "jarSha256": "91ee27266369bf624cd40149038a4ade47290234bb9d9011effb17ef67af6139",
   "automatedTests": {
-    "total": 28,
+    "total": 33,
     "failures": 0,
     "errors": 0,
     "skipped": 0
   },
   "integrationScenarios": [
-    "Existing v1.1.0 default config upgraded and backed up automatically",
+    "Existing v1.1.1 default config upgraded and backed up automatically",
     "Compact inline label/value rows and single XYZ row; exact MK/108e Tab credits",
     "Right-side sidebar, health, unique blank lines, and hidden score numbers",
     "Red OWNER rank and numeric ping visible to other players in Tab",
@@ -122,7 +122,7 @@
               },
               {
                 "color": "gray",
-                "text": "3 -60 5"
+                "text": "6 -60 6"
               }
             ],
             "text": ""
@@ -164,7 +164,7 @@
               },
               {
                 "color": "green",
-                "text": "20.0"
+                "text": "17.2"
               }
             ],
             "text": ""
@@ -183,7 +183,7 @@
               },
               {
                 "color": "yellow",
-                "text": "0m 21s"
+                "text": "0m 23s"
               }
             ],
             "text": ""
@@ -224,7 +224,7 @@
               },
               {
                 "color": "green",
-                "text": "0"
+                "text": "12"
               },
               {
                 "color": "gray",
@@ -405,7 +405,7 @@
               },
               {
                 "color": "gray",
-                "text": "-1 -60 10"
+                "text": "2 -60 9"
               }
             ],
             "text": ""
@@ -447,7 +447,7 @@
               },
               {
                 "color": "green",
-                "text": "20.0"
+                "text": "17.1"
               }
             ],
             "text": ""
@@ -466,7 +466,7 @@
               },
               {
                 "color": "yellow",
-                "text": "0m 21s"
+                "text": "0m 22s"
               }
             ],
             "text": ""
@@ -545,7 +545,7 @@
               },
               {
                 "color": "green",
-                "text": "0"
+                "text": "12"
               },
               {
                 "color": "gray",
@@ -688,7 +688,7 @@
               },
               {
                 "color": "gray",
-                "text": "5 -60 -4"
+                "text": "4 -60 9"
               }
             ],
             "text": ""
@@ -730,7 +730,7 @@
               },
               {
                 "color": "green",
-                "text": "20.0"
+                "text": "17.6"
               }
             ],
             "text": ""
@@ -749,7 +749,7 @@
               },
               {
                 "color": "yellow",
-                "text": "0m 21s"
+                "text": "0m 23s"
               }
             ],
             "text": ""
@@ -828,7 +828,7 @@
               },
               {
                 "color": "green",
-                "text": "0"
+                "text": "12"
               },
               {
                 "color": "gray",
@@ -1079,7 +1079,7 @@
               },
               {
                 "color": "green",
-                "text": "2"
+                "text": "0"
               },
               {
                 "color": "gray",
@@ -1181,11 +1181,11 @@
         },
         {
           "order": 2,
-          "component": "server_tps: 20.0"
+          "component": "server_tps: 19.7"
         },
         {
           "order": 1,
-          "component": "server_uptime: 0m 34s"
+          "component": "server_uptime: 0m 36s"
         },
         {
           "order": 1,
@@ -1302,7 +1302,7 @@
               },
               {
                 "color": "green",
-                "text": "2"
+                "text": "0"
               },
               {
                 "color": "gray",

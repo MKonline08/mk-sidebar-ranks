@@ -6,8 +6,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.function.LongSupplier;
 
 public final class Displays {
+    private static final Set<String> PING_KEYS=Set.of("player_ping","player_ping_color");
+    private record Cached(Component component,Map<String,Component> inputs) {}
     private static final class View {
         Scoreboard originalBoard, board;
         Objective objective;
@@ -16,14 +19,29 @@ public final class Displays {
         boolean footerConflict;
         boolean sidebarConflict, tabConflict;
         int lineCount;
+        Settings settings;
+        Map<String,Cached> cache=new HashMap<>();
+        Map<String,Component> lastTabInputs;
+        long nextTabRefresh;
         View(Player p) { originalBoard=p.getScoreboard(); originalTab=p.playerListName(); originalFooter=p.playerListFooter(); }
     }
     private final Map<UUID,View> views = new HashMap<>();
     private final ScoreboardManager manager;
     private final Logger logger;
-    public Displays(ScoreboardManager manager, Logger logger) { this.manager=manager; this.logger=logger; }
+    private final LongSupplier nanos;
+    private long renders,tabWrites,sidebarWrites;
+    public Displays(ScoreboardManager manager, Logger logger) { this(manager,logger,System::nanoTime); }
+    Displays(ScoreboardManager manager,Logger logger,LongSupplier nanos) { this.manager=manager; this.logger=logger; this.nanos=nanos; }
+    long renders(){return renders;} long tabWrites(){return tabWrites;} long sidebarWrites(){return sidebarWrites;}
+    private Component render(View v,String source,Settings settings,Map<String,Component> inputs) {
+        var compiled=settings.template(source);Cached cached=v.cache.get(source);
+        if(cached!=null&&compiled.sameInputs(cached.inputs(),inputs,Set.of())) return cached.component();
+        Component result=compiled.render(inputs);v.cache.put(source,new Cached(result,inputs));renders++;return result;
+    }
     public void update(Player player, PlayerRecord record, Settings settings, Map<String,Component> values) {
         View v = views.computeIfAbsent(player.getUniqueId(), ignored -> new View(player));
+        if(v.settings!=settings) {v.settings=settings;v.cache.clear();v.lastTabInputs=null;}
+        values=Map.copyOf(values);
         if (!settings.sidebarEnabled() || record.sidebarHidden()) releaseSidebar(player,v);
         else if (!v.sidebarConflict) {
             if (v.board != null && !ownsSidebar(player,v)) {
@@ -32,16 +50,16 @@ public final class Displays {
             } else {
                 if (v.board == null) {
                     v.originalBoard=player.getScoreboard(); v.board=manager.getNewScoreboard();
-                    v.objective=v.board.registerNewObjective("mk_sidebar",Criteria.DUMMY,Templates.render(settings.title(),values));
+                    v.objective=v.board.registerNewObjective("mk_sidebar",Criteria.DUMMY,render(v,settings.title(),settings,values));
                     v.objective.setDisplaySlot(DisplaySlot.SIDEBAR); v.objective.numberFormat(NumberFormat.blank());
                     player.setScoreboard(v.board);
                 }
-                Component title=Templates.render(settings.title(),values);
+                Component title=render(v,settings.title(),settings,values);
                 if (!v.objective.displayName().equals(title)) v.objective.displayName(title);
                 for (int i=0;i<settings.lines().size();i++) {
                     Score score=v.objective.getScore("mk_line_"+i);
-                    Component line=Templates.render(settings.lines().get(i),values);
-                    if (!line.equals(score.customName())) score.customName(line);
+                    Component line=render(v,settings.lines().get(i),settings,values);
+                    if (!line.equals(score.customName())) {score.customName(line);sidebarWrites++;}
                     int order=settings.lines().size()-i;
                     if (score.getScore()!=order) score.setScore(order);
                 }
@@ -54,9 +72,10 @@ public final class Displays {
             if (v.lastTab!=null && !player.playerListName().equals(v.lastTab)) {
                 v.tabConflict=true; v.lastTab=null;
                 logger.warning("Tab formatting replaced by another plugin for "+player.getName()+". Tab updates paused until reconnect.");
-            } else {
-                Component tab=Templates.render(settings.tabFormat(),values);
-                if (!tab.equals(v.lastTab)) { player.playerListName(tab); v.lastTab=tab; }
+            } else if(nanos.getAsLong()>=v.nextTabRefresh || !settings.template(settings.tabFormat()).sameInputs(v.lastTabInputs,values,PING_KEYS)) {
+                Component tab=render(v,settings.tabFormat(),settings,values);
+                if (!tab.equals(v.lastTab)) { player.playerListName(tab); v.lastTab=tab;tabWrites++; }
+                v.lastTabInputs=values;v.nextTabRefresh=nanos.getAsLong()+settings.tabPingSeconds()*1_000_000_000L;
             }
         }
         if(settings.tabEnabled() && !v.footerConflict) {
@@ -64,7 +83,7 @@ public final class Displays {
                 v.footerConflict=true; v.lastFooter=null;
                 logger.warning("Tab footer replaced by another plugin for "+player.getName()+". Footer updates paused until reconnect.");
             } else {
-                Component footer=Templates.render(settings.tabFooter(),values);
+                Component footer=render(v,settings.tabFooter(),settings,values);
                 if(!footer.equals(v.lastFooter)) { player.sendPlayerListFooter(footer); v.lastFooter=footer; }
             }
         }
@@ -80,6 +99,7 @@ public final class Displays {
     private void releaseTab(Player p,View v) {
         if (v.lastTab!=null && p.playerListName().equals(v.lastTab)) p.playerListName(v.originalTab);
         v.lastTab=null;
+        v.lastTabInputs=null;
         if(v.lastFooter!=null && Objects.equals(p.playerListFooter(),v.lastFooter)) p.sendPlayerListFooter(v.originalFooter==null?Component.empty():v.originalFooter);
         v.lastFooter=null;
     }

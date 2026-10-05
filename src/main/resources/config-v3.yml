@@ -1,7 +1,7 @@
 # MK Sidebar & Ranks | Created by MK
 # Colors use MiniMessage: <gold>text</gold>, <bold>text</bold>, or <#ff5555>text</#ff5555>.
 # See docs/PLACEHOLDERS.md for all available %placeholders%.
-config-version: 4
+config-version: 3
 server-name: 'My Server'
 sidebar:
   enabled: true
@@ -29,11 +29,6 @@ promotion:
     key: 'minecraft:ui.toast.challenge_complete'
     volume: 0.7
     pitch: 1.0
-performance:
-  # Sidebar updates are queued about once a second, in bounded batches across server ticks.
-  max-updates-per-tick: 32
-  # Rank/name changes bypass this delay; ping-only Tab updates are less frequent.
-  tab-ping-update-seconds: 5
 ranks:
   new_player:
     name: 'New Player'

@@ -6,7 +6,9 @@ import java.util.*;
 
 public record Settings(String serverName, boolean sidebarEnabled, String title, List<String> lines,
                        boolean tabEnabled, String tabFormat, String tabFooter, long promotionMillis, boolean importExisting,
-                       String announcement, PromotionSound promotionSound, Map<String, Rank> ranks) {
+                       String announcement, PromotionSound promotionSound, Map<String, Rank> ranks,
+                       Map<String, Templates.Compiled> compiled, Set<String> sidebarKeys, Set<String> tabKeys,
+                       int tabPingSeconds, int maxUpdatesPerTick) {
     public static Settings read(YamlConfiguration yaml) {
         String name = required(yaml, "server-name");
         if (name.length() > 64 || name.codePoints().anyMatch(Character::isISOControl)) throw new IllegalArgumentException("server-name must contain 1–64 printable characters.");
@@ -28,9 +30,27 @@ public record Settings(String serverName, boolean sidebarEnabled, String title, 
             ranks.put(id, new Rank(id, required(yaml, "ranks." + id + ".name"), required(yaml, "ranks." + id + ".color"), bool(yaml, "ranks." + id + ".bold")));
         }
         for (String id : List.of("new_player", "og_player", "owner")) if (!ranks.containsKey(id)) throw new IllegalArgumentException("Required rank missing: " + id);
-        Templates.validate(title); lines.forEach(Templates::validate); Templates.validate(tab); Templates.validate(footer); Templates.validate(announcement);
+        Map<String,Templates.Compiled> compiled=new HashMap<>();
+        List<String> all=new ArrayList<>(lines);all.addAll(List.of(title,tab,footer,announcement));
+        for(String template:all) compiled.computeIfAbsent(template,Templates::compile);
+        Set<String> sidebarKeys=new HashSet<>(compiled.get(title).keys()),tabKeys=new HashSet<>(compiled.get(tab).keys());
+        lines.forEach(line->sidebarKeys.addAll(compiled.get(line).keys()));tabKeys.addAll(compiled.get(footer).keys());
         return new Settings(name, bool(yaml, "sidebar.enabled"), title, lines, bool(yaml, "tab.enabled"), tab, footer,
-                millis, bool(yaml, "promotion.import-existing-playtime"), announcement, PromotionSound.read(yaml), Collections.unmodifiableMap(ranks));
+                millis, bool(yaml, "promotion.import-existing-playtime"), announcement, PromotionSound.read(yaml), Collections.unmodifiableMap(ranks),
+                Map.copyOf(compiled),Set.copyOf(sidebarKeys),Set.copyOf(tabKeys),integer(yaml,"performance.tab-ping-update-seconds",5,1,60),integer(yaml,"performance.max-updates-per-tick",32,1,512));
+    }
+    private static int integer(YamlConfiguration yaml,String key,int fallback,int min,int max) {
+        if(yaml.contains(key) && !yaml.isInt(key)) throw new IllegalArgumentException(key+" must be an integer.");
+        int value=yaml.getInt(key,fallback);
+        if(value<min||value>max)throw new IllegalArgumentException(key+" must be between "+min+" and "+max+".");
+        return value;
+    }
+    public Templates.Compiled template(String source) { return Objects.requireNonNull(compiled.get(source)); }
+    public Set<String> displayKeys(boolean showSidebar) {
+        Set<String> keys=new HashSet<>();
+        if(sidebarEnabled&&showSidebar) keys.addAll(sidebarKeys);
+        if(tabEnabled) keys.addAll(tabKeys);
+        return keys;
     }
     private static String required(YamlConfiguration yaml, String key) {
         if (!yaml.isString(key) || yaml.getString(key).isBlank()) throw new IllegalArgumentException("Missing text setting: " + key);

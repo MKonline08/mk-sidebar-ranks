@@ -10,7 +10,7 @@ A standalone plugin for **Paper 1.21.11 · Java 21**, created by **MK**. Compact
 
 ## Install
 
-1. Download **`mk-sidebar-ranks-1.1.1.jar`** from the release page.
+1. Download **`mk-sidebar-ranks-1.2.0.jar`** from the release page.
 2. Stop your Paper 1.21.11 server and copy the jar into its **`plugins/`** folder.
 3. Start the server. Settings appear in **`plugins/MKSidebarRanks/config.yml`**.
 4. Run **`/mkrank set YourMinecraftName owner`** after you have joined. Your OWNER label will be bold red in your sidebar and Tab.
@@ -24,13 +24,13 @@ The label does not make someone an operator or grant permissions. Keep using you
 - **New Player** on first join, then **OG Player** after **24 total connected hours**, including time spent AFK.
 - A server-wide chat announcement when someone earns OG. Existing recorded Minecraft playtime counts once on first join after installation.
 
-Both displays update once per second; rank assignments update immediately. Manually assigned OWNER and custom ranks stay protected from automatic promotion. Names, playtime, earned ranks, manual ranks, and sidebar preferences survive restarts.
+Sidebar refreshes are queued roughly once per second and spread across ticks. Tab ping refreshes every five seconds by default; rank/name changes bypass that delay. Manually assigned OWNER and custom ranks stay protected from automatic promotion. Names, playtime, earned ranks, manual ranks, and sidebar preferences survive restarts.
 
-**New in v1.1.1:** a compact sidebar matching the classic `Rank: value` style, with no separator bars, shorter spacing, and one `XYZ:` row. The celebration sound and **Credits: MK/108e** Tab footer remain included.
+**New in v1.2.0:** cached display rows, selective placeholder reads, shared server-stat snapshots, bounded update batches, throttled Tab ping updates, and saves limited to changed player records. The compact layout, celebration sound, and **Credits: MK/108e** Tab footer remain included.
 
-### Update from v1.0.0 or v1.1.0
+### Update from an earlier version
 
-Stop the server, remove the old plugin jar, install the v1.1.1 jar, and restart. Keep the `MKSidebarRanks` folder so ranks and playtime remain saved. The first startup backs up the old config, adds the sound and footer settings, and replaces the unchanged original sidebar layout with the compact layout. Custom sidebar lines, custom ranks, server name, and promotion settings remain intact.
+Stop the server, remove the old plugin jar, install the v1.2.0 jar, and restart. Keep the `MKSidebarRanks` folder so ranks and playtime remain saved. The first startup backs up the old config and adds missing settings. Older unchanged default layouts become compact; existing compact/custom layouts, custom ranks, server name, and promotion settings remain intact.
 
 ## Commands
 
@@ -38,6 +38,7 @@ Stop the server, remove the old plugin jar, install the v1.1.1 jar, and restart.
 | --- | --- |
 | `/mksb toggle` | Hide or restore your own sidebar; Tab stays active |
 | `/mksb reload` | Validate and apply configuration changes |
+| `/mksb performance` | Admin: view recent scheduled plugin work and server tick time |
 | `/mkrank list` | List rank IDs and colored labels |
 | `/mkrank create <id> <color> <display name...>` | Create a custom rank |
 | `/mkrank color <id> <color>` | Change a rank’s color |
@@ -89,7 +90,19 @@ The placeholders are built into this plugin’s templates; they are not register
 
 ## Storage and other plugins
 
-Player records live in `plugins/MKSidebarRanks/players.db`. SQLite is bundled. Saves run on a separate worker every minute, on disconnect, during rank changes, and at shutdown. Back up the whole plugin folder while the server is stopped. A hard crash can lose connected time since the last completed save, normally up to one minute. Promotion markers are saved before announcements.
+Player records live in `plugins/MKSidebarRanks/players.db`. SQLite is bundled. Changed records are saved on a separate worker every minute, on disconnect, during rank changes, and at shutdown. Completed saves only clear a record's dirty marker if no newer change exists. Back up the whole plugin folder while the server is stopped. A hard crash can lose connected time since the last completed save, normally up to one minute. Promotion markers are saved before announcements.
+
+## Performance
+
+The plugin reads only placeholders used by enabled displays, shares server statistics across each refresh cycle, caches unchanged text, and sends display changes only when needed. It reads Paper's existing ping estimate; it does not send its own ping probes. Regular database writes stay on one worker, while Minecraft API calls remain on the server thread as required by [Paper's scheduler guidance](https://docs.papermc.io/paper/dev/scheduler/).
+
+`performance.max-updates-per-tick` defaults to `32` (allowed 1–512). Processing also yields after approximately 1 ms; a single player's operation can exceed that target. The FIFO queue removes disconnected players and deduplicates pending refreshes. At large player counts, display refreshes can take longer than one second rather than growing an unlimited backlog.
+
+`performance.tab-ping-update-seconds` defaults to `5` (allowed 1–60). Rank/name changes stay prompt. Static Tab credits are not repeatedly sent. Configuration reloads queue display refreshes instead of rebuilding every player's sidebar in one tick.
+
+Use `/mksb performance` as an operator or in the console. It reports the last 200 ticks of scheduled plugin work (average, p95, maximum), queued players, and the server's overall average tick time/TPS. It excludes joins, config reloads, the database worker, and the diagnostics command itself. Startup/shutdown wait for database initialization/draining.
+
+No plugin can guarantee zero CPU overhead or unchanged internet ping on every host. The local load fixture and its limitations are documented in [PERFORMANCE.md](docs/PERFORMANCE.md).
 
 This plugin needs control of the sidebar and Tab display names. Disable the corresponding feature in another scoreboard/Tab plugin, or turn off `sidebar.enabled` / `tab.enabled` here. If another plugin replaces a display, MK logs a warning and yields rather than repeatedly overwriting it. Reconnect to resume after resolving the conflict; toggling the sidebar also retries sidebar ownership. Releasing displays restores prior values only while MK still owns them.
 
@@ -101,7 +114,7 @@ With JDK 21 and Maven 3.9+:
 mvn -B clean verify
 ```
 
-Installable output: `target/mk-sidebar-ranks-1.1.1.jar`. Do not install the `original-` jar. GitHub Actions builds and tests the project and provides the packaged jar as an artifact.
+Installable output: `target/mk-sidebar-ranks-1.2.0.jar`. Do not install the `original-` jar. GitHub Actions builds and tests the project and provides the packaged jar as an artifact.
 
 For the local Paper integration fixture, see [validation instructions](docs/VALIDATION.md).
 

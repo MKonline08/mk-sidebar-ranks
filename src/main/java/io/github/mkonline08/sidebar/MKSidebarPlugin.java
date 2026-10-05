@@ -23,6 +23,10 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
     private Displays displays;
     private volatile boolean stopping;
     private Path configFile;
+    private final UpdateQueue updateQueue=new UpdateQueue();
+    private final PerformanceSamples performance=new PerformanceSamples();
+    private Map<String,Component> sharedValues=new HashMap<>();
+    private int tick;
 
     @Override public void onEnable() {
         try {
@@ -45,19 +49,28 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
             }
             getServer().getPluginManager().registerEvents(this,this);
             for(Player p:getServer().getOnlinePlayers()) joined(p);
-            getServer().getScheduler().runTaskTimer(this,() -> {
-                players.checkpointAll();
-                for(Player p:getServer().getOnlinePlayers()) {
-                    promote(p.getUniqueId()); update(p);
-                }
-            },20L,20L);
-            getServer().getScheduler().runTaskTimer(this,() -> { players.checkpointAll(); save(players.snapshot()); },1200L,1200L);
+            getServer().getScheduler().runTaskTimer(this,this::pulse,1L,1L);
+            getServer().getScheduler().runTaskTimer(this,() -> { players.checkpointAll(); save(players.dirtySnapshot()); },1200L,1200L);
             getLogger().info("MK Sidebar & Ranks enabled | Created by MK | "+settings.ranks().size()+" ranks loaded.");
         } catch(Exception ex) {
             getLogger().log(Level.SEVERE,"Could not start MK Sidebar & Ranks. Fix the configuration/storage error and restart.",ex);
             getServer().getPluginManager().disablePlugin(this);
         }
     }
+    private void pulse() {
+        long started=System.nanoTime();
+        if(tick++%20==0) {
+            sharedValues=new HashMap<>();
+            updateQueue.refresh(getServer().getOnlinePlayers().stream().map(Player::getUniqueId).toList());
+        }
+        for(int i=0;i<settings.maxUpdatesPerTick();i++) {
+            UUID id=updateQueue.poll();if(id==null)break;
+            Player p=getServer().getPlayer(id);if(p!=null){promote(id);update(p,sharedValues);}
+            if(System.nanoTime()-started>=1_000_000L)break;
+        }
+        performance.add(System.nanoTime()-started);
+    }
+    String performanceReport(){return performance.report(updateQueue.size(),getServer().getAverageTickTime(),getServer().getTPS()[0],displays);}
     @Override public void onDisable() {
         stopping=true;
         getServer().getScheduler().cancelTasks(this);
@@ -81,13 +94,13 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
             Settings snapshot=settings;
             Player online=getServer().getPlayer(id);
             Map<String,Component> values;
-            if(online!=null) values=Values.of(online,record,snapshot,getServer());
+            if(online!=null) values=Values.of(online,record,snapshot,getServer(),snapshot.template(snapshot.announcement()).keys(),new HashMap<>());
             else {
                 values=new HashMap<>(); Templates.KEYS.forEach(key -> values.put(key,Component.text("—")));
                 values.putAll(Values.announcement(record,snapshot));
                 values.put("player_playtime_hours",Component.text(String.format(Locale.ROOT,"%.2f",record.playMillis()/3_600_000.0)));
             }
-            Component message=Templates.render(snapshot.announcement(),values);
+            Component message=snapshot.template(snapshot.announcement()).render(values);
             // Save the earned marker before announcing, preventing repeated announcements after restart.
             save(List.of(record)).thenRun(() -> onMain(() -> {
                 for(Player p:getServer().getOnlinePlayers()) {
@@ -99,9 +112,12 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
         });
     }
     CompletableFuture<Void> save(Collection<PlayerRecord> snapshot) {
-        CompletableFuture<Void> future=store.save(snapshot);
+        if(snapshot.isEmpty())return CompletableFuture.completedFuture(null);
+        Collection<PlayerRecord> saved=List.copyOf(snapshot);
+        CompletableFuture<Void> future=store.save(saved);
         future.whenComplete((ignored,error) -> {
             if(error!=null) getLogger().log(Level.SEVERE,"Player data could not be saved. Check disk space and database access.",error);
+            else onMain(()->players.saved(saved));
         });
         return future;
     }
@@ -111,10 +127,13 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
         catch(org.bukkit.plugin.IllegalPluginAccessException ignored) { /* Shutdown can race with a database completion. */ }
     }
     void update(Player player) {
-        PlayerRecord record=players.get(player.getUniqueId());
-        if(record!=null) displays.update(player,record,settings,Values.of(player,record,settings,getServer()));
+        update(player,new HashMap<>());
     }
-    void refreshAll() { for(Player p:getServer().getOnlinePlayers()) update(p); }
+    private void update(Player player,Map<String,Component> shared) {
+        PlayerRecord record=players.get(player.getUniqueId());
+        if(record!=null) displays.update(player,record,settings,Values.of(player,record,settings,getServer(),settings.displayKeys(!record.sidebarHidden()),shared));
+    }
+    void refreshAll() {sharedValues=new HashMap<>();for(Player p:getServer().getOnlinePlayers())updateQueue.offer(p.getUniqueId());}
     Settings settings() { return settings; }
     Players players() { return players; }
     void toggle(Player p) {

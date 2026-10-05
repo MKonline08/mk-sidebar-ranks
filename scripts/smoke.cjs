@@ -14,10 +14,10 @@ if (!paper || !fs.existsSync(paper)) throw new Error('Set PAPER_JAR to a Paper 1
 const port = Number(process.env.MK_SMOKE_PORT || 25586);
 fs.mkdirSync(path.join(dir, 'plugins', 'MKSidebarRanks'), { recursive: true });
 fs.copyFileSync(paper, path.join(dir, 'paper.jar'));
-fs.copyFileSync(path.join(repo, 'target', 'mk-sidebar-ranks-1.1.1.jar'), path.join(dir, 'plugins', 'mk-sidebar-ranks.jar'));
+fs.copyFileSync(path.join(repo, 'target', 'mk-sidebar-ranks-1.2.0.jar'), path.join(dir, 'plugins', 'mk-sidebar-ranks.jar'));
 const defaultConfig = fs.readFileSync(path.join(repo, 'src/main/resources/config.yml'), 'utf8');
 const configPath = path.join(dir, 'plugins/MKSidebarRanks/config.yml');
-fs.writeFileSync(configPath, fs.readFileSync(path.join(repo, 'src/main/resources/config-v2.yml'), 'utf8'));
+fs.writeFileSync(configPath, fs.readFileSync(path.join(repo, 'src/main/resources/config-v3.yml'), 'utf8'));
 fs.writeFileSync(path.join(dir, 'eula.txt'), 'eula=true\n');
 fs.writeFileSync(path.join(dir, 'server.properties'), `server-ip=127.0.0.1\nserver-port=${port}\nonline-mode=false\nenforce-secure-profile=false\nspawn-protection=0\nview-distance=2\nsimulation-distance=2\nlevel-type=minecraft:flat\ngenerate-structures=false\nmax-players=10\npause-when-empty-seconds=-1\n`);
 function offlineUuid(name) {
@@ -87,9 +87,9 @@ function snapshot(state, label) { observations.push({ label, name: state.name, f
 (async () => {
   try {
     await boot();
-    assert(fs.readdirSync(path.dirname(configPath)).some(name=>name.startsWith('config-before-v1.1.1-')));
+    assert(fs.readdirSync(path.dirname(configPath)).some(name=>name.startsWith('config-before-v1.2.0-')));
     assert(fs.readFileSync(configPath,'utf8').includes('MK/108e'));
-    pass('Existing v1.1.0 default config upgraded and backed up automatically');
+    pass('Existing v1.1.1 default config upgraded and backed up automatically');
     const owner = await connect('OwnerTester'), fresh = await connect('NewTester');
     assert.match(line(fresh,1),/^Rank: New Player$/);assert.match(line(fresh,2),/^Health: 20\.0\/20\.0$/);
     assert.match(line(fresh,3),/^XYZ: -?\d+ -?\d+ -?\d+$/);assert.match(line(fresh,0),/^Name: NewTester$/);
