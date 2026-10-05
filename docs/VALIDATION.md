@@ -1,15 +1,15 @@
 # Validation
 
-## Release verification — v1.1.0
+## Release verification — v1.1.1
 
 Verified on October 5, 2026:
 
-- **27 automated tests passed**, with no failures, errors, or skipped tests.
+- **28 automated tests passed**, with no failures, errors, or skipped tests.
 - **16 real Paper integration scenarios passed** on Paper **1.21.11 build 132**, including three protocol clients and a full server restart.
 - Windows Java **21.0.12** runtime; SQLite **3.53.4.0** bundled with Windows and Linux native libraries.
 - Captured display components and scenario results: [validation-report.json](validation-report.json).
-- Release jar SHA-256: `d6a9c8cc17f6cd2b794101ea170dba2690df06a883bc9f3e16859fda323b93b3`.
-- Verified compact coordinate rows, exact MK/108e footer text, one celebration sound to every online player per promotion, no replay after restart, and automatic v1.0.0 configuration upgrade with a backup.
+- Release jar SHA-256: `9f9dd9589a780b117b5ef936c97056801b2f8082aa51477580776421cc1928f7`.
+- Verified compact inline label/value rows, one XYZ line, exact MK/108e footer text, one celebration sound to every online player per promotion, no replay after restart, and automatic v1.1.0 configuration upgrade with a backup. Unit tests also cover direct upgrades from v1.0.0 and preservation of custom layouts/settings.
 
 This verifies the local test server. Installation on the owner's production server is a separate step.
 

@@ -2,7 +2,7 @@
 
 **Your server. Your ranks. A sidebar worth showing off.**
 
-A standalone plugin for **Paper 1.21.11 · Java 21**, created by **MK**. Gold and aqua sidebar styling, colored rank badges in Tab, numeric ping, and automatic playtime promotions. No companion plugins or client mods required.
+A standalone plugin for **Paper 1.21.11 · Java 21**, created by **MK**. Compact sidebar rows with white labels and colored values, colored rank badges in Tab, numeric ping, and automatic playtime promotions. No companion plugins or client mods required.
 
 ![MK Sidebar & Ranks design preview](docs/preview.svg)
 
@@ -10,7 +10,7 @@ A standalone plugin for **Paper 1.21.11 · Java 21**, created by **MK**. Gold an
 
 ## Install
 
-1. Download **`mk-sidebar-ranks-1.1.0.jar`** from the release page.
+1. Download **`mk-sidebar-ranks-1.1.1.jar`** from the release page.
 2. Stop your Paper 1.21.11 server and copy the jar into its **`plugins/`** folder.
 3. Start the server. Settings appear in **`plugins/MKSidebarRanks/config.yml`**.
 4. Run **`/mkrank set YourMinecraftName owner`** after you have joined. Your OWNER label will be bold red in your sidebar and Tab.
@@ -26,11 +26,11 @@ The label does not make someone an operator or grant permissions. Keep using you
 
 Both displays update once per second; rank assignments update immediately. Manually assigned OWNER and custom ranks stay protected from automatic promotion. Names, playtime, earned ranks, manual ranks, and sidebar preferences survive restarts.
 
-**New in v1.1.0:** a narrower sidebar with separate X/Y/Z rows, a celebration sound sent to everyone online at automatic rank-up, and **Credits: MK/108e** in the Tab footer.
+**New in v1.1.1:** a compact sidebar matching the classic `Rank: value` style, with no separator bars, shorter spacing, and one `XYZ:` row. The celebration sound and **Credits: MK/108e** Tab footer remain included.
 
-### Update from v1.0.0
+### Update from v1.0.0 or v1.1.0
 
-Stop the server, remove the old plugin jar, install the v1.1.0 jar, and restart. Keep the `MKSidebarRanks` folder so ranks and playtime remain saved. The first startup backs up the old config, adds the sound and footer settings, and replaces the unchanged original sidebar layout with the compact layout. Custom sidebar lines, custom ranks, server name, and promotion settings remain intact.
+Stop the server, remove the old plugin jar, install the v1.1.1 jar, and restart. Keep the `MKSidebarRanks` folder so ranks and playtime remain saved. The first startup backs up the old config, adds the sound and footer settings, and replaces the unchanged original sidebar layout with the compact layout. Custom sidebar lines, custom ranks, server name, and promotion settings remain intact.
 
 ## Commands
 
@@ -101,7 +101,7 @@ With JDK 21 and Maven 3.9+:
 mvn -B clean verify
 ```
 
-Installable output: `target/mk-sidebar-ranks-1.1.0.jar`. Do not install the `original-` jar. GitHub Actions builds and tests the project and provides the packaged jar as an artifact.
+Installable output: `target/mk-sidebar-ranks-1.1.1.jar`. Do not install the `original-` jar. GitHub Actions builds and tests the project and provides the packaged jar as an artifact.
 
 For the local Paper integration fixture, see [validation instructions](docs/VALIDATION.md).
 

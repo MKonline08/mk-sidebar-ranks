@@ -21,10 +21,16 @@ class UpdateTest {
     @Test void upgradesOriginalLayoutAndAddsSoundAndExactCreditsOnce() throws Exception {
         var yaml=legacy();yaml.set("server-name","Custom SMP");yaml.set("ranks.vip.name","VIP");yaml.set("ranks.vip.color","gold");yaml.set("ranks.vip.bold",false);
         assertTrue(ConfigUpgrade.apply(yaml));var settings=Settings.read(yaml);
-        assertEquals(13,settings.lines().size());assertEquals("Custom SMP",settings.serverName());assertTrue(settings.ranks().containsKey("vip"));
-        assertTrue(settings.lines().get(5).contains("%player_x%"));assertFalse(settings.lines().get(5).contains("%player_z%"));
+        assertEquals(8,settings.lines().size());assertEquals("Custom SMP",settings.serverName());assertTrue(settings.ranks().containsKey("vip"));
+        assertTrue(settings.lines().get(3).contains("%player_x%"));assertTrue(settings.lines().get(3).contains("%player_z%"));
         assertTrue(settings.promotionSound().enabled());assertEquals("minecraft:ui.toast.challenge_complete",settings.promotionSound().key());
         assertEquals("Credits: MK/108e",TemplatesTest.plain(Templates.render(settings.tabFooter(),Map.of())));assertFalse(ConfigUpgrade.apply(yaml));
+    }
+    @Test void upgradesV11LayoutWithoutChangingSoundFooterOrPromotionSettings() throws Exception {
+        var yaml=new YamlConfiguration();
+        try(var reader=new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("/config-v2.yml")),StandardCharsets.UTF_8)) {yaml.load(reader);}
+        yaml.set("promotion.hours",50);yaml.set("promotion.sound.enabled",false);yaml.set("tab.footer","My credits");
+        assertTrue(ConfigUpgrade.apply(yaml));var s=Settings.read(yaml);assertEquals(8,s.lines().size());assertTrue(s.lines().get(1).contains("Rank:"));assertEquals(180_000_000,s.promotionMillis());assertFalse(s.promotionSound().enabled());assertEquals("My credits",s.tabFooter());assertFalse(ConfigUpgrade.apply(yaml));
     }
     @Test void preservesCustomLayoutsAndNewFeatureOverrides() throws Exception {
         var yaml=legacy();yaml.set("sidebar.lines",List.of("My layout","%player_rank%"));yaml.set("tab.footer","Custom footer");yaml.set("promotion.sound.enabled",false);

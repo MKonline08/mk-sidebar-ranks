@@ -33,9 +33,9 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
             players=new Players(store.open(getDataFolder().toPath().resolve("players.db")).join(),System::nanoTime);
             validateAssignedRanks(settings);
             if(upgraded) {
-                Files.copy(configFile,getDataFolder().toPath().resolve("config-before-v1.1.0-"+System.currentTimeMillis()+".yml"));
+                Files.copy(configFile,getDataFolder().toPath().resolve("config-before-v"+getPluginMeta().getVersion()+"-"+System.currentTimeMillis()+".yml"));
                 writeConfig(yaml);
-                getLogger().info("Upgraded configuration to v1.1.0; the previous configuration was backed up.");
+                getLogger().info("Upgraded configuration to v"+getPluginMeta().getVersion()+"; the previous configuration was backed up.");
             }
             displays=new Displays(Objects.requireNonNull(getServer().getScoreboardManager()),getLogger());
             Commands commands=new Commands(this);

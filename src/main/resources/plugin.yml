@@ -1,5 +1,5 @@
 name: MKSidebarRanks
-version: '1.1.0'
+version: '1.1.1'
 main: io.github.mkonline08.sidebar.MKSidebarPlugin
 api-version: '1.21.11'
 description: Stylish sidebar, Tab ping and ranks, and automatic playtime promotions.

@@ -14,10 +14,10 @@ if (!paper || !fs.existsSync(paper)) throw new Error('Set PAPER_JAR to a Paper 1
 const port = Number(process.env.MK_SMOKE_PORT || 25586);
 fs.mkdirSync(path.join(dir, 'plugins', 'MKSidebarRanks'), { recursive: true });
 fs.copyFileSync(paper, path.join(dir, 'paper.jar'));
-fs.copyFileSync(path.join(repo, 'target', 'mk-sidebar-ranks-1.1.0.jar'), path.join(dir, 'plugins', 'mk-sidebar-ranks.jar'));
+fs.copyFileSync(path.join(repo, 'target', 'mk-sidebar-ranks-1.1.1.jar'), path.join(dir, 'plugins', 'mk-sidebar-ranks.jar'));
 const defaultConfig = fs.readFileSync(path.join(repo, 'src/main/resources/config.yml'), 'utf8');
 const configPath = path.join(dir, 'plugins/MKSidebarRanks/config.yml');
-fs.writeFileSync(configPath, fs.readFileSync(path.join(repo, 'src/main/resources/config-v1.yml'), 'utf8'));
+fs.writeFileSync(configPath, fs.readFileSync(path.join(repo, 'src/main/resources/config-v2.yml'), 'utf8'));
 fs.writeFileSync(path.join(dir, 'eula.txt'), 'eula=true\n');
 fs.writeFileSync(path.join(dir, 'server.properties'), `server-ip=127.0.0.1\nserver-port=${port}\nonline-mode=false\nenforce-secure-profile=false\nspawn-protection=0\nview-distance=2\nsimulation-distance=2\nlevel-type=minecraft:flat\ngenerate-structures=false\nmax-players=10\npause-when-empty-seconds=-1\n`);
 function offlineUuid(name) {
@@ -71,7 +71,7 @@ async function connect(name) {
   state.client.on('player_info', p => { for (const entry of p.data) if (entry.displayName != null) state.tabs.set(entry.uuid, component(entry.displayName)); });
   state.client.on('system_chat', p => state.messages.push(component(p.content)));
   state.client.on('position', p => { state.positions.push(p); state.client.write('teleport_confirm', { teleportId: p.teleportId }); });
-  await waitFor(() => state.lines.size >= 13 || state.error, `${name} sidebar`, 30000);
+  await waitFor(() => state.lines.size >= 8 || state.error, `${name} sidebar`, 30000);
   if (state.error) throw state.error;
   return state;
 }
@@ -87,23 +87,23 @@ function snapshot(state, label) { observations.push({ label, name: state.name, f
 (async () => {
   try {
     await boot();
-    assert(fs.readdirSync(path.dirname(configPath)).some(name=>name.startsWith('config-before-v1.1.0-')));
+    assert(fs.readdirSync(path.dirname(configPath)).some(name=>name.startsWith('config-before-v1.1.1-')));
     assert(fs.readFileSync(configPath,'utf8').includes('MK/108e'));
-    pass('Existing v1.0.0 default config upgraded and backed up automatically');
+    pass('Existing v1.1.0 default config upgraded and backed up automatically');
     const owner = await connect('OwnerTester'), fresh = await connect('NewTester');
-    assert.match(line(fresh, 2), /New Player/); assert.match(line(fresh, 4), /20\.0\/20\.0/);
-    assert.equal(line(fresh,0),'────────────');assert.match(line(fresh,5),/^X\s*»/);assert.match(line(fresh,6),/^Y\s*»/);assert.match(line(fresh,7),/^Z\s*»/);
+    assert.match(line(fresh,1),/^Rank: New Player$/);assert.match(line(fresh,2),/^Health: 20\.0\/20\.0$/);
+    assert.match(line(fresh,3),/^XYZ: -?\d+ -?\d+ -?\d+$/);assert.match(line(fresh,0),/^Name: NewTester$/);
     await waitFor(()=>text(fresh.footer)==='Credits: MK/108e' && text(owner.footer)==='Credits: MK/108e','Tab credits');
-    pass('Compact sidebar uses short separators and separate coordinates; exact MK/108e Tab credits');
+    pass('Compact inline label/value rows and single XYZ row; exact MK/108e Tab credits');
     assert.equal(owner.objectives.find(o => o.name === 'mk_sidebar' && o.number_format === 0)?.number_format, 0);
     pass('Right-side sidebar, health, unique blank lines, and hidden score numbers');
     command('mkrank set OwnerTester owner');
-    await waitFor(() => line(owner, 2).includes('OWNER') && tab(fresh, 'OwnerTester').includes('[OWNER]'), 'owner labels');
+    await waitFor(() => line(owner, 1).includes('OWNER') && tab(fresh, 'OwnerTester').includes('[OWNER]'), 'owner labels');
     assert.match(tab(fresh, 'OwnerTester'), /OwnerTester.*\d+ms/);
-    assert(JSON.stringify(owner.lines.get('mk_line_2').component).includes('red'));
+    assert(JSON.stringify(owner.lines.get('mk_line_1').component).includes('red'));
     pass('Red OWNER rank and numeric ping visible to other players in Tab');
     const veteran = await connect('VeteranTester');
-    await waitFor(() => line(veteran, 2).includes('OG Player') && announcements(fresh, 'VeteranTester') === 1, 'existing playtime promotion');
+    await waitFor(() => line(veteran, 1).includes('OG Player') && announcements(fresh, 'VeteranTester') === 1, 'existing playtime promotion');
     assert.equal(announcements(owner, 'VeteranTester'), 1);
     await waitFor(()=>rankSounds(owner)===1 && rankSounds(fresh)===1 && rankSounds(veteran)===1,'rank-up sound for everyone');
     pass('Every online player receives the rank-up sound alongside the announcement');
@@ -113,27 +113,27 @@ function snapshot(state, label) { observations.push({ label, name: state.name, f
     assert.equal(fresh.packetCounts.scoreboard_objective, stable);
     pass('Sidebar objective remains stable during updates');
     const shortConfig = defaultConfig.replace('hours: 24', 'hours: 0.003'); fs.writeFileSync(configPath, shortConfig); command('mksb reload');
-    await waitFor(() => line(fresh, 2).includes('OG Player') && announcements(owner, 'NewTester') === 1, 'connected-time promotion', 20000);
-    assert.equal(announcements(fresh, 'NewTester'), 1); assert.match(line(owner, 2), /OWNER/);
+    await waitFor(() => line(fresh, 1).includes('OG Player') && announcements(owner, 'NewTester') === 1, 'connected-time promotion', 20000);
+    assert.equal(announcements(fresh, 'NewTester'), 1); assert.match(line(owner, 1), /OWNER/);
     await waitFor(()=>rankSounds(owner)===2 && rankSounds(fresh)===2 && rankSounds(veteran)===2,'second promotion sound');
     pass('Connected playtime promotes once; manual OWNER stays protected');
     command('mkrank create builder #55ffff Master Builder'); command('mkrank set NewTester builder');
-    await waitFor(() => line(fresh, 2).includes('Master Builder') && tab(owner, 'NewTester').includes('[Master Builder]'), 'custom rank');
+    await waitFor(() => line(fresh, 1).includes('Master Builder') && tab(owner, 'NewTester').includes('[Master Builder]'), 'custom rank');
     command('mkrank color builder light_purple');
-    await waitFor(() => JSON.stringify(fresh.lines.get('mk_line_2').component).includes('light_purple'), 'custom color');
-    command('mkrank reset NewTester'); await waitFor(() => line(fresh, 2).includes('OG Player'), 'reset earned rank');
+    await waitFor(() => JSON.stringify(fresh.lines.get('mk_line_1').component).includes('light_purple'), 'custom color');
+    command('mkrank reset NewTester'); await waitFor(() => line(fresh, 1).includes('OG Player'), 'reset earned rank');
     assert.equal(announcements(owner, 'NewTester'), 1); pass('Custom rank creation, color changes, assignment, and reset');
     fresh.client.write('chat_command', { command: 'mkrank set NewTester owner' });
-    await sleep(500); assert.match(line(fresh, 2), /OG Player/);
+    await sleep(500); assert.match(line(fresh, 1), /OG Player/);
     pass('Non-operator cannot assign OWNER');
     fresh.client.write('chat_command', { command: 'mksb toggle' });
     await waitFor(() => fresh.messages.some(m => text(m).includes('Sidebar hidden.')), 'sidebar toggle');
     assert.match(tab(owner, 'NewTester'), /OG Player/); pass('Personal sidebar toggle leaves Tab formatting active');
-    command('tp OwnerTester -125.5 64 -320.5'); await waitFor(() => line(owner,5).includes('-126') && line(owner,6).includes('64') && line(owner,7).includes('-321'), 'negative coordinates');
+    command('tp OwnerTester -125.5 64 -320.5'); await waitFor(() => line(owner,3)==='XYZ: -126 64 -321', 'negative coordinates');
     pass('Coordinates use block positions, including negative values');
     fs.writeFileSync(configPath, shortConfig.replace('hours: 0.003', 'hours: -1')); command('mksb reload');
     await waitFor(() => fullLog.includes('promotion.hours must be a positive number'), 'invalid config rejected');
-    assert.match(line(owner, 2), /OWNER/); pass('Invalid reload retains working configuration');
+    assert.match(line(owner, 1), /OWNER/); pass('Invalid reload retains working configuration');
     // Configure every original placeholder across two valid sidebar pages.
     const groups = [
       ['player_name','player_displayname','player_health','player_max_health','player_food','player_level','player_exp','player_ping','player_ping_color','player_world','player_gamemode','player_x','player_y','player_z','player_deaths'],
@@ -160,11 +160,11 @@ function snapshot(state, label) { observations.push({ label, name: state.name, f
     hidden.client.on('system_chat', p => hidden.messages.push(component(p.content)));hidden.client.on('scoreboard_score', p => hidden.lines.set(p.itemName, p));
     hidden.client.on('player_info', p => { for(const e of p.data) if(e.displayName != null) hidden.tabs.set(e.uuid,component(e.displayName)); });
     await waitFor(() => tab(owner2, 'NewTester').includes('[OG Player]'), 'saved automatic rank'); await sleep(1500);
-    assert.equal(hidden.lines.size, 0); assert.match(line(owner2, 2), /OWNER/); assert.equal(announcements(owner2, 'NewTester'), 0);
-    const veteran2 = await connect('VeteranTester');assert.match(line(veteran2, 2), /VIP/); assert.equal(announcements(owner2, 'VeteranTester'), 0);
+    assert.equal(hidden.lines.size, 0); assert.match(line(owner2, 1), /OWNER/); assert.equal(announcements(owner2, 'NewTester'), 0);
+    const veteran2 = await connect('VeteranTester');assert.match(line(veteran2, 1), /VIP/); assert.equal(announcements(owner2, 'VeteranTester'), 0);
     assert.equal(rankSounds(owner2),0);assert.equal(rankSounds(veteran2),0);assert.equal(text(owner2.footer),'Credits: MK/108e');
     pass('Restart preserves OWNER, OG, offline custom assignments, hidden sidebar, and announcement markers');
-    hidden.client.write('chat_command', { command: 'mksb toggle' }); await waitFor(() => hidden.lines.size >= 11, 'restored sidebar');
+    hidden.client.write('chat_command', { command: 'mksb toggle' }); await waitFor(() => hidden.lines.size >= 8, 'restored sidebar');
     // Disabling formatting restores original Tab names and clears our sidebar.
     const disabled = fs.readFileSync(configPath,'utf8').replace('enabled: true','enabled: false').replace('tab:\n  enabled: true','tab:\n  enabled: false');fs.writeFileSync(configPath, disabled);command('mksb reload');
     await waitFor(() => tab(owner2,'OwnerTester') === 'OwnerTester', 'original Tab name restored');

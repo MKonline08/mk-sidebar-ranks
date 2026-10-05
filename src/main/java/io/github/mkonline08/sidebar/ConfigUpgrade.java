@@ -8,14 +8,14 @@ import java.util.Objects;
 final class ConfigUpgrade {
     private ConfigUpgrade() {}
     static boolean apply(YamlConfiguration yaml) throws Exception {
-        if (yaml.getInt("config-version", 1) >= 2) return false;
-        YamlConfiguration defaults = resource("/config.yml"), legacy = resource("/config-v1.yml");
+        if (yaml.getInt("config-version", 1) >= 3) return false;
+        YamlConfiguration defaults = resource("/config.yml"), legacy = resource("/config-v1.yml"), previous = resource("/config-v2.yml");
         // Only replace the unmodified shipped layout. Custom lines and all player/rank data stay intact.
-        if (Objects.equals(yaml.get("sidebar.lines"), legacy.get("sidebar.lines"))) yaml.set("sidebar.lines",defaults.get("sidebar.lines"));
+        if (Objects.equals(yaml.get("sidebar.lines"), legacy.get("sidebar.lines")) || Objects.equals(yaml.get("sidebar.lines"),previous.get("sidebar.lines"))) yaml.set("sidebar.lines",defaults.get("sidebar.lines"));
         for(String key : new String[]{"tab.footer","promotion.sound.enabled","promotion.sound.key","promotion.sound.volume","promotion.sound.pitch"}) {
             if(!yaml.contains(key)) yaml.set(key,defaults.get(key));
         }
-        yaml.set("config-version",2);
+        yaml.set("config-version",3);
         return true;
     }
     private static YamlConfiguration resource(String name) throws Exception {
