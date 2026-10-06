@@ -78,9 +78,3 @@ async function screenshotData(label,p){samples.push({label,window:p.window&&{tit
  const offset=log.length;cmd('mkmarket performance');await wait(()=>log.slice(offset).includes('MK market work:'),'market timing');samples.push({label:'market-main-thread-timing',text:log.slice(offset).match(/MK market work:.*/)?.[0]});
  assert(!log.includes('Market transaction error'));await stop();const report={version,result:'PASS',paper:'1.21.11 build 132',results,observations:samples,fixture:dir};fs.writeFileSync(path.join(dir,'market-report.json'),JSON.stringify(report,null,2));if(process.env.MK_MARKET_REPORT)fs.writeFileSync(process.env.MK_MARKET_REPORT,JSON.stringify(report,null,2));console.log('MARKET CHECKS PASSED:',results.length);
 }catch(e){console.error(e.stack);fs.writeFileSync(path.join(dir,'failure.log'),log);process.exitCode=1;try{await stop();}catch{child?.kill();}}})();
-
-
-
-
-
-

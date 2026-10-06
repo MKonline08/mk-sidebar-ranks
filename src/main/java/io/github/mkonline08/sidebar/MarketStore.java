@@ -221,4 +221,3 @@ final class MarketStore implements AutoCloseable {
     @FunctionalInterface private interface SqlWork<T>{T run()throws Exception;}
     @Override public void close(){try{task(()->{if(db!=null){transaction(()->{for(Challenge c:List.copyOf(challenges.values()))refund(c,"Server shutdown");return null;});db.close();}return null;}).join();}finally{worker.shutdown();}}
 }
-
