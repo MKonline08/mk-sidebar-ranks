@@ -1,0 +1,1786 @@
+{
+  "version": "1.5.0",
+  "result": "PASS",
+  "paper": "1.21.11 build 132",
+  "results": [
+    "New players get $500 once and see it in wallet and compact sidebar",
+    "Ordinary players can transfer money and recipients receive confirmation",
+    "Invalid and unaffordable transfers cannot change balances",
+    "Admin add/remove works from console; ordinary players cannot grant themselves money",
+    "Everyone can view the top-money leaderboard",
+    "Listing escrows the held stack and persists its fixed total price",
+    "Viewing and cancelling a purchase confirmation does not spend money",
+    "Confirmed purchase pays seller exactly once and puts the exact item in buyer mailbox",
+    "Full inventory cannot consume or partially deliver a mailbox stack",
+    "Mailbox delivers the exact purchased stack without leaving a duplicate claim",
+    "Cancelled listings return the complete stack through mailbox",
+    "Offline sellers receive proceeds without losing their wallet or receiving starter money again",
+    "Transaction history includes sale receipts",
+    "Market category filters and navigation open as native inventory menus",
+    "Coin flip challenge holds one stake; declining refunds it",
+    "Accepted coin flip pays one winner the exact pot; repeat acceptance cannot pay again",
+    "Expired coin flips refund held money automatically",
+    "Disconnecting closes pending coin flips and returns held funds",
+    "Admin can place a persistent in-world text leaderboard at spawn",
+    "Configurable rotating chat reminders advertise auction, coin flips and public leaderboard",
+    "Recovery reconciles real inventory snapshots before and after removal without replaying an item transfer",
+    "Wallets, offline mail and spawn leaderboard persist across full restart without duplicate $500 grants",
+    "Admin removal deletes the in-world board and saved location"
+  ],
+  "observations": [
+    {
+      "label": "market",
+      "window": {
+        "title": "MK MARKET • $500.00",
+        "items": [
+          {
+            "itemCount": 16,
+            "itemId": 898,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "lore",
+                "data": [
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "yellow"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Listing #1"
+                      }
+                    }
+                  },
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "yellow"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Seller: MarketAlex"
+                      }
+                    }
+                  },
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "yellow"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Total price: $125.00"
+                      }
+                    }
+                  },
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "yellow"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Expires: 6d 23h 59m 59s"
+                      }
+                    }
+                  },
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "yellow"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Click to review purchase"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 1,
+            "itemId": 331,
+            "addedComponentCount": 2,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Category: ALL"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "lore",
+                "data": [
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Click to change category"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 717,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Sort: NEWEST"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 895,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Previous page"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 1028,
+            "addedComponentCount": 2,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Page 1"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "lore",
+                "data": [
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Hold an item: /auction sell <total price>"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 895,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Next page"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 1220,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "My listings"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 439,
+            "addedComponentCount": 2,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Mailbox"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "lore",
+                "data": [
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Claim purchases and returned items"
+                      }
+                    }
+                  },
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Sale earnings go directly to your wallet"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 1054,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Transaction history"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 502,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Close"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          }
+        ]
+      },
+      "messages": [
+        "multiplayer.player.joined",
+        "multiplayer.player.joined",
+        "MK » Received $25.00 from MarketAlex.",
+        "MK » An administrator removed $25.00. Balance: $500.00",
+        "chat.type.advancement.task"
+      ],
+      "lines": [
+        [
+          "mk_line_0",
+          "Name: MarketSam"
+        ],
+        [
+          "mk_line_1",
+          "Rank: New Player"
+        ],
+        [
+          "mk_line_2",
+          "Health: 20.0/20.0"
+        ],
+        [
+          "mk_line_3",
+          "XYZ: -10 -60 9"
+        ],
+        [
+          "mk_line_4",
+          "Hours: 0.00"
+        ],
+        [
+          "mk_line_5",
+          "Money: $500.00"
+        ],
+        [
+          "mk_line_6",
+          ""
+        ],
+        [
+          "mk_line_7",
+          "Online: 3/20"
+        ],
+        [
+          "mk_line_8",
+          "TPS: 19.2"
+        ],
+        [
+          "mk_line_9",
+          "Uptime: 0m 37s"
+        ]
+      ]
+    },
+    {
+      "label": "confirmation",
+      "window": {
+        "title": "CONFIRM PURCHASE",
+        "items": [
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 1,
+            "itemId": 899,
+            "addedComponentCount": 2,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Confirm: $125.00"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "lore",
+                "data": [
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Seller: MarketAlex"
+                      }
+                    }
+                  },
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Balance after: $375.00"
+                      }
+                    }
+                  },
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "The item will be in /auction mail"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 16,
+            "itemId": 898,
+            "addedComponentCount": 0,
+            "removedComponentCount": 0,
+            "components": [],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 1,
+            "itemId": 502,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Cancel"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          }
+        ]
+      },
+      "messages": [
+        "multiplayer.player.joined",
+        "multiplayer.player.joined",
+        "MK » Received $25.00 from MarketAlex.",
+        "MK » An administrator removed $25.00. Balance: $500.00",
+        "chat.type.advancement.task"
+      ],
+      "lines": [
+        [
+          "mk_line_0",
+          "Name: MarketSam"
+        ],
+        [
+          "mk_line_1",
+          "Rank: New Player"
+        ],
+        [
+          "mk_line_2",
+          "Health: 20.0/20.0"
+        ],
+        [
+          "mk_line_3",
+          "XYZ: -10 -60 9"
+        ],
+        [
+          "mk_line_4",
+          "Hours: 0.00"
+        ],
+        [
+          "mk_line_5",
+          "Money: $500.00"
+        ],
+        [
+          "mk_line_6",
+          ""
+        ],
+        [
+          "mk_line_7",
+          "Online: 3/20"
+        ],
+        [
+          "mk_line_8",
+          "TPS: 19.2"
+        ],
+        [
+          "mk_line_9",
+          "Uptime: 0m 37s"
+        ]
+      ]
+    },
+    {
+      "label": "filtered-market",
+      "window": {
+        "title": "MK MARKET • $500.00",
+        "items": [
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 1,
+            "itemId": 331,
+            "addedComponentCount": 2,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Category: BLOCKS"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "lore",
+                "data": [
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Click to change category"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 717,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Sort: NEWEST"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 895,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Previous page"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 1028,
+            "addedComponentCount": 2,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Page 1"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "lore",
+                "data": [
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Hold an item: /auction sell <total price>"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 895,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Next page"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 1220,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "My listings"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 439,
+            "addedComponentCount": 2,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Mailbox"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "lore",
+                "data": [
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Claim purchases and returned items"
+                      }
+                    }
+                  },
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Sale earnings go directly to your wallet"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 1054,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Transaction history"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 502,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Close"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          }
+        ]
+      },
+      "messages": [
+        "multiplayer.player.joined",
+        "chat.type.advancement.task",
+        "chat.type.advancement.task",
+        "chat.type.advancement.task",
+        "multiplayer.player.left",
+        "multiplayer.player.joined"
+      ],
+      "lines": [
+        [
+          "mk_line_0",
+          "Name: MarketLee"
+        ],
+        [
+          "mk_line_1",
+          "Rank: New Player"
+        ],
+        [
+          "mk_line_2",
+          "Health: 20.0/20.0"
+        ],
+        [
+          "mk_line_3",
+          "XYZ: 6 -60 9"
+        ],
+        [
+          "mk_line_4",
+          "Hours: 0.00"
+        ],
+        [
+          "mk_line_5",
+          "Money: $500.00"
+        ],
+        [
+          "mk_line_6",
+          ""
+        ],
+        [
+          "mk_line_7",
+          "Online: 3/20"
+        ],
+        [
+          "mk_line_8",
+          "TPS: 19.7"
+        ],
+        [
+          "mk_line_9",
+          "Uptime: 0m 49s"
+        ]
+      ]
+    },
+    {
+      "label": "market-timing-with-inventory-saves",
+      "text": "MK market work: avg=0.620ms p95=2.723ms max=18.415ms server=2.543ms/tick tps=19.84 (last 200 commands, clicks, callbacks and maintenance calls; excludes database worker) inventory-saves=5 save-max=9.533ms (since enable)"
+    },
+    {
+      "label": "market-main-thread-timing",
+      "text": "MK market work: avg=0.186ms p95=1.911ms max=2.519ms server=1.230ms/tick tps=20.00 (last 200 commands, clicks, callbacks and maintenance calls; excludes database worker) inventory-saves=0 save-max=0.000ms (since enable)"
+    }
+  ],
+  "fixture": "isolated-local-market-fixture",
+  "jarSha256": "b9d5a7ba765347cfc23f3039690915340846cd2ab1427f575d42428ea27ae717"
+}

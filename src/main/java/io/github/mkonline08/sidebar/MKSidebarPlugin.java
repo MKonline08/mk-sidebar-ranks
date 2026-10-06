@@ -22,6 +22,7 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
     private PlayerStore store;
     private Displays displays;
     private Nametags nametags;
+    private Market market;
     private volatile boolean stopping;
     private Path configFile;
     private final UpdateQueue updateQueue=new UpdateQueue();
@@ -37,6 +38,8 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
             store=new PlayerStore();
             players=new Players(store.open(getDataFolder().toPath().resolve("players.db")).join(),System::nanoTime);
             validateAssignedRanks(settings);
+            MarketSettings marketSettings=MarketSettings.read(yaml);
+            market=new Market(this,marketSettings);market.start(players.snapshot());
             if(upgraded) {
                 Files.copy(configFile,getDataFolder().toPath().resolve("config-before-v"+getPluginMeta().getVersion()+"-"+System.currentTimeMillis()+".yml"));
                 writeConfig(yaml);
@@ -76,6 +79,7 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
     @Override public void onDisable() {
         stopping=true;
         getServer().getScheduler().cancelTasks(this);
+        if(market!=null)try{market.close();}catch(Exception e){getLogger().log(Level.SEVERE,"Could not close the market safely.",e);}
         if(nametags!=null)nametags.clear();
         if(displays!=null) for(Player p:getServer().getOnlinePlayers()) displays.remove(p);
         if(store!=null) {
@@ -87,10 +91,11 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
     @EventHandler public void onJoin(PlayerJoinEvent e) { joined(e.getPlayer()); }
     private void joined(Player p) {
         players.join(p,settings); save(List.of(players.get(p.getUniqueId())));
+        if(market!=null)market.joined(p);
         promote(p.getUniqueId()); update(p);
     }
     @EventHandler public void onQuit(PlayerQuitEvent e) {
-        Player p=e.getPlayer(); players.quit(p.getUniqueId()); save(List.of(players.get(p.getUniqueId()))); nametags.remove(p);displays.remove(p);
+        Player p=e.getPlayer(); if(market!=null)market.quit(p);players.quit(p.getUniqueId()); save(List.of(players.get(p.getUniqueId()))); nametags.remove(p);displays.remove(p);
     }
     boolean promote(UUID id) {
         Optional<PlayerRecord> earned=players.promote(id,settings.promotionMillis());
@@ -124,7 +129,10 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
         PlayerRecord record=players.get(player.getUniqueId());
         if(record!=null) {
             nametags.target(player,settings.rank(record));
-            displays.update(player,record,settings,Values.of(player,record,settings,getServer(),settings.displayKeys(!record.sidebarHidden()),shared));
+            Set<String> requested=settings.displayKeys(!record.sidebarHidden());
+            Map<String,Component> values=Values.of(player,record,settings,getServer(),requested,shared);
+            if(requested.contains("player_balance")&&market!=null)values.put("player_balance",market.balance(player.getUniqueId()));
+            displays.update(player,record,settings,values);
             nametags.sync(player,settings.nametagsEnabled());
         }
     }
@@ -138,7 +146,8 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
         p.sendMessage(Component.text(record.sidebarHidden()?"Sidebar hidden.":"Sidebar enabled.",NamedTextColor.AQUA));
     }
     void reloadSettings() throws Exception {
-        Settings candidate=Settings.read(readConfig()); validateAssignedRanks(candidate); settings=candidate;
+        YamlConfiguration yaml=readConfig();Settings candidate=Settings.read(yaml);MarketSettings candidateMarket=MarketSettings.read(yaml);validateAssignedRanks(candidate); settings=candidate;
+        market.reload(candidateMarket);
         for(Player p:getServer().getOnlinePlayers()) promote(p.getUniqueId());
         refreshAll();
     }

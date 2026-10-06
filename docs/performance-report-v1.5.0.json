@@ -1,0 +1,330 @@
+{
+  "version": "1.5.0",
+  "result": "PASS",
+  "paper": "1.21.11 build 132",
+  "fixture": "isolated-local-load-fixture",
+  "players": 64,
+  "cpu": "AMD Ryzen 5 9600X 6-Core Processor             ",
+  "javaHeapMiB": 2048,
+  "measurements": [
+    {
+      "scenario": "displays-disabled",
+      "seconds": 30,
+      "players": 64,
+      "samples": [
+        {
+          "avgMs": 0.019,
+          "p95Ms": 0.17,
+          "maxMs": 0.326,
+          "queued": 0,
+          "serverMs": 0.966,
+          "tps": 20,
+          "renders": 1840,
+          "tabUpdates": 118,
+          "sidebarUpdates": 1594
+        },
+        {
+          "avgMs": 0.017,
+          "p95Ms": 0.159,
+          "maxMs": 0.326,
+          "queued": 0,
+          "serverMs": 0.85,
+          "tps": 20,
+          "renders": 1840,
+          "tabUpdates": 118,
+          "sidebarUpdates": 1594
+        },
+        {
+          "avgMs": 0.016,
+          "p95Ms": 0.151,
+          "maxMs": 0.207,
+          "queued": 0,
+          "serverMs": 0.937,
+          "tps": 20,
+          "renders": 1840,
+          "tabUpdates": 118,
+          "sidebarUpdates": 1594
+        },
+        {
+          "avgMs": 0.016,
+          "p95Ms": 0.157,
+          "maxMs": 0.249,
+          "queued": 0,
+          "serverMs": 0.83,
+          "tps": 20,
+          "renders": 1840,
+          "tabUpdates": 118,
+          "sidebarUpdates": 1594
+        },
+        {
+          "avgMs": 0.016,
+          "p95Ms": 0.142,
+          "maxMs": 0.249,
+          "queued": 0,
+          "serverMs": 0.757,
+          "tps": 20,
+          "renders": 1840,
+          "tabUpdates": 118,
+          "sidebarUpdates": 1594
+        },
+        {
+          "avgMs": 0.015,
+          "p95Ms": 0.14,
+          "maxMs": 0.224,
+          "queued": 0,
+          "serverMs": 0.75,
+          "tps": 20,
+          "renders": 1840,
+          "tabUpdates": 118,
+          "sidebarUpdates": 1594
+        }
+      ],
+      "incomingDisplayPacketsAcrossClients": {
+        "scoreboard_score": 0,
+        "player_info": 64,
+        "playerlist_header": 0,
+        "teams": 0
+      }
+    },
+    {
+      "scenario": "enabled-static",
+      "seconds": 30,
+      "players": 64,
+      "samples": [
+        {
+          "avgMs": 0.171,
+          "p95Ms": 1.022,
+          "maxMs": 1.107,
+          "queued": 0,
+          "serverMs": 0.836,
+          "tps": 20,
+          "renders": 3738,
+          "tabUpdates": 255,
+          "sidebarUpdates": 3227
+        },
+        {
+          "avgMs": 0.141,
+          "p95Ms": 1.016,
+          "maxMs": 1.056,
+          "queued": 23,
+          "serverMs": 0.84,
+          "tps": 20,
+          "renders": 4115,
+          "tabUpdates": 271,
+          "sidebarUpdates": 3588
+        },
+        {
+          "avgMs": 0.133,
+          "p95Ms": 1.01,
+          "maxMs": 1.056,
+          "queued": 0,
+          "serverMs": 0.807,
+          "tps": 20,
+          "renders": 4471,
+          "tabUpdates": 284,
+          "sidebarUpdates": 3931
+        },
+        {
+          "avgMs": 0.13,
+          "p95Ms": 1.006,
+          "maxMs": 1.033,
+          "queued": 0,
+          "serverMs": 0.826,
+          "tps": 20,
+          "renders": 4813,
+          "tabUpdates": 306,
+          "sidebarUpdates": 4251
+        },
+        {
+          "avgMs": 0.133,
+          "p95Ms": 1.01,
+          "maxMs": 1.036,
+          "queued": 0,
+          "serverMs": 0.815,
+          "tps": 20,
+          "renders": 5177,
+          "tabUpdates": 328,
+          "sidebarUpdates": 4593
+        },
+        {
+          "avgMs": 0.132,
+          "p95Ms": 1.011,
+          "maxMs": 1.036,
+          "queued": 0,
+          "serverMs": 0.794,
+          "tps": 20,
+          "renders": 5540,
+          "tabUpdates": 350,
+          "sidebarUpdates": 4934
+        }
+      ],
+      "incomingDisplayPacketsAcrossClients": {
+        "scoreboard_score": 2027,
+        "player_info": 6848,
+        "playerlist_header": 0,
+        "teams": 0
+      }
+    },
+    {
+      "scenario": "enabled-moving",
+      "seconds": 30,
+      "players": 64,
+      "samples": [
+        {
+          "avgMs": 0.126,
+          "p95Ms": 1.009,
+          "maxMs": 1.05,
+          "queued": 0,
+          "serverMs": 0.923,
+          "tps": 20,
+          "renders": 6828,
+          "tabUpdates": 401,
+          "sidebarUpdates": 6171
+        },
+        {
+          "avgMs": 0.124,
+          "p95Ms": 1.011,
+          "maxMs": 1.05,
+          "queued": 0,
+          "serverMs": 0.892,
+          "tps": 20,
+          "renders": 7201,
+          "tabUpdates": 414,
+          "sidebarUpdates": 6531
+        },
+        {
+          "avgMs": 0.125,
+          "p95Ms": 1.011,
+          "maxMs": 1.031,
+          "queued": 0,
+          "serverMs": 0.93,
+          "tps": 20,
+          "renders": 7570,
+          "tabUpdates": 420,
+          "sidebarUpdates": 6894
+        },
+        {
+          "avgMs": 0.129,
+          "p95Ms": 1.018,
+          "maxMs": 1.09,
+          "queued": 0,
+          "serverMs": 0.885,
+          "tps": 20,
+          "renders": 7959,
+          "tabUpdates": 427,
+          "sidebarUpdates": 7276
+        },
+        {
+          "avgMs": 0.129,
+          "p95Ms": 1.016,
+          "maxMs": 1.09,
+          "queued": 5,
+          "serverMs": 0.918,
+          "tps": 20,
+          "renders": 8423,
+          "tabUpdates": 438,
+          "sidebarUpdates": 7729
+        },
+        {
+          "avgMs": 0.12,
+          "p95Ms": 1.006,
+          "maxMs": 1.02,
+          "queued": 0,
+          "serverMs": 0.867,
+          "tps": 20,
+          "renders": 8808,
+          "tabUpdates": 445,
+          "sidebarUpdates": 8107
+        }
+      ],
+      "incomingDisplayPacketsAcrossClients": {
+        "scoreboard_score": 2296,
+        "player_info": 4224,
+        "playerlist_header": 0,
+        "teams": 0
+      }
+    },
+    {
+      "scenario": "enabled-market-activity",
+      "seconds": 30,
+      "players": 64,
+      "samples": [
+        {
+          "avgMs": 0.133,
+          "p95Ms": 1.006,
+          "maxMs": 3.37,
+          "queued": 0,
+          "serverMs": 1.025,
+          "tps": 20,
+          "renders": 9482,
+          "tabUpdates": 476,
+          "sidebarUpdates": 8750
+        },
+        {
+          "avgMs": 0.121,
+          "p95Ms": 1.006,
+          "maxMs": 1.084,
+          "queued": 0,
+          "serverMs": 0.995,
+          "tps": 20,
+          "renders": 9816,
+          "tabUpdates": 490,
+          "sidebarUpdates": 9070
+        },
+        {
+          "avgMs": 0.144,
+          "p95Ms": 1.009,
+          "maxMs": 5.379,
+          "queued": 0,
+          "serverMs": 0.921,
+          "tps": 20,
+          "renders": 10160,
+          "tabUpdates": 511,
+          "sidebarUpdates": 9393
+        },
+        {
+          "avgMs": 0.142,
+          "p95Ms": 1.008,
+          "maxMs": 5.379,
+          "queued": 0,
+          "serverMs": 0.929,
+          "tps": 20,
+          "renders": 10530,
+          "tabUpdates": 539,
+          "sidebarUpdates": 9735
+        },
+        {
+          "avgMs": 0.119,
+          "p95Ms": 1.008,
+          "maxMs": 1.029,
+          "queued": 1,
+          "serverMs": 0.883,
+          "tps": 20,
+          "renders": 10953,
+          "tabUpdates": 553,
+          "sidebarUpdates": 10144
+        },
+        {
+          "avgMs": 0.12,
+          "p95Ms": 1.007,
+          "maxMs": 1.029,
+          "queued": 0,
+          "serverMs": 0.996,
+          "tps": 20,
+          "renders": 11304,
+          "tabUpdates": 570,
+          "sidebarUpdates": 10478
+        }
+      ],
+      "incomingDisplayPacketsAcrossClients": {
+        "scoreboard_score": 2048,
+        "player_info": 7040,
+        "playerlist_header": 0,
+        "teams": 0
+      }
+    }
+  ],
+  "marketTiming": "MK market work: avg=0.056ms p95=0.228ms max=1.204ms server=0.994ms/tick tps=20.00 (last 200 commands, clicks, callbacks and maintenance calls; excludes database worker) inventory-saves=0 save-max=0.000ms (since enable)",
+  "limitations": "Loopback protocol clients in a flat spectator world on the same Windows PC; no production-host or internet-latency guarantee. Scheduled loop metrics exclude commands, joins and database worker work. Market timing separately covers commands, menu clicks, callbacks and maintenance. The activity phase sends 8 payments and 4 menu opens per second for 30 seconds, with a placed text leaderboard. Item transfer persistence is covered by the separate survival market fixture.",
+  "jarSha256": "b9d5a7ba765347cfc23f3039690915340846cd2ab1427f575d42428ea27ae717"
+}

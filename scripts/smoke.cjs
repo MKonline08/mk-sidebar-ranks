@@ -14,7 +14,7 @@ if (!paper || !fs.existsSync(paper)) throw new Error('Set PAPER_JAR to a Paper 1
 const port = Number(process.env.MK_SMOKE_PORT || 25586);
 fs.mkdirSync(path.join(dir, 'plugins', 'MKSidebarRanks'), { recursive: true });
 fs.copyFileSync(paper, path.join(dir, 'paper.jar'));
-fs.copyFileSync(path.join(repo, 'target', 'mk-sidebar-ranks-1.4.0.jar'), path.join(dir, 'plugins', 'mk-sidebar-ranks.jar'));
+fs.copyFileSync(path.join(repo, 'target', 'mk-sidebar-ranks-1.5.0.jar'), path.join(dir, 'plugins', 'mk-sidebar-ranks.jar'));
 const defaultConfig = fs.readFileSync(path.join(repo, 'src/main/resources/config.yml'), 'utf8');
 const configPath = path.join(dir, 'plugins/MKSidebarRanks/config.yml');
 fs.writeFileSync(configPath, fs.readFileSync(path.join(repo, 'src/main/resources/config-v5.yml'), 'utf8'));
@@ -100,7 +100,7 @@ function snapshot(state, label) { observations.push({ label, name: state.name, f
 (async () => {
   try {
     await boot();
-    assert(fs.readdirSync(path.dirname(configPath)).some(name=>name.startsWith('config-before-v1.4.0-')));
+    assert(fs.readdirSync(path.dirname(configPath)).some(name=>name.startsWith('config-before-v1.5.0-')));
     assert(fs.readFileSync(configPath,'utf8').includes('MK/108e'));
     assert(fs.readFileSync(configPath,'utf8').includes('rank-change:'));
     pass('Existing v1.3 configuration gains manual announcements and a backup');
@@ -227,7 +227,7 @@ function snapshot(state, label) { observations.push({ label, name: state.name, f
     command('mkrank set OwnerTester owner');await waitFor(()=>line(owner,1).includes('OWNER') && rankSounds(owner)===8 && rankSounds(fresh)===8,'restore OWNER');
     await stop();
     const oldId=crypto.randomUUID();
-    const duplicate=spawnSync(process.env.JAVA_BIN||'java',['-cp',path.join(repo,'target/mk-sidebar-ranks-1.4.0.jar'),path.join(__dirname,'insert-duplicate.java'),path.join(dir,'plugins/MKSidebarRanks/players.db'),oldId,'OwnerTester'],{encoding:'utf8',windowsHide:true});
+    const duplicate=spawnSync(process.env.JAVA_BIN||'java',['-cp',path.join(repo,'target/mk-sidebar-ranks-1.5.0.jar'),path.join(__dirname,'insert-duplicate.java'),path.join(dir,'plugins/MKSidebarRanks/players.db'),oldId,'OwnerTester'],{encoding:'utf8',windowsHide:true});
     assert.equal(duplicate.status,0,duplicate.stderr||duplicate.stdout);
     await boot(); const owner2 = await connect('OwnerTester');
     const hidden = { name: 'NewTester', client: mc.createClient({ host: '127.0.0.1', port, username: 'NewTester', auth: 'offline', version: '1.21.11' }), sounds:[],teams:new Map(),messages: [], tabs: new Map(), lines: new Map() }; clients.push(hidden);trackTeams(hidden);

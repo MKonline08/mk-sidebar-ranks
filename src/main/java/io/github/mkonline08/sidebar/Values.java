@@ -59,6 +59,7 @@ public final class Values {
                 case "player_biome" -> Component.text(p.getWorld().getBiome(loc).getKey().getKey());
                 case "player_rank" -> settings.rank(record).label();
                 case "player_rank_badge" -> settings.rank(record).badge();
+                case "player_balance" -> Component.text("—");
                 default -> throw new IllegalArgumentException("Unknown player placeholder: "+key);
             };
             v.put(key,value);

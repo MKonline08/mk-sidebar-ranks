@@ -2,24 +2,30 @@
 
 **Your server. Your ranks. A sidebar worth showing off.**
 
-A standalone plugin for **Paper 1.21.11 · Java 21**, created by **MK**. Compact sidebar rows with white labels and colored values, colored rank badges in Tab, numeric ping, and automatic playtime promotions. No companion plugins or client mods required.
+A standalone plugin for **Paper 1.21.11 · Java 21**, created by **MK**. Compact sidebar rows, colored rank badges, ping, playtime promotions, an in-game wallet, fixed-price item market, player coin flips and a spawn money leaderboard. No companion plugins or client mods required.
 
 ![MK Sidebar & Ranks design preview](docs/preview.svg)
 
 [Download the plugin](https://github.com/MKonline08/mk-sidebar-ranks/releases/latest) · [Placeholders](docs/PLACEHOLDERS.md) · [Configuration](src/main/resources/config.yml) · [Validation](docs/VALIDATION.md)
 
+**New in v1.5.0:** everyone gets a one-time **$500** wallet; `/auction` browses fixed-price listings with purchase confirmation, category/price filters and an offline item mailbox. `/money history` shows sale receipts and transactions, `/coinflip` offers equal-stakes player challenges, and `/baltop` shows the richest players. Admins can add/remove money and place/remove a persistent spawn leaderboard. Configurable chat reminders advertise the market and coin flips. All features live in this one jar. See [market instructions and commands](docs/MARKET.md).
+
+![Market design concept](docs/market-concept.png)
+
+The image is a design concept. Actual interfaces use native Minecraft inventory slots, item tooltips and chat, with gold/aqua styling.
+
 ## Install
 
-1. Download **`mk-sidebar-ranks-1.4.0.jar`** from the release page.
-2. Stop your Paper 1.21.11 server and copy the jar into its **`plugins/`** folder.
-3. Start the server. Settings appear in **`plugins/MKSidebarRanks/config.yml`**.
+1. Download **`mk-sidebar-ranks-1.5.0.jar`** from the release page.
+2. Stop your Paper 1.21.11 server and replace the old MKSidebarRanks jar in **`plugins/`**. Install only one version.
+3. Keep the **`MKSidebarRanks`** folder when upgrading. Start the server; older configurations are backed up and new settings are added while preserving custom values.
 4. Run **`/mkrank set YourMinecraftName owner`** after you have joined. Your OWNER label will be bold red in your sidebar and Tab.
 
 The label does not make someone an operator or grant permissions. Keep using your existing server permissions for administrative access.
 
 ## What players see
 
-- A right-side sidebar showing **server name, player name, rank, health, coordinates, hours played, online count, TPS, and uptime**.
+- A right-side sidebar showing **server name, player name, rank, health, coordinates, hours played, money, online count, TPS, and uptime**.
 - Colored rank badges beside usernames above players' heads, such as **`[OWNER] MK`**. The rank badge uses its configured color and bold setting; the username stays white.
 - Tab entries such as **`[OWNER] MK • 42ms`**, with rank colors and green/yellow/red numeric ping.
 - **New Player** on first join, then **OG Player** after **24 total connected hours**, including time spent AFK.
@@ -39,7 +45,7 @@ Sidebar refreshes are queued roughly once per second and spread across ticks. Ta
 
 ### Update from an earlier version
 
-Stop the server, remove the old plugin jar, install the v1.4.0 jar, and restart. Keep the `MKSidebarRanks` folder so ranks and playtime remain saved. Older configurations gain missing settings with a backup. Unchanged default layouts gain the Hours row; custom layouts, custom ranks, server name, and promotion settings remain intact. For a custom sidebar, add `'<white>Hours:</white> <aqua>%player_playtime_hours%</aqua>'` to its lines if desired (maximum 15 lines).
+Stop the server, replace the old plugin jar with v1.5.0, and restart. Keep the `MKSidebarRanks` folder so ranks, playtime, wallets, listings and mailbox data remain saved. Older configurations gain missing settings with a backup. Unchanged default layouts gain Hours and Money rows; custom layouts, custom ranks, server name and promotion settings remain intact. For a custom sidebar, add the Hours and `%player_balance%` lines if desired (maximum 15 lines).
 
 ## Commands
 
@@ -133,7 +139,7 @@ With JDK 21 and Maven 3.9+:
 mvn -B clean verify
 ```
 
-Installable output: `target/mk-sidebar-ranks-1.4.0.jar`. Do not install the `original-` jar. GitHub Actions builds and tests the project and provides the packaged jar as an artifact.
+Installable output: `target/mk-sidebar-ranks-1.5.0.jar`. Do not install the `original-` jar. GitHub Actions builds and tests the project and provides the packaged jar as an artifact.
 
 For the local Paper integration fixture, see [validation instructions](docs/VALIDATION.md).
 

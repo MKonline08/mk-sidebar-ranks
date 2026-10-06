@@ -1,23 +1,23 @@
 # Validation
 
-## Release verification — v1.4.0
+## Release verification — v1.5.0
 
-Verified on October 6, 2026:
+Verified October 6, 2026 with the exact release jar:
 
-- **47 automated tests passed**, with no failures, errors, or skipped tests.
-- **44 real Paper integration scenarios passed** on Paper **1.21.11 build 132**, including three protocol clients and a full server restart.
-- Windows Java **21.0.12** runtime; SQLite **3.53.4.0** bundled with Windows and Linux native libraries.
-- Captured display components and scenario results: [validation-report.json](validation-report.json).
-- Release jar SHA-256: `642c52aa78a9d5125bfde92cb173711a7c80466ebe25cd19d77b0bd0a6822497`.
-- Verified compact inline label/value rows, one XYZ line, exact MK/108e footer text, one celebration sound to every online player per promotion or effective manual rank change, no replay after restart, and automatic v1.3 configuration upgrade with a backup. Unit tests also cover direct upgrades from v1.0.0 and preservation of custom layouts/settings.
-- Manual sound checks cover OWNER/custom assignments, same-rank silence, resets, offline assignments, mute settings, and avoiding a duplicate sound when reset earns OG. No sounds replay after restart.
-- Overhead team packets verify colored labels, automatic/manual/custom changes, sidebar-hidden observers, quit cleanup, feature switches, and restart restoration. The Hours row includes imported playtime. Unit tests also cover shared boards, cache reuse, external team conflicts, and config migration. The fixture verifies transmitted labels rather than a rendered game screenshot.
-- The real Paper fixture inserts a historical duplicate UUID for an online username, verifies that name commands select the connected UUID, and confirms the old saved record remains available by UUID.
-- The **v1.3.0 64-client load fixture** remains recorded in [PERFORMANCE.md](PERFORMANCE.md). Those measurements used the previous v1.3.0 jar; v1.4.0 was verified with the automated and real Paper functional checks above.
+- **64 automated tests passed**, zero failures/errors/skips.
+- **67 real Paper scenarios passed**: 44 existing rank/display checks and 23 market checks, using three protocol players and full restarts.
+- **64-client load fixture passed**, with wallet/sidebar updates, eight payments and four market opens per second during the active phase, and a placed spawn leaderboard.
+- Paper 1.21.11 build 132, Java 21, bundled SQLite 3.53.4.0.
+- SHA-256: `b9d5a7ba765347cfc23f3039690915340846cd2ab1427f575d42428ea27ae717`.
+- [Rank/display results](validation-report.json), [market results](market-validation-report.json), [performance results](performance-report-v1.5.0.json).
 
-New command/event checks cover colored manual announcements, same-rank silence, offline changes, reset earning OG without duplication, independent announcement/sound switches, ordinary-player progress, earned/manual rank status after restart, and sound testing to all three clients with configured volume/pitch. Unit tests also verify that notifications wait for a successful save and main-thread delivery and that failed saves suppress notifications.
+Market checks cover one-time $500 grants, balances, payments and admin permissions, purchase confirmation and cancellation, exact item escrow/delivery, full-inventory rejection, cancelled listing returns, offline seller payouts, history, filters, all coin flip closing/refund paths, repeated acceptance, rotating reminders, spawn-board placement/removal, mailbox/wallet persistence, and reconnect recovery of real serialized inventory snapshots. The recovery fixture injects pending journal records into the **stopped temporary database** for both before/after inventory-removal stages; it does not claim to simulate every filesystem/power-loss failure.
 
-This verifies the local test server. Installation on the owner's production server is a separate step.
+Unit checks also cover concurrent purchases/spending, fee calculations, failed-save rollback, insufficient funds, listing limits, persisted review records, money bounds, and configuration migration. Critical inventory handoffs are queued to at most one per tick and are measured by the market diagnostics. [MARKET.md](MARKET.md) describes the recovery path for inventory changes caused by external plugins or administrators.
+
+Existing rank/name-tag/Tab/promotion functionality passes the complete regression fixture. Historical v1.2.0 and v1.3.0 load data remain associated with their original jars in [PERFORMANCE.md](PERFORMANCE.md); they are not measurements of v1.5.0.
+
+This verifies isolated local fixtures, not the owner's production host or internet latency. Installation is a server restart with the old jar replaced and the MKSidebarRanks folder retained.
 
 ## Automated tests
 
@@ -61,3 +61,7 @@ The fixture binds only `127.0.0.1:25586`, uses temporary worlds, and briefly low
 Checks include transmitted sidebar and Tab components, red OWNER labels, numeric ping, recorded-playtime imports, broadcast promotions, stable objective updates, custom-rank commands, permissions, sidebar toggles, negative coordinates, invalid reloads, every placeholder, offline assignments, and restart persistence.
 
 Protocol checks verify actual Paper output. The README design preview is an illustration of the intended styling, not a Minecraft client screenshot.
+
+## Market fixture
+
+Use Node.js 24 and run `npm run market` in scripts after `npm ci`, with PAPER_JAR set to Paper 1.21.11. It binds to 127.0.0.1:25588 and uses Node's built-in SQLite reader to inspect only its own temporary fixture. Optional variables: MK_MARKET_PORT, MK_MARKET_REPORT, MK_SMOKE_PARENT.

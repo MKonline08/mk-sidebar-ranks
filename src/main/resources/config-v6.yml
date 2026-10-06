@@ -1,7 +1,7 @@
 # MK Sidebar & Ranks | Created by MK
 # Colors use MiniMessage: <gold>text</gold>, <bold>text</bold>, or <#ff5555>text</#ff5555>.
 # See docs/PLACEHOLDERS.md for all available %placeholders%.
-config-version: 7
+config-version: 6
 server-name: 'My Server'
 sidebar:
   enabled: true
@@ -13,7 +13,6 @@ sidebar:
     - '<white>Health:</white> <green>%player_health%/%player_max_health%</green>'
     - '<white>XYZ:</white> <gray>%player_x% %player_y% %player_z%</gray>'
     - '<white>Hours:</white> <aqua>%player_playtime_hours%</aqua>'
-    - '<white>Money:</white> %player_balance%'
     - ''
     - '<white>Online:</white> <green>%server_online%/%server_max_players%</green>'
     - '<white>TPS:</white> <green>%server_tps%</green>'
@@ -54,24 +53,3 @@ ranks:
     name: 'OWNER'
     color: red
     bold: true
-economy:
-  # Granted once to each saved player; never reapplied on reconnect or reload.
-  starting-balance: 500
-auction:
-  expire-days: 7
-  max-listings-per-player: 5
-  max-listings-total: 5000
-  sale-fee-percent: 0
-coinflip:
-  minimum: 1
-  maximum: 10000
-  challenge-seconds: 60
-money-leaderboard:
-  enabled: true
-  refresh-seconds: 60
-market-reminders:
-  enabled: true
-  interval-seconds: 120
-  messages:
-    - '<gold><bold>MK »</bold></gold> <white>Buy and sell items with</white> <click:run_command:/auction><aqua>/auction</aqua></click><white>! Challenge a player:</white> <aqua>/coinflip Alex 50</aqua>'
-    - '<gold><bold>MK »</bold></gold> <white>Challenge a player:</white> <aqua>/coinflip Alex 50</aqua><white>. Check the richest players with</white> <click:run_command:/baltop><aqua>/baltop</aqua></click><white>! Trade items with</white> <click:run_command:/auction><aqua>/auction</aqua></click><white>.</white>'

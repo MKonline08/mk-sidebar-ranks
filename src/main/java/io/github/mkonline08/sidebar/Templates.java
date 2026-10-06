@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.regex.*;
 
 public final class Templates {
-    public static final Set<String> KEYS = Set.of("player_name", "player_displayname", "player_health", "player_max_health", "player_food", "player_level", "player_exp", "player_ping", "player_ping_color", "player_world", "player_gamemode", "player_x", "player_y", "player_z", "player_deaths", "player_kills", "player_blocks_walked", "player_playtime_hours", "player_armor", "player_direction", "player_item_in_hand", "player_biome", "player_rank", "player_rank_badge", "server_name", "server_online", "server_max_players", "server_tps", "server_uptime");
+    public static final Set<String> KEYS = Set.of("player_name", "player_displayname", "player_health", "player_max_health", "player_food", "player_level", "player_exp", "player_ping", "player_ping_color", "player_world", "player_gamemode", "player_x", "player_y", "player_z", "player_deaths", "player_kills", "player_blocks_walked", "player_playtime_hours", "player_armor", "player_direction", "player_item_in_hand", "player_biome", "player_rank", "player_rank_badge", "player_balance", "server_name", "server_online", "server_max_players", "server_tps", "server_uptime");
     private static final Pattern TOKEN = Pattern.compile("%([a-zA-Z0-9_]+)%");
     private static final MiniMessage MM = MiniMessage.builder().strict(true).build();
     private Templates() {}

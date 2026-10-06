@@ -1,11 +1,36 @@
 name: MKSidebarRanks
-version: '1.4.0'
+version: '1.5.0'
 main: io.github.mkonline08.sidebar.MKSidebarPlugin
 api-version: '1.21.11'
 description: Stylish sidebar, Tab ping and ranks, and automatic playtime promotions.
 author: MK
 website: https://github.com/MKonline08/mk-sidebar-ranks
 commands:
+  auction:
+    description: Fixed-price market, your listings and item mailbox
+    aliases: [ah]
+    usage: /auction [sell <price>|mine|mail|cancel <ID>]
+    permission: mksidebar.market
+  money:
+    description: Wallet balance and transaction history
+    aliases: [balance, bal]
+    usage: /money [history [page]]
+    permission: mksidebar.market
+  pay:
+    description: Transfer money to a saved player
+    usage: /pay <player|UUID> <amount>
+    permission: mksidebar.market
+  baltop:
+    description: Top ten money balances
+    permission: mksidebar.market
+  coinflip:
+    description: Challenge an online player to an equal-stakes coin flip
+    usage: /coinflip <player> <amount> or /coinflip accept|decline|cancel [ID]
+    permission: mksidebar.market
+  mkmarket:
+    description: Admin money, spawn leaderboard and recovery tools
+    usage: /mkmarket money|leaderboard|recovery|performance
+    permission: mksidebar.admin
   rank:
     description: View your rank, playtime, and progress toward OG
     usage: /rank
@@ -18,6 +43,9 @@ commands:
     usage: /mkrank <list|create|color|set|reset|info|testsound>
     permission: mksidebar.admin
 permissions:
+  mksidebar.market:
+    description: Wallet, payments, market, coin flips and public money leaderboard
+    default: true
   mksidebar.rank:
     description: View your own rank and playtime progress
     default: true

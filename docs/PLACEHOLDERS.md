@@ -1,5 +1,7 @@
 # Placeholder reference
 
+`%player_balance%` renders the formatted, cached in-game wallet balance (for example `$500.00`) in sidebar and Tab templates. It never queries the database per tick. Rank-event templates show a dash for this value. See [market commands](MARKET.md).
+
 Use these inside sidebar title/lines, Tab format/footer, and promotion or manual rank-change announcements. Values describe the listed player in Tab and the viewing player in the sidebar. Player-supplied text is inserted as a component and cannot inject formatting tags.
 
 | Placeholder | Value |

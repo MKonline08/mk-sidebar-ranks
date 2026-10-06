@@ -1,11 +1,12 @@
 {
   "name": "mk-sidebar-ranks-smoke",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "private": true,
   "description": "Local Paper integration test using three protocol clients",
   "scripts": {
     "test": "node smoke.cjs",
-    "load": "node load.cjs"
+    "load": "node load.cjs",
+    "market": "node market-smoke.cjs"
   },
   "devDependencies": {
     "minecraft-protocol": "1.68.0"

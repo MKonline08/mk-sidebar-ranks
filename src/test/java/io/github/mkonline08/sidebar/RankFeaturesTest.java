@@ -55,7 +55,7 @@ class RankFeaturesTest {
     @Test void upgradesV13SettingsAndPreservesCustomAnnouncementOverrides() throws Exception {
         var yaml=new YamlConfiguration();try(var reader=new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("/config-v5.yml")),StandardCharsets.UTF_8)){yaml.load(reader);}
         var before=List.copyOf(yaml.getStringList("sidebar.lines"));assertTrue(ConfigUpgrade.apply(yaml));Settings s=Settings.read(yaml);
-        assertTrue(s.rankChangeEnabled());assertEquals(before,s.lines());assertFalse(ConfigUpgrade.apply(yaml));
+        assertTrue(s.rankChangeEnabled());assertEquals(10,s.lines().size());assertTrue(s.lines().get(5).contains("%player_balance%"));assertFalse(ConfigUpgrade.apply(yaml));
         yaml.set("config-version",5);yaml.set("rank-change.enabled",false);yaml.set("rank-change.announcement","Custom %player_name% -> %player_rank%");assertTrue(ConfigUpgrade.apply(yaml));s=Settings.read(yaml);assertFalse(s.rankChangeEnabled());assertEquals("Custom %player_name% -> %player_rank%",s.rankChangeAnnouncement());
         yaml.set("rank-change.enabled","true");assertThrows(IllegalArgumentException.class,()->Settings.read(yaml));yaml.set("rank-change.enabled",true);yaml.set("rank-change.announcement","%unknown%");assertThrows(IllegalArgumentException.class,()->Settings.read(yaml));
     }

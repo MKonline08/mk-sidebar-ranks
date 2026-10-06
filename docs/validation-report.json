@@ -1,16 +1,7 @@
 {
-  "verifiedOn": "2026-10-06",
-  "version": "1.4.0",
   "paper": "1.21.11 build 132",
   "result": "PASS",
-  "jarSha256": "642c52aa78a9d5125bfde92cb173711a7c80466ebe25cd19d77b0bd0a6822497",
-  "automatedTests": {
-    "total": 47,
-    "failures": 0,
-    "errors": 0,
-    "skipped": 0
-  },
-  "integrationScenarios": [
+  "results": [
     "Existing v1.3 configuration gains manual announcements and a backup",
     "Ordinary players can use /rank to view hours, progress, and remaining OG time",
     "Default compact sidebar includes the viewing player's hours played",
@@ -56,7 +47,7 @@
     "Independent nametag switch removes owned teams while retaining sidebar and Tab",
     "Independent configuration switches release sidebar and Tab ownership"
   ],
-  "capturedDisplayExamples": [
+  "observations": [
     {
       "label": "default-owner",
       "name": "OwnerTester",
@@ -124,7 +115,7 @@
       ],
       "lines": [
         {
-          "order": 9,
+          "order": 10,
           "component": {
             "extra": [
               {
@@ -143,7 +134,7 @@
           }
         },
         {
-          "order": 8,
+          "order": 9,
           "component": {
             "extra": [
               {
@@ -163,7 +154,7 @@
           }
         },
         {
-          "order": 7,
+          "order": 8,
           "component": {
             "extra": [
               {
@@ -182,7 +173,7 @@
           }
         },
         {
-          "order": 6,
+          "order": 7,
           "component": {
             "extra": [
               {
@@ -194,14 +185,14 @@
               },
               {
                 "color": "gray",
-                "text": "8 -60 -2"
+                "text": "-6 -60 -10"
               }
             ],
             "text": ""
           }
         },
         {
-          "order": 5,
+          "order": 6,
           "component": {
             "extra": [
               {
@@ -214,6 +205,25 @@
               {
                 "color": "aqua",
                 "text": "0.00"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 5,
+          "component": {
+            "extra": [
+              {
+                "color": "white",
+                "text": "Money:"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "yellow",
+                "text": "$500.00"
               }
             ],
             "text": ""
@@ -255,7 +265,7 @@
               },
               {
                 "color": "green",
-                "text": "19.4"
+                "text": "18.5"
               }
             ],
             "text": ""
@@ -274,7 +284,7 @@
               },
               {
                 "color": "yellow",
-                "text": "0m 20s"
+                "text": "0m 34s"
               }
             ],
             "text": ""
@@ -470,7 +480,7 @@
       ],
       "lines": [
         {
-          "order": 9,
+          "order": 10,
           "component": {
             "extra": [
               {
@@ -489,7 +499,7 @@
           }
         },
         {
-          "order": 8,
+          "order": 9,
           "component": {
             "extra": [
               {
@@ -509,7 +519,7 @@
           }
         },
         {
-          "order": 7,
+          "order": 8,
           "component": {
             "extra": [
               {
@@ -528,7 +538,7 @@
           }
         },
         {
-          "order": 6,
+          "order": 7,
           "component": {
             "extra": [
               {
@@ -540,14 +550,14 @@
               },
               {
                 "color": "gray",
-                "text": "9 -60 -6"
+                "text": "4 -60 -9"
               }
             ],
             "text": ""
           }
         },
         {
-          "order": 5,
+          "order": 6,
           "component": {
             "extra": [
               {
@@ -560,6 +570,25 @@
               {
                 "color": "aqua",
                 "text": "0.00"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 5,
+          "component": {
+            "extra": [
+              {
+                "color": "white",
+                "text": "Money:"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "yellow",
+                "text": "$500.00"
               }
             ],
             "text": ""
@@ -601,7 +630,7 @@
               },
               {
                 "color": "green",
-                "text": "19.4"
+                "text": "18.5"
               }
             ],
             "text": ""
@@ -620,7 +649,7 @@
               },
               {
                 "color": "yellow",
-                "text": "0m 20s"
+                "text": "0m 34s"
               }
             ],
             "text": ""
@@ -816,7 +845,7 @@
       ],
       "lines": [
         {
-          "order": 9,
+          "order": 10,
           "component": {
             "extra": [
               {
@@ -835,7 +864,7 @@
           }
         },
         {
-          "order": 8,
+          "order": 9,
           "component": {
             "extra": [
               {
@@ -855,7 +884,7 @@
           }
         },
         {
-          "order": 7,
+          "order": 8,
           "component": {
             "extra": [
               {
@@ -874,7 +903,7 @@
           }
         },
         {
-          "order": 6,
+          "order": 7,
           "component": {
             "extra": [
               {
@@ -886,14 +915,14 @@
               },
               {
                 "color": "gray",
-                "text": "7 -60 1"
+                "text": "5 -60 10"
               }
             ],
             "text": ""
           }
         },
         {
-          "order": 5,
+          "order": 6,
           "component": {
             "extra": [
               {
@@ -906,6 +935,25 @@
               {
                 "color": "aqua",
                 "text": "24.00"
+              }
+            ],
+            "text": ""
+          }
+        },
+        {
+          "order": 5,
+          "component": {
+            "extra": [
+              {
+                "color": "white",
+                "text": "Money:"
+              },
+              {
+                "": " "
+              },
+              {
+                "color": "yellow",
+                "text": "$500.00"
               }
             ],
             "text": ""
@@ -947,7 +995,7 @@
               },
               {
                 "color": "green",
-                "text": "19.4"
+                "text": "18.3"
               }
             ],
             "text": ""
@@ -966,7 +1014,7 @@
               },
               {
                 "color": "yellow",
-                "text": "0m 20s"
+                "text": "0m 33s"
               }
             ],
             "text": ""
@@ -1191,7 +1239,7 @@
         },
         {
           "order": 8,
-          "component": "player_ping: 0"
+          "component": "player_ping: 1"
         },
         {
           "order": 7,
@@ -1199,7 +1247,7 @@
             "extra": [
               {
                 "color": "green",
-                "text": "0"
+                "text": "1"
               }
             ],
             "text": "player_ping_color: "
@@ -1264,7 +1312,7 @@
               },
               {
                 "color": "green",
-                "text": "0"
+                "text": "1"
               },
               {
                 "color": "gray",
@@ -1486,11 +1534,11 @@
         },
         {
           "order": 2,
-          "component": "server_tps: 19.9"
+          "component": "server_tps: 19.6"
         },
         {
           "order": 1,
-          "component": "server_uptime: 0m 34s"
+          "component": "server_uptime: 0m 47s"
         },
         {
           "order": 1,
@@ -1531,7 +1579,7 @@
               },
               {
                 "color": "green",
-                "text": "0"
+                "text": "1"
               },
               {
                 "color": "gray",
@@ -1619,5 +1667,8 @@
         }
       ]
     }
-  ]
+  ],
+  "fixture": "isolated-local-smoke-fixture",
+  "version": "1.5.0",
+  "jarSha256": "b9d5a7ba765347cfc23f3039690915340846cd2ab1427f575d42428ea27ae717"
 }
