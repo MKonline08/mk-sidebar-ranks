@@ -1,6 +1,6 @@
 # Placeholder reference
 
-Use these inside sidebar title/lines and Tab format. Values describe the listed player in Tab and the viewing player in the sidebar. Player-supplied text is inserted as a component and cannot inject formatting tags.
+Use these inside sidebar title/lines, Tab format/footer, and promotion or manual rank-change announcements. Values describe the listed player in Tab and the viewing player in the sidebar. Player-supplied text is inserted as a component and cannot inject formatting tags.
 
 | Placeholder | Value |
 | --- | --- |

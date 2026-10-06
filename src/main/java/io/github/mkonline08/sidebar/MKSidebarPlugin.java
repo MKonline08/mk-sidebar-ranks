@@ -45,7 +45,7 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
             displays=new Displays(Objects.requireNonNull(getServer().getScoreboardManager()),getLogger());
             nametags=new Nametags(getLogger());
             Commands commands=new Commands(this);
-            for(String name:List.of("mksb","mkrank")) {
+            for(String name:List.of("mksb","mkrank","rank")) {
                 PluginCommand command=Objects.requireNonNull(getCommand(name));
                 command.setExecutor(commands); command.setTabCompleter(commands);
             }
@@ -96,23 +96,9 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
         Optional<PlayerRecord> earned=players.promote(id,settings.promotionMillis());
         earned.ifPresent(record -> {
             Settings snapshot=settings;
-            Player online=getServer().getPlayer(id);
-            Map<String,Component> values;
-            if(online!=null) values=Values.of(online,record,snapshot,getServer(),snapshot.template(snapshot.announcement()).keys(),new HashMap<>());
-            else {
-                values=new HashMap<>(); Templates.KEYS.forEach(key -> values.put(key,Component.text("—")));
-                values.putAll(Values.announcement(record,snapshot));
-                values.put("player_playtime_hours",Component.text(String.format(Locale.ROOT,"%.2f",record.playMillis()/3_600_000.0)));
-            }
-            Component message=snapshot.template(snapshot.announcement()).render(values);
+            Component message=RankEvents.message(record,snapshot,getServer(),snapshot.announcement());
             // Save the earned marker before announcing, preventing repeated announcements after restart.
-            save(List.of(record)).thenRun(() -> onMain(() -> {
-                for(Player p:getServer().getOnlinePlayers()) {
-                    p.sendMessage(message);
-                    if(snapshot.promotionSound().enabled()) p.playSound(snapshot.promotionSound().sound());
-                }
-                getServer().getConsoleSender().sendMessage(message);
-            }));
+            RankEvents.afterSave(save(List.of(record)),getServer(),message,snapshot.promotionSound(),this::onMain);
         });
         return earned.isPresent();
     }
@@ -189,11 +175,22 @@ public final class MKSidebarPlugin extends JavaPlugin implements Listener {
         CompletableFuture<Void> saved=save(List.of(record));
         boolean promoted=rank==null && promote(record.uuid());
         if(!promoted && !previousRank.equals(players.get(record.uuid()).rankId())) {
-            PromotionSound sound=settings.promotionSound();
-            if(sound.enabled()) saved.thenRun(() -> onMain(() -> {
-                for(Player listener:getServer().getOnlinePlayers()) listener.playSound(sound.sound());
-            }));
+            Settings snapshot=settings;
+            Component message=snapshot.rankChangeEnabled()?RankEvents.message(players.get(record.uuid()),snapshot,getServer(),snapshot.rankChangeAnnouncement()):null;
+            RankEvents.afterSave(saved,getServer(),message,snapshot.promotionSound(),this::onMain);
         }
         Player p=getServer().getPlayer(record.uuid()); if(p!=null) update(p);
+    }
+    void showRank(Player player) {
+        players.checkpoint(player.getUniqueId());PlayerRecord record=players.get(player.getUniqueId());
+        if(record==null)throw new IllegalArgumentException("Your player data is not available yet. Reconnect and try again.");
+        RankProgress.messages(record,settings).forEach(player::sendMessage);
+    }
+    int testSound() {
+        PromotionSound sound=settings.promotionSound();
+        if(!sound.enabled())throw new IllegalArgumentException("Rank sounds are disabled in configuration.");
+        Collection<? extends Player> audience=getServer().getOnlinePlayers();
+        for(Player player:audience)player.playSound(sound.sound());
+        return audience.size();
     }
 }

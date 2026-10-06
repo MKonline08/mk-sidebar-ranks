@@ -1,20 +1,23 @@
 {
-  "verifiedOn": "2026-10-05",
-  "version": "1.3.1",
+  "verifiedOn": "2026-10-06",
+  "version": "1.4.0",
   "paper": "1.21.11 build 132",
   "result": "PASS",
-  "jarSha256": "a87098c3cf33eea36d7fd162348522e88890e38bee54324ade0b3571629a3431",
+  "jarSha256": "642c52aa78a9d5125bfde92cb173711a7c80466ebe25cd19d77b0bd0a6822497",
   "automatedTests": {
-    "total": 40,
+    "total": 47,
     "failures": 0,
     "errors": 0,
     "skipped": 0
   },
   "integrationScenarios": [
-    "Existing v1.1.1 default config upgraded and backed up automatically",
+    "Existing v1.3 configuration gains manual announcements and a backup",
+    "Ordinary players can use /rank to view hours, progress, and remaining OG time",
     "Default compact sidebar includes the viewing player's hours played",
     "Compact inline label/value rows and single XYZ row; exact MK/108e Tab credits",
     "Right-side sidebar, health, unique blank lines, and hidden score numbers",
+    "Manual assignments broadcast colored rank-change messages to every online player",
+    "/rank explains that manual ranks pause automatic promotion",
     "Colored OWNER and New Player badges appear beside names on observer scoreboards",
     "Manual rank assignment plays one celebration sound for every online player",
     "Red OWNER rank and numeric ping visible to other players in Tab",
@@ -23,25 +26,33 @@
     "Existing 24-hour playtime imported; OG announcement broadcast to everyone",
     "Unchanged overhead tags send no repeated team updates",
     "Sidebar objective remains stable during updates",
+    "/rank reports earned OG as complete",
     "Connected playtime promotes once; manual OWNER stays protected",
     "Custom rank assignment also sounds for every online player",
     "Reassigning the same rank does not replay the sound",
     "Custom labels and rank color changes update overhead tags",
+    "Reset announces effective rank changes; duplicate assignments and resets stay silent",
     "Reset sounds once when the displayed rank changes; repeat reset stays silent",
     "Custom rank creation, color changes, assignment, and reset",
-    "Non-operator cannot assign OWNER",
+    "Non-operator cannot assign OWNER or trigger the server-wide test sound",
     "Hiding the sidebar keeps overhead ranks active on the restored scoreboard",
     "Personal sidebar toggle leaves Tab formatting active",
     "Coordinates use block positions, including negative values",
     "Invalid reload retains working configuration",
     "All requested and added placeholders resolve on real Paper players",
+    "Muting rank sounds leaves enabled manual announcements active",
     "Disabling promotion.sound also mutes manual rank changes",
     "Disconnected player entries are removed from overhead teams",
     "Offline rank changes sound only for the players currently online",
+    "Reset earning OG broadcasts only the existing automatic announcement",
     "Reset triggering an automatic promotion plays one sound without duplication",
     "Overhead ranks restore after restart, including offline rank assignments",
     "Restart preserves OWNER, OG, offline custom assignments, hidden sidebar, and announcement markers",
+    "/rank preserves earned progress after reconnect and restart",
     "Online name commands choose the connected UUID when historical duplicate records exist",
+    "Console testsound reaches every player with configured audio and leaves ranks unchanged",
+    "Disabling manual announcements independently preserves rank-change sounds",
+    "testsound respects disabled sound configuration",
     "Independent nametag switch removes owned teams while retaining sidebar and Tab",
     "Independent configuration switches release sidebar and Tab ownership"
   ],
@@ -183,7 +194,7 @@
               },
               {
                 "color": "gray",
-                "text": "-1 -60 -3"
+                "text": "8 -60 -2"
               }
             ],
             "text": ""
@@ -263,7 +274,7 @@
               },
               {
                 "color": "yellow",
-                "text": "0m 21s"
+                "text": "0m 20s"
               }
             ],
             "text": ""
@@ -304,7 +315,7 @@
               },
               {
                 "color": "green",
-                "text": "1"
+                "text": "3"
               },
               {
                 "color": "gray",
@@ -529,7 +540,7 @@
               },
               {
                 "color": "gray",
-                "text": "10 -60 -6"
+                "text": "9 -60 -6"
               }
             ],
             "text": ""
@@ -609,7 +620,7 @@
               },
               {
                 "color": "yellow",
-                "text": "0m 21s"
+                "text": "0m 20s"
               }
             ],
             "text": ""
@@ -688,7 +699,7 @@
               },
               {
                 "color": "green",
-                "text": "1"
+                "text": "3"
               },
               {
                 "color": "gray",
@@ -875,7 +886,7 @@
               },
               {
                 "color": "gray",
-                "text": "-4 -60 6"
+                "text": "7 -60 1"
               }
             ],
             "text": ""
@@ -936,7 +947,7 @@
               },
               {
                 "color": "green",
-                "text": "19.2"
+                "text": "19.4"
               }
             ],
             "text": ""
@@ -1034,7 +1045,7 @@
               },
               {
                 "color": "green",
-                "text": "1"
+                "text": "3"
               },
               {
                 "color": "gray",
@@ -1479,7 +1490,7 @@
         },
         {
           "order": 1,
-          "component": "server_uptime: 0m 36s"
+          "component": "server_uptime: 0m 34s"
         },
         {
           "order": 1,

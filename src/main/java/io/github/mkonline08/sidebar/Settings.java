@@ -8,7 +8,8 @@ public record Settings(String serverName, boolean sidebarEnabled, String title, 
                        boolean tabEnabled, String tabFormat, String tabFooter, long promotionMillis, boolean importExisting,
                        String announcement, PromotionSound promotionSound, Map<String, Rank> ranks,
                        Map<String, Templates.Compiled> compiled, Set<String> sidebarKeys, Set<String> tabKeys,
-                       int tabPingSeconds, int maxUpdatesPerTick, boolean nametagsEnabled) {
+                       int tabPingSeconds, int maxUpdatesPerTick, boolean nametagsEnabled,
+                       boolean rankChangeEnabled,String rankChangeAnnouncement) {
     public static Settings read(YamlConfiguration yaml) {
         String name = required(yaml, "server-name");
         if (name.length() > 64 || name.codePoints().anyMatch(Character::isISOControl)) throw new IllegalArgumentException("server-name must contain 1–64 printable characters.");
@@ -23,6 +24,7 @@ public record Settings(String serverName, boolean sidebarEnabled, String title, 
         if (!Double.isFinite(hours) || hours <= 0 || hours > 1_000_000) throw new IllegalArgumentException("promotion.hours must be a positive number up to 1000000.");
         long millis = Math.max(1, Math.round(hours * 3_600_000));
         String announcement = required(yaml, "promotion.announcement");
+        String rankChange = required(yaml,"rank-change.announcement");
         Map<String, Rank> ranks = new LinkedHashMap<>();
         ConfigurationSection section = yaml.getConfigurationSection("ranks");
         if (section == null) throw new IllegalArgumentException("ranks section is missing.");
@@ -31,13 +33,13 @@ public record Settings(String serverName, boolean sidebarEnabled, String title, 
         }
         for (String id : List.of("new_player", "og_player", "owner")) if (!ranks.containsKey(id)) throw new IllegalArgumentException("Required rank missing: " + id);
         Map<String,Templates.Compiled> compiled=new HashMap<>();
-        List<String> all=new ArrayList<>(lines);all.addAll(List.of(title,tab,footer,announcement));
+        List<String> all=new ArrayList<>(lines);all.addAll(List.of(title,tab,footer,announcement,rankChange));
         for(String template:all) compiled.computeIfAbsent(template,Templates::compile);
         Set<String> sidebarKeys=new HashSet<>(compiled.get(title).keys()),tabKeys=new HashSet<>(compiled.get(tab).keys());
         lines.forEach(line->sidebarKeys.addAll(compiled.get(line).keys()));tabKeys.addAll(compiled.get(footer).keys());
         return new Settings(name, bool(yaml, "sidebar.enabled"), title, lines, bool(yaml, "tab.enabled"), tab, footer,
                 millis, bool(yaml, "promotion.import-existing-playtime"), announcement, PromotionSound.read(yaml), Collections.unmodifiableMap(ranks),
-                Map.copyOf(compiled),Set.copyOf(sidebarKeys),Set.copyOf(tabKeys),integer(yaml,"performance.tab-ping-update-seconds",5,1,60),integer(yaml,"performance.max-updates-per-tick",32,1,512),bool(yaml,"nametags.enabled"));
+                Map.copyOf(compiled),Set.copyOf(sidebarKeys),Set.copyOf(tabKeys),integer(yaml,"performance.tab-ping-update-seconds",5,1,60),integer(yaml,"performance.max-updates-per-tick",32,1,512),bool(yaml,"nametags.enabled"),bool(yaml,"rank-change.enabled"),rankChange);
     }
     private static int integer(YamlConfiguration yaml,String key,int fallback,int min,int max) {
         if(yaml.contains(key) && !yaml.isInt(key)) throw new IllegalArgumentException(key+" must be an integer.");

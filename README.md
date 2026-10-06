@@ -10,7 +10,7 @@ A standalone plugin for **Paper 1.21.11 · Java 21**, created by **MK**. Compact
 
 ## Install
 
-1. Download **`mk-sidebar-ranks-1.3.1.jar`** from the release page.
+1. Download **`mk-sidebar-ranks-1.4.0.jar`** from the release page.
 2. Stop your Paper 1.21.11 server and copy the jar into its **`plugins/`** folder.
 3. Start the server. Settings appear in **`plugins/MKSidebarRanks/config.yml`**.
 4. Run **`/mkrank set YourMinecraftName owner`** after you have joined. Your OWNER label will be bold red in your sidebar and Tab.
@@ -35,14 +35,17 @@ Sidebar refreshes are queued roughly once per second and spread across ticks. Ta
 
 **New in v1.3.1:** if multiple saved UUID records share a username, `/mkrank set`, `/mkrank reset`, and `/mkrank info` choose the currently connected player when given that name. Old records remain saved. For an ambiguous offline name, specify the exact UUID.
 
+**New in v1.4.0:** manual assignments and resets broadcast **RANK CHANGE! PlayerName is now RankName!** after saving. `/rank` shows your rank, hours, and progress toward OG. Administrators can use `/mkrank testsound` to test the configured celebration sound without changing ranks.
+
 ### Update from an earlier version
 
-Stop the server, remove the old plugin jar, install the v1.3.1 jar, and restart. Keep the `MKSidebarRanks` folder so ranks and playtime remain saved. Older configurations gain missing settings with a backup. Unchanged default layouts gain the Hours row; custom layouts, custom ranks, server name, and promotion settings remain intact. For a custom sidebar, add `'<white>Hours:</white> <aqua>%player_playtime_hours%</aqua>'` to its lines if desired (maximum 15 lines).
+Stop the server, remove the old plugin jar, install the v1.4.0 jar, and restart. Keep the `MKSidebarRanks` folder so ranks and playtime remain saved. Older configurations gain missing settings with a backup. Unchanged default layouts gain the Hours row; custom layouts, custom ranks, server name, and promotion settings remain intact. For a custom sidebar, add `'<white>Hours:</white> <aqua>%player_playtime_hours%</aqua>'` to its lines if desired (maximum 15 lines).
 
 ## Commands
 
 | Command | Purpose |
 | --- | --- |
+| `/rank` | View your own rank, hours played, OG progress, and remaining time |
 | `/mksb toggle` | Hide or restore your own sidebar; Tab stays active |
 | `/mksb reload` | Validate and apply configuration changes |
 | `/mksb performance` | Admin: view recent scheduled plugin work and server tick time |
@@ -52,6 +55,7 @@ Stop the server, remove the old plugin jar, install the v1.3.1 jar, and restart.
 | `/mkrank set <player\|UUID> <rank>` | Assign a protected manual rank |
 | `/mkrank reset <player\|UUID>` | Restore the automatic rank, retaining playtime |
 | `/mkrank info <player\|UUID>` | View rank, identity, and accumulated playtime |
+| `/mkrank testsound` | Admin: play the configured sound for everyone online without changing ranks |
 
 Examples:
 
@@ -65,7 +69,11 @@ Examples:
 
 Rank IDs use lowercase letters, numbers, and underscores and start with a letter. Colors accept Minecraft color names or six-digit hex values. Rank labels can contain spaces. Use a UUID to assign a player who has never joined; their recorded playtime will still import on first join. Offline names must already be known to this plugin.
 
-**Permissions:** `mksidebar.admin` controls rank commands and reloads (operators by default); `mksidebar.toggle` allows personal sidebar toggling (everyone by default). Console supports all administrative commands.
+**Permissions:** `mksidebar.admin` controls rank administration, sound testing, and reloads (operators by default). `mksidebar.toggle` permits personal sidebar toggling and `mksidebar.rank` permits `/rank` (both everyone by default). Console supports all administrative commands; `/rank` is for players. If another plugin owns `/rank`, use `/mksidebarranks:rank`.
+
+`/rank` is a private view of your current colored rank and connected hours. New Player shows a ten-part progress bar, percentage, and remaining time until OG. Earned OG remains complete even if the threshold is later raised. A manual rank shows that automatic promotion is paused; it also shows earned OG status if already earned. Playtime still accumulates with a manual rank.
+
+`/mkrank testsound` respects `promotion.sound.enabled`, `volume`, and `pitch`, and confirms the number of online recipients to the administrator. It does not alter ranks or announce a rank change.
 
 ## Customize the look
 
@@ -91,7 +99,9 @@ This is a configuration excerpt; retain the other settings in the generated file
 
 `tab.footer` defaults to `<gray>Credits:</gray> <gold><bold>MK/108e</bold></gold>`. Set it to an empty string to remove the credits. The footer uses the same template syntax and placeholders, and preserves an existing Tab header.
 
-`promotion.sound` has `enabled`, `key`, `volume`, and `pitch` settings. The default is `minecraft:ui.toast.challenge_complete`, volume `0.7`, pitch `1.0`. It plays once for every player online when the saved automatic promotion announcement is delivered, or after a manual assignment/reset changes the player's effective rank and is saved, regardless of world or distance. Manual changes do not add an automatic promotion announcement. Clients control their own audio volume. Set `enabled: false` to mute both automatic and manual rank sounds; custom keys must identify an existing Minecraft sound. Volume must be 0–1 and pitch 0.5–2.
+`promotion.sound` has `enabled`, `key`, `volume`, and `pitch` settings. The default is `minecraft:ui.toast.challenge_complete`, volume `0.7`, pitch `1.0`. It plays once for every player online when the saved automatic promotion announcement is delivered, or after a manual assignment/reset changes the player's effective rank and is saved, regardless of world or distance. Clients control their own audio volume. Set `enabled: false` to mute automatic/manual celebrations and disable the test-sound command; custom keys must identify an existing Minecraft sound. Volume must be 0–1 and pitch 0.5–2.
+
+`rank-change.enabled` controls manual chat announcements independently of sound. `rank-change.announcement` uses the same built-in placeholders and MiniMessage formatting as other templates. The default is **RANK CHANGE! PlayerName is now RankName!** with the rank's configured color. Assignments and resets that leave the effective rank unchanged stay silent, including repeated commands. If a reset earns OG, only the existing automatic promotion message/sound plays. Offline assignments use saved name/rank/playtime; unavailable live values show `—`. Announcements are sent after successful saves, do not replay on join/restart, and are suppressed if the save fails.
 
 The placeholders are built into this plugin's templates; they are not registered as a PlaceholderAPI expansion. The plugin does not format chat messages.
 
@@ -123,7 +133,7 @@ With JDK 21 and Maven 3.9+:
 mvn -B clean verify
 ```
 
-Installable output: `target/mk-sidebar-ranks-1.3.1.jar`. Do not install the `original-` jar. GitHub Actions builds and tests the project and provides the packaged jar as an artifact.
+Installable output: `target/mk-sidebar-ranks-1.4.0.jar`. Do not install the `original-` jar. GitHub Actions builds and tests the project and provides the packaged jar as an artifact.
 
 For the local Paper integration fixture, see [validation instructions](docs/VALIDATION.md).
 

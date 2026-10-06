@@ -1,7 +1,7 @@
 # MK Sidebar & Ranks | Created by MK
 # Colors use MiniMessage: <gold>text</gold>, <bold>text</bold>, or <#ff5555>text</#ff5555>.
 # See docs/PLACEHOLDERS.md for all available %placeholders%.
-config-version: 6
+config-version: 5
 server-name: 'My Server'
 sidebar:
   enabled: true
@@ -23,9 +23,6 @@ tab:
   enabled: true
   format: '%player_rank_badge% <white>%player_name%</white> <dark_gray>•</dark_gray> %player_ping_color%<gray>ms</gray>'
   footer: '<gray>Credits:</gray> <gold><bold>MK/108e</bold></gold>'
-rank-change:
-  enabled: true
-  announcement: '<gold><bold>RANK CHANGE!</bold></gold> <white>%player_name%</white> <gray>is now</gray> %player_rank%<gray>!</gray>'
 promotion:
   hours: 24
   import-existing-playtime: true

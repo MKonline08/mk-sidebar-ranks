@@ -14,10 +14,10 @@ if (!paper || !fs.existsSync(paper)) throw new Error('Set PAPER_JAR to a Paper 1
 const port = Number(process.env.MK_SMOKE_PORT || 25586);
 fs.mkdirSync(path.join(dir, 'plugins', 'MKSidebarRanks'), { recursive: true });
 fs.copyFileSync(paper, path.join(dir, 'paper.jar'));
-fs.copyFileSync(path.join(repo, 'target', 'mk-sidebar-ranks-1.3.1.jar'), path.join(dir, 'plugins', 'mk-sidebar-ranks.jar'));
+fs.copyFileSync(path.join(repo, 'target', 'mk-sidebar-ranks-1.4.0.jar'), path.join(dir, 'plugins', 'mk-sidebar-ranks.jar'));
 const defaultConfig = fs.readFileSync(path.join(repo, 'src/main/resources/config.yml'), 'utf8');
 const configPath = path.join(dir, 'plugins/MKSidebarRanks/config.yml');
-fs.writeFileSync(configPath, fs.readFileSync(path.join(repo, 'src/main/resources/config-v3.yml'), 'utf8'));
+fs.writeFileSync(configPath, fs.readFileSync(path.join(repo, 'src/main/resources/config-v5.yml'), 'utf8'));
 fs.writeFileSync(path.join(dir, 'eula.txt'), 'eula=true\n');
 fs.writeFileSync(path.join(dir, 'server.properties'), `server-ip=127.0.0.1\nserver-port=${port}\nonline-mode=false\nenforce-secure-profile=false\nspawn-protection=0\nview-distance=2\nsimulation-distance=2\nlevel-type=minecraft:flat\ngenerate-structures=false\nmax-players=10\npause-when-empty-seconds=-1\n`);
 function offlineUuid(name) {
@@ -90,6 +90,7 @@ function trackTeams(state){state.client.on('teams',p=>{
 function head(state,name){return [...state.teams.values()].find(team=>team.players.has(name));}
 function headText(state,name){const team=head(state,name);return team?text(team.prefix)+name:'';}
 function announcements(state, name) { return state.messages.filter(m => text(m).includes(name) && text(m).includes('ranked up to')).length; }
+function changes(state,name){return state.messages.filter(m=>text(m).includes('RANK CHANGE! '+name+' is now')).length;}
 // minecraft-data sound IDs are one-based; decoded registry holder IDs are zero-based.
 const rankSoundId=require('minecraft-data')('1.21.11').soundsByName['ui.toast.challenge_complete'].id-1;
 function rankSounds(state) { return state.sounds.filter(p => p.sound?.soundId === rankSoundId || JSON.stringify(p.sound).includes('ui.toast.challenge_complete')).length; }
@@ -99,10 +100,13 @@ function snapshot(state, label) { observations.push({ label, name: state.name, f
 (async () => {
   try {
     await boot();
-    assert(fs.readdirSync(path.dirname(configPath)).some(name=>name.startsWith('config-before-v1.3.1-')));
+    assert(fs.readdirSync(path.dirname(configPath)).some(name=>name.startsWith('config-before-v1.4.0-')));
     assert(fs.readFileSync(configPath,'utf8').includes('MK/108e'));
-    pass('Existing v1.1.1 default config upgraded and backed up automatically');
+    assert(fs.readFileSync(configPath,'utf8').includes('rank-change:'));
+    pass('Existing v1.3 configuration gains manual announcements and a backup');
     const owner = await connect('OwnerTester'), fresh = await connect('NewTester');
+    fresh.client.write('chat_command',{command:'rank'});await waitFor(()=>fresh.messages.some(m=>text(m).includes('Time until OG Player:')),'new player rank progress');
+    assert(fresh.messages.some(m=>text(m).includes('OG progress:')));assert(fresh.messages.some(m=>text(m).includes('Playtime:')));pass('Ordinary players can use /rank to view hours, progress, and remaining OG time');
     assert.match(line(fresh,1),/^Rank: New Player$/);assert.match(line(fresh,2),/^Health: 20\.0\/20\.0$/);
     assert.match(line(fresh,3),/^XYZ: -?\d+ -?\d+ -?\d+$/);assert.match(line(fresh,0),/^Name: NewTester$/);
     assert.match(line(fresh,4),/^Hours: \d+\.\d{2}$/);
@@ -114,6 +118,10 @@ function snapshot(state, label) { observations.push({ label, name: state.name, f
     command('mkrank set OwnerTester owner');
     await waitFor(() => line(owner, 1).includes('OWNER') && tab(fresh, 'OwnerTester').includes('[OWNER]'), 'owner labels');
     await waitFor(()=>rankSounds(owner)===1 && rankSounds(fresh)===1,'manual OWNER sound to everyone');
+    await waitFor(()=>changes(owner,'OwnerTester')===1 && changes(fresh,'OwnerTester')===1,'manual OWNER announcement');
+    assert(fresh.messages.some(m=>text(m)==='RANK CHANGE! OwnerTester is now OWNER!' && JSON.stringify(m).includes('red')));
+    pass('Manual assignments broadcast colored rank-change messages to every online player');
+    owner.client.write('chat_command',{command:'rank'});await waitFor(()=>owner.messages.some(m=>text(m).includes('automatic promotion is paused')),'manual rank progress');pass('/rank explains that manual ranks pause automatic promotion');
     await waitFor(()=>headText(fresh,'OwnerTester')==='[OWNER] OwnerTester' && headText(owner,'NewTester')==='[New Player] NewTester','overhead rank badges');
     assert(JSON.stringify(head(fresh,'OwnerTester').prefix).includes('red'));assert.equal(head(fresh,'OwnerTester').visibility,'always');
     pass('Colored OWNER and New Player badges appear beside names on observer scoreboards');
@@ -137,31 +145,38 @@ function snapshot(state, label) { observations.push({ label, name: state.name, f
     const shortConfig = defaultConfig.replace('hours: 24', 'hours: 0.003'); fs.writeFileSync(configPath, shortConfig); command('mksb reload');
     await waitFor(() => line(fresh, 1).includes('OG Player') && announcements(owner, 'NewTester') === 1, 'connected-time promotion', 20000);
     assert.equal(announcements(fresh, 'NewTester'), 1); assert.match(line(owner, 1), /OWNER/);
+    fresh.client.write('chat_command',{command:'rank'});await waitFor(()=>fresh.messages.some(m=>text(m).includes('OG Player earned — 100% complete.')),'earned rank progress');pass('/rank reports earned OG as complete');
     await waitFor(()=>headText(owner,'NewTester')==='[OG Player] NewTester','connected-time overhead promotion');
     await waitFor(()=>rankSounds(owner)===3 && rankSounds(fresh)===3 && rankSounds(veteran)===2,'second promotion sound');
     pass('Connected playtime promotes once; manual OWNER stays protected');
     command('mkrank create builder #55ffff Master Builder'); command('mkrank set NewTester builder');
     await waitFor(() => line(fresh, 1).includes('Master Builder') && tab(owner, 'NewTester').includes('[Master Builder]'), 'custom rank');
     await waitFor(()=>rankSounds(owner)===4 && rankSounds(fresh)===4 && rankSounds(veteran)===3,'custom assignment sound');
+    await waitFor(()=>changes(owner,'NewTester')===1 && changes(fresh,'NewTester')===1 && changes(veteran,'NewTester')===1,'custom rank announcement');
     await waitFor(()=>headText(owner,'NewTester')==='[Master Builder] NewTester','custom overhead label');
     pass('Custom rank assignment also sounds for every online player');
     command('mkrank set NewTester builder'); await sleep(500);
     assert.equal(rankSounds(owner),4);assert.equal(rankSounds(fresh),4);assert.equal(rankSounds(veteran),3);
+    assert.equal(changes(owner,'NewTester'),1);assert.equal(changes(fresh,'NewTester'),1);assert.equal(changes(veteran,'NewTester'),1);
     pass('Reassigning the same rank does not replay the sound');
     command('mkrank color builder light_purple');
     await waitFor(() => JSON.stringify(fresh.lines.get('mk_line_1').component).includes('light_purple'), 'custom color');
     await waitFor(()=>JSON.stringify(head(owner,'NewTester')?.prefix).includes('light_purple'),'custom overhead color');pass('Custom labels and rank color changes update overhead tags');
     assert.equal(rankSounds(owner),4);assert.equal(rankSounds(fresh),4);assert.equal(rankSounds(veteran),3);
+    assert.equal(changes(owner,'NewTester'),1);
     command('mkrank reset NewTester'); await waitFor(() => line(fresh, 1).includes('OG Player'), 'reset earned rank');
     await waitFor(()=>rankSounds(owner)===5 && rankSounds(fresh)===5 && rankSounds(veteran)===4,'reset sound');
+    await waitFor(()=>changes(owner,'NewTester')===2 && changes(fresh,'NewTester')===2 && changes(veteran,'NewTester')===2,'reset announcement');
     command('mkrank reset NewTester');await sleep(500);
     assert.equal(rankSounds(owner),5);assert.equal(rankSounds(fresh),5);assert.equal(rankSounds(veteran),4);
+    assert.equal(changes(owner,'NewTester'),2);pass('Reset announces effective rank changes; duplicate assignments and resets stay silent');
     pass('Reset sounds once when the displayed rank changes; repeat reset stays silent');
     assert.equal(announcements(owner, 'NewTester'), 1); pass('Custom rank creation, color changes, assignment, and reset');
     fresh.client.write('chat_command', { command: 'mkrank set NewTester owner' });
+    fresh.client.write('chat_command',{command:'mkrank testsound'});
     await sleep(500); assert.match(line(fresh, 1), /OG Player/);
     assert.equal(rankSounds(owner),5);
-    pass('Non-operator cannot assign OWNER');
+    pass('Non-operator cannot assign OWNER or trigger the server-wide test sound');
     fresh.client.write('chat_command', { command: 'mksb toggle' });
     await waitFor(() => fresh.messages.some(m => text(m).includes('Sidebar hidden.')), 'sidebar toggle');
     await waitFor(()=>headText(fresh,'OwnerTester')==='[OWNER] OwnerTester' && headText(fresh,'NewTester')==='[OG Player] NewTester','overhead with sidebar hidden');pass('Hiding the sidebar keeps overhead ranks active on the restored scoreboard');
@@ -191,6 +206,7 @@ function snapshot(state, label) { observations.push({ label, name: state.name, f
     command('mkrank set OwnerTester new_player');await waitFor(()=>line(owner,1).includes('New Player'),'muted assignment');
     command('mkrank set OwnerTester owner');await waitFor(()=>line(owner,1).includes('OWNER'),'muted restoration');await sleep(500);
     assert.equal(rankSounds(owner),5);assert.equal(rankSounds(fresh),5);assert.equal(rankSounds(veteran),4);
+    assert.equal(changes(owner,'OwnerTester'),3);pass('Muting rank sounds leaves enabled manual announcements active');
     pass('Disabling promotion.sound also mutes manual rank changes');
     fs.writeFileSync(configPath,shortConfig);command('mksb reload');await sleep(600);
     // Reapply a custom rank to exercise offline changes after a clean shutdown.
@@ -199,19 +215,23 @@ function snapshot(state, label) { observations.push({ label, name: state.name, f
     await waitFor(()=>!head(owner,'VeteranTester'),'disconnected overhead entry removed');pass('Disconnected player entries are removed from overhead teams');
     command('mkrank set VeteranTester vip'); await waitFor(() => fullLog.includes('Assigned vip to VeteranTester.'), 'offline assignment');
     await waitFor(()=>rankSounds(owner)===6 && rankSounds(fresh)===6,'offline assignment sound');
+    await waitFor(()=>changes(owner,'VeteranTester')===1 && changes(fresh,'VeteranTester')===1,'offline assignment announcement');
     assert.equal(rankSounds(veteran),4);
     pass('Offline rank changes sound only for the players currently online');
+    const beforeReset=changes(owner,'OwnerTester');
     command('mkrank reset OwnerTester');await waitFor(()=>line(owner,1).includes('OG Player'),'eligible reset promotion');
     await waitFor(()=>rankSounds(owner)===7 && rankSounds(fresh)===7,'eligible reset single sound');await sleep(600);
     assert.equal(rankSounds(owner),7);assert.equal(rankSounds(fresh),7);
+    assert.equal(changes(owner,'OwnerTester'),beforeReset);assert.equal(announcements(owner,'OwnerTester'),1);pass('Reset earning OG broadcasts only the existing automatic announcement');
     pass('Reset triggering an automatic promotion plays one sound without duplication');
     command('mkrank set OwnerTester owner');await waitFor(()=>line(owner,1).includes('OWNER') && rankSounds(owner)===8 && rankSounds(fresh)===8,'restore OWNER');
     await stop();
     const oldId=crypto.randomUUID();
-    const duplicate=spawnSync(process.env.JAVA_BIN||'java',['-cp',path.join(repo,'target/mk-sidebar-ranks-1.3.1.jar'),path.join(__dirname,'insert-duplicate.java'),path.join(dir,'plugins/MKSidebarRanks/players.db'),oldId,'OwnerTester'],{encoding:'utf8',windowsHide:true});
+    const duplicate=spawnSync(process.env.JAVA_BIN||'java',['-cp',path.join(repo,'target/mk-sidebar-ranks-1.4.0.jar'),path.join(__dirname,'insert-duplicate.java'),path.join(dir,'plugins/MKSidebarRanks/players.db'),oldId,'OwnerTester'],{encoding:'utf8',windowsHide:true});
     assert.equal(duplicate.status,0,duplicate.stderr||duplicate.stdout);
     await boot(); const owner2 = await connect('OwnerTester');
-    const hidden = { name: 'NewTester', client: mc.createClient({ host: '127.0.0.1', port, username: 'NewTester', auth: 'offline', version: '1.21.11' }), teams:new Map(),messages: [], tabs: new Map(), lines: new Map() }; clients.push(hidden);trackTeams(hidden);
+    const hidden = { name: 'NewTester', client: mc.createClient({ host: '127.0.0.1', port, username: 'NewTester', auth: 'offline', version: '1.21.11' }), sounds:[],teams:new Map(),messages: [], tabs: new Map(), lines: new Map() }; clients.push(hidden);trackTeams(hidden);
+    hidden.client.on('packet',(packet,meta)=>{if(meta.name==='sound_effect'||meta.name==='entity_sound_effect')hidden.sounds.push(packet);});
     hidden.client.on('error', e => { hidden.error = e; }); hidden.client.on('position', p => hidden.client.write('teleport_confirm', { teleportId: p.teleportId }));
     hidden.client.on('system_chat', p => hidden.messages.push(component(p.content)));hidden.client.on('scoreboard_score', p => hidden.lines.set(p.itemName, p));
     hidden.client.on('player_info', p => { for(const e of p.data) if(e.displayName != null) hidden.tabs.set(e.uuid,component(e.displayName)); });
@@ -220,12 +240,23 @@ function snapshot(state, label) { observations.push({ label, name: state.name, f
     const veteran2 = await connect('VeteranTester');assert.match(line(veteran2, 1), /VIP/); assert.equal(announcements(owner2, 'VeteranTester'), 0);
     await waitFor(()=>headText(hidden,'OwnerTester')==='[OWNER] OwnerTester' && headText(owner2,'VeteranTester')==='[VIP] VeteranTester','restored nametags');pass('Overhead ranks restore after restart, including offline rank assignments');
     assert.equal(rankSounds(owner2),0);assert.equal(rankSounds(veteran2),0);assert.equal(text(owner2.footer),'Credits: MK/108e');
+    assert.equal(changes(owner2,'OwnerTester'),0);assert.equal(changes(owner2,'VeteranTester'),0);
     pass('Restart preserves OWNER, OG, offline custom assignments, hidden sidebar, and announcement markers');
+    hidden.client.write('chat_command',{command:'rank'});await waitFor(()=>hidden.messages.some(m=>text(m).includes('OG Player earned — 100% complete.')),'reconnected rank progress');pass('/rank preserves earned progress after reconnect and restart');
     command('mkrank info OwnerTester');await waitFor(()=>fullLog.includes(`OwnerTester | ${offlineUuid('OwnerTester')}`),'online info selects current UUID');
     command('mkrank set OwnerTester vip');await waitFor(()=>line(owner2,1).includes('VIP') && headText(veteran2,'OwnerTester')==='[VIP] OwnerTester','online rank assignment with duplicate saved name');
     assert(!fullLog.includes('That name matches multiple records. Use a UUID.'));
     command('mkrank set OwnerTester owner');await waitFor(()=>line(owner2,1).includes('OWNER'),'restore OWNER after duplicate-name check');
     pass('Online name commands choose the connected UUID when historical duplicate records exist');
+    const soundBefore=rankSounds(owner2),veteranSoundBefore=rankSounds(veteran2),hiddenSoundBefore=rankSounds(hidden),chatBefore=owner2.messages.length;
+    const infoOffset=fullLog.length;command('mkrank testsound');await waitFor(()=>fullLog.slice(infoOffset).includes('Test sound sent to 3 online players.') && rankSounds(owner2)===soundBefore+1 && rankSounds(veteran2)===veteranSoundBefore+1 && rankSounds(hidden)===hiddenSoundBefore+1,'administrator sound test');
+    assert.equal(rankSounds(owner2),soundBefore+1);assert.match(line(owner2,1),/OWNER/);assert.equal(owner2.messages.slice(chatBefore).filter(m=>text(m).includes('RANK CHANGE!')||text(m).includes('RANK UP!')).length,0);
+    const testPacket=owner2.sounds.at(-1);assert(Math.abs(testPacket.volume-0.7)<0.0001);assert.equal(testPacket.pitch,1);pass('Console testsound reaches every player with configured audio and leaves ranks unchanged');
+    let enabledConfig=fs.readFileSync(configPath,'utf8');const noAnnouncement=enabledConfig.replace('rank-change:\n  enabled: true','rank-change:\n  enabled: false');fs.writeFileSync(configPath,noAnnouncement);command('mksb reload');await sleep(700);
+    const changesBefore=changes(owner2,'OwnerTester'),mutedChatSound=rankSounds(owner2);command('mkrank set OwnerTester vip');await waitFor(()=>line(owner2,1).includes('VIP')&&rankSounds(owner2)===mutedChatSound+1,'disabled announcements still sound');await sleep(400);assert.equal(changes(owner2,'OwnerTester'),changesBefore);pass('Disabling manual announcements independently preserves rank-change sounds');
+    const fullyMuted=noAnnouncement.replace('sound:\n    enabled: true','sound:\n    enabled: false');fs.writeFileSync(configPath,fullyMuted);command('mksb reload');await sleep(700);
+    const mutedCount=rankSounds(owner2),mutedOffset=fullLog.length;command('mkrank testsound');await waitFor(()=>fullLog.slice(mutedOffset).includes('Rank sounds are disabled in configuration.'),'muted sound test');assert.equal(rankSounds(owner2),mutedCount);pass('testsound respects disabled sound configuration');
+    command('mkrank set OwnerTester owner');await waitFor(()=>line(owner2,1).includes('OWNER'),'restore owner while muted');fs.writeFileSync(configPath,enabledConfig);command('mksb reload');await sleep(700);
     hidden.client.write('chat_command', { command: 'mksb toggle' }); await waitFor(() => hidden.lines.size >= 9, 'restored sidebar');
     const noTags=fs.readFileSync(configPath,'utf8').replace('nametags:\n  enabled: true','nametags:\n  enabled: false');fs.writeFileSync(configPath,noTags);command('mksb reload');await waitFor(()=>!head(owner2,'VeteranTester')&&!head(veteran2,'OwnerTester'),'nametags independently disabled');assert.match(line(owner2,1),/OWNER/);pass('Independent nametag switch removes owned teams while retaining sidebar and Tab');
     // Disabling formatting restores original Tab names and clears our sidebar.

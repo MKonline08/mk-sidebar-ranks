@@ -11,6 +11,11 @@ public final class Commands implements CommandExecutor,TabCompleter {
     public Commands(MKSidebarPlugin plugin) { this.plugin=plugin; }
     @Override public boolean onCommand(CommandSender sender,Command command,String label,String[] args) {
         try {
+            if(command.getName().equalsIgnoreCase("rank")) {
+                exact(args,0,"/rank");
+                if(!(sender instanceof Player player))throw new IllegalArgumentException("Use /mkrank info <player|UUID> from the console.");
+                require(sender,"mksidebar.rank");plugin.showRank(player);return true;
+            }
             if(command.getName().equalsIgnoreCase("mksb")) {
                 if(args.length==1&&args[0].equalsIgnoreCase("toggle")) {
                     if(!(sender instanceof Player p)) throw new IllegalArgumentException("Only players can toggle their sidebar.");
@@ -27,6 +32,7 @@ public final class Commands implements CommandExecutor,TabCompleter {
             require(sender,"mksidebar.admin");
             String action=args.length==0?"help":args[0].toLowerCase(Locale.ROOT);
             switch(action) {
+                case "testsound" -> {exact(args,1,"/mkrank testsound");int count=plugin.testSound();success(sender,"Test sound sent to "+count+" online players.");}
                 case "list" -> { exact(args,1,"/mkrank list"); for(Rank rank:plugin.settings().ranks().values()) sender.sendMessage(Component.text(rank.id()+" » ",NamedTextColor.DARK_GRAY).append(rank.label())); }
                 case "create" -> {
                     if(args.length<4) throw new IllegalArgumentException("Usage: /mkrank create <id> <color> <display name...>");
@@ -55,14 +61,15 @@ public final class Commands implements CommandExecutor,TabCompleter {
     private static void info(CommandSender sender,String message) { sender.sendMessage(Component.text(message,NamedTextColor.AQUA)); }
     private static void help(CommandSender sender) {
         sender.sendMessage(Component.text("MK RANKS • Created by MK",NamedTextColor.GOLD));
-        for(String line:List.of("/mkrank list","/mkrank create <id> <color> <display name...>","/mkrank color <id> <color>","/mkrank set <player|UUID> <rank>","/mkrank reset <player|UUID>","/mkrank info <player|UUID>")) info(sender,line);
+        for(String line:List.of("/mkrank list","/mkrank create <id> <color> <display name...>","/mkrank color <id> <color>","/mkrank set <player|UUID> <rank>","/mkrank reset <player|UUID>","/mkrank info <player|UUID>","/mkrank testsound","/rank — your rank and OG progress")) info(sender,line);
     }
     @Override public List<String> onTabComplete(CommandSender sender,Command command,String alias,String[] args) {
         List<String> options=new ArrayList<>();
+        if(command.getName().equalsIgnoreCase("rank"))return List.of();
         if(command.getName().equalsIgnoreCase("mksb")) {
             if(args.length==1) { if(sender instanceof Player&&sender.hasPermission("mksidebar.toggle")) options.add("toggle"); if(sender.hasPermission("mksidebar.admin")) options.addAll(List.of("reload","performance")); }
         } else if(sender.hasPermission("mksidebar.admin")) {
-            if(args.length==1) options.addAll(List.of("list","create","color","set","reset","info"));
+            if(args.length==1) options.addAll(List.of("list","create","color","set","reset","info","testsound"));
             else if(args.length==2) {
                 if(List.of("set","reset","info").contains(args[0].toLowerCase(Locale.ROOT))) plugin.players().snapshot().forEach(r -> options.add(r.name()));
                 else if(args[0].equalsIgnoreCase("color")) options.addAll(plugin.settings().ranks().keySet());
