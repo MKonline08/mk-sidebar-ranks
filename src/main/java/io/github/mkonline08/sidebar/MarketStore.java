@@ -10,7 +10,7 @@ final class MarketStore implements AutoCloseable {
     record Account(UUID uuid,String name,long cents) {}
     record Listing(long id,UUID seller,byte[] item,String material,long price,long expires,String state) {}
     record Mail(long id,UUID owner,byte[] item,String detail,String state) {}
-    record Challenge(long id,UUID from,UUID to,long amount,long expires) {}
+    record Challenge(long id,UUID from,UUID to,long amount,long expires,String state,UUID winner,long finishAt) {}
     record InventoryOp(long id,UUID owner,String kind,long ref,byte[] before,byte[] after,String state) {}
     record History(long at,long delta,String kind,String detail) {}
     record Board(UUID world,double x,double y,double z) {}
@@ -44,9 +44,15 @@ final class MarketStore implements AutoCloseable {
             s.execute("CREATE TABLE IF NOT EXISTS flips(id INTEGER PRIMARY KEY,sender TEXT NOT NULL,recipient TEXT NOT NULL,amount INTEGER NOT NULL,expires INTEGER NOT NULL,state TEXT NOT NULL)");
             s.execute("CREATE TABLE IF NOT EXISTS board(id INTEGER PRIMARY KEY CHECK(id=1),world TEXT NOT NULL,x REAL NOT NULL,y REAL NOT NULL,z REAL NOT NULL)");
         }
+        // Preserve v1.5 wallets/listings and upgrade existing challenge records in place.
+        Set<String> flipColumns=new HashSet<>();
+        try(Statement s=db.createStatement();ResultSet r=s.executeQuery("PRAGMA table_info(flips)")){while(r.next())flipColumns.add(r.getString("name"));}
+        if(!flipColumns.contains("winner"))sql("ALTER TABLE flips ADD COLUMN winner TEXT");
+        if(!flipColumns.contains("finish_at"))sql("ALTER TABLE flips ADD COLUMN finish_at INTEGER NOT NULL DEFAULT 0");
+        sql("CREATE INDEX IF NOT EXISTS flips_active ON flips(state,sender,recipient,winner)");
         try(Statement s=db.createStatement();ResultSet r=s.executeQuery("SELECT * FROM wallets")){while(r.next()){Account a=account(r);accounts.put(a.uuid(),a);}}
         reloadMarket();
-        transaction(()->{for(Challenge c:List.copyOf(challenges.values()))refund(c,"Server restart");return null;});
+        transaction(()->{for(Challenge c:List.copyOf(challenges.values())){if(c.state().equals("RUNNING"))settle(c);else refund(c,"Server restart");}return null;});
         readBoard();refreshTopInternal();return null;
     });}
     long balance(UUID id){Account a=accounts.get(id);return a==null?0:a.cents();}
@@ -56,6 +62,7 @@ final class MarketStore implements AutoCloseable {
     Listing listing(long id){return listings.get(id);}
     List<Mail> mailbox(UUID owner){return mailByOwner.getOrDefault(owner,List.of());}
     List<Challenge> challenges(){return List.copyOf(challenges.values());}
+    Challenge flip(long id){return challenges.get(id);}
     List<InventoryOp> operations(UUID owner){return opsByOwner.getOrDefault(owner,List.of());}
     List<InventoryOp> reviews(){return operations.values().stream().filter(o->o.state().equals("REVIEW")).toList();}
     List<Account> top(){return top;}
@@ -126,30 +133,42 @@ final class MarketStore implements AutoCloseable {
         Listing l=listings.get(ref);if(l==null||!l.state().equals("ACTIVE")||!l.seller().equals(owner))throw new IllegalArgumentException("That active listing is not yours.");
         returnListing(l,"Cancelled listing #"+ref);return null;
     }));}
-    CompletableFuture<Long> challenge(UUID from,UUID to,long amount,long expires){return task(()->transaction(()->{
-        if(from.equals(to))throw new IllegalArgumentException("You cannot challenge yourself.");positive(amount);
-        if(scalar("SELECT COUNT(*) FROM flips WHERE state='OPEN' AND (sender IN (?,?) OR recipient IN (?,?))",from,to,from,to)>0)throw new IllegalArgumentException("One of you already has a pending coin flip.");
-        if(actualBalance(to)<amount)throw new IllegalArgumentException("That player cannot afford to match this wager.");change(from,-amount,"FLIP_HOLD","Challenge to "+name(to));
-        long id=insert("INSERT INTO flips(sender,recipient,amount,expires,state) VALUES(?,?,?,?,'OPEN')",from,to,amount,expires);marketChanged=true;return id;
+    CompletableFuture<Long> createFlip(UUID from,long amount,long expires){return task(()->transaction(()->{
+        positive(amount);if(amount>Money.LIMIT/2)throw new IllegalArgumentException("Wager is too large.");
+        if(inFlip(from))throw new IllegalArgumentException("You already have a waiting or active coin flip.");
+        change(from,-amount,"FLIP_HOLD","Public coin flip wager");
+        long id=insert("INSERT INTO flips(sender,recipient,amount,expires,state) VALUES(?,'',?,?,'WAITING')",from,amount,expires);marketChanged=true;return id;
     }));}
-    CompletableFuture<UUID> accept(UUID recipient,long id,boolean senderWins,long now){return task(()->transaction(()->{
-        Challenge c=challenges.get(id);if(c==null||!c.to().equals(recipient)||c.expires()<=now)throw new IllegalArgumentException("That challenge is unavailable or expired.");
-        UUID winner=senderWins?c.from():c.to();
-        change(c.to(),-c.amount(),"FLIP_STAKE","Against "+name(c.from()));
-        change(winner,Math.multiplyExact(c.amount(),2),"FLIP_WIN","Coin flip #"+id);
-        log(winner.equals(c.from())?c.to():c.from(),0,"FLIP_LOSS","Coin flip #"+id);
-        sql("UPDATE flips SET state='DONE' WHERE id=?",id);marketChanged=true;return winner;
+    CompletableFuture<Challenge> joinFlip(UUID recipient,long id,boolean senderWins,long now,int animationSeconds){return task(()->transaction(()->{
+        Challenge c=challenges.get(id);
+        if(c==null||!c.state().equals("WAITING")||c.expires()<=now)throw new IllegalArgumentException("That flip has already started or expired.");
+        if(c.from().equals(recipient))throw new IllegalArgumentException("You cannot join your own coin flip.");
+        if(inFlip(recipient))throw new IllegalArgumentException("You already have a waiting or active coin flip.");
+        if(actualBalance(recipient)<c.amount())throw new IllegalArgumentException("Not enough money to match this wager.");
+        // Both possible winners must have room for the pot; no outcome-dependent retry at the balance cap.
+        if(actualBalance(c.from())>Money.LIMIT-c.amount()*2||actualBalance(recipient)>Money.LIMIT-c.amount())throw new IllegalArgumentException("This pot would exceed a player's wallet limit.");
+        change(recipient,-c.amount(),"FLIP_STAKE","Against "+name(c.from()));
+        UUID winner=senderWins?c.from():recipient;long finish=now+animationSeconds*1000L;
+        sql("UPDATE flips SET recipient=?,winner=?,finish_at=?,state='RUNNING' WHERE id=?",recipient,winner,finish,id);marketChanged=true;
+        return new Challenge(id,c.from(),recipient,c.amount(),c.expires(),"RUNNING",winner,finish);
     }));}
+    CompletableFuture<Challenge> settleFlip(long id,long now){return task(()->transaction(()->{
+        Challenge c=readFlip(id);if(c==null)throw new IllegalArgumentException("Unknown match.");
+        if(c.state().equals("DONE"))return c;
+        if(!c.state().equals("RUNNING")||c.finishAt()>now)throw new IllegalArgumentException("The match has not finished yet.");
+        settle(c);return new Challenge(c.id(),c.from(),c.to(),c.amount(),c.expires(),"DONE",c.winner(),c.finishAt());
+    }));}
+    private boolean inFlip(UUID id)throws SQLException{return scalar("SELECT COUNT(*) FROM flips WHERE state IN ('OPEN','WAITING','RUNNING') AND (sender=? OR recipient=?)",id,id)>0;}
     CompletableFuture<Void> decline(UUID owner,long id,String reason){return task(()->transaction(()->{
-        Challenge c=challenges.get(id);if(c==null||(!owner.equals(c.from())&&!owner.equals(c.to())))throw new IllegalArgumentException("Unknown challenge.");
+        Challenge c=challenges.get(id);if(c==null||!owner.equals(c.from())||!c.state().equals("WAITING"))throw new IllegalArgumentException("Only your waiting flip can be cancelled. Started matches finish normally.");
         refund(c,reason);return null;
     }));}
     CompletableFuture<Void> disconnected(UUID owner){return task(()->transaction(()->{
-        for(Challenge c:List.copyOf(challenges.values()))if(c.from().equals(owner)||c.to().equals(owner))refund(c,"Player disconnected");return null;
+        for(Challenge c:List.copyOf(challenges.values()))if(!c.state().equals("RUNNING")&&(c.from().equals(owner)||owner.equals(c.to())))refund(c,"Player disconnected");return null;
     }));}
     CompletableFuture<Void> expire(long now){return task(()->transaction(()->{
         for(Listing l:List.copyOf(listings.values()))if(l.state().equals("ACTIVE")&&l.expires()<=now)returnListing(l,"Expired listing #"+l.id());
-        for(Challenge c:List.copyOf(challenges.values()))if(c.expires()<=now)refund(c,"Challenge expired");return null;
+        for(Challenge c:List.copyOf(challenges.values())){if(c.state().equals("RUNNING")){if(c.finishAt()<=now)settle(c);}else if(c.expires()<=now)refund(c,"Waiting flip expired");}return null;
     }));}
     CompletableFuture<List<History>> history(UUID id,int page){return task(()->{
         List<History> rows=new ArrayList<>();
@@ -167,6 +186,12 @@ final class MarketStore implements AutoCloseable {
     private void refund(Challenge c,String reason)throws SQLException{
         change(c.from(),c.amount(),"FLIP_REFUND",reason);sql("UPDATE flips SET state='REFUNDED' WHERE id=?",c.id());marketChanged=true;
     }
+    private void settle(Challenge c)throws SQLException{
+        if(c.winner()==null||c.to()==null)throw new SQLException("Running flip has no saved winner/participant");
+        sql("UPDATE flips SET state='DONE' WHERE id=? AND state='RUNNING'",c.id());
+        change(c.winner(),c.amount()*2,"FLIP_WIN","Coin flip #"+c.id());
+        log(c.winner().equals(c.from())?c.to():c.from(),0,"FLIP_LOSS","Coin flip #"+c.id());marketChanged=true;
+    }
     private void positive(long amount){if(amount<=0||amount>Money.LIMIT)throw new IllegalArgumentException("Invalid amount.");}
     private long actualBalance(UUID owner)throws SQLException{
         try(PreparedStatement p=prepare("SELECT cents FROM wallets WHERE uuid=?",owner);ResultSet r=p.executeQuery()){
@@ -176,7 +201,7 @@ final class MarketStore implements AutoCloseable {
     private void change(UUID owner,long delta,String kind,String detail)throws SQLException{
         long old=actualBalance(owner),next=Math.addExact(old,delta);
         if(next<0)throw new IllegalArgumentException("Not enough money.");
-        long held=scalar("SELECT COALESCE(SUM(amount),0) FROM flips WHERE sender=? AND state='OPEN'",owner);
+        long held=scalar("SELECT COALESCE(SUM(CASE WHEN state='RUNNING' THEN amount*2 ELSE amount END),0) FROM flips WHERE (sender=? AND state IN ('OPEN','WAITING')) OR (winner=? AND state='RUNNING')",owner,owner);
         if(next>Money.LIMIT||next>Money.LIMIT-held && !kind.equals("FLIP_REFUND") && !kind.equals("FLIP_WIN"))throw new IllegalArgumentException("That wallet would exceed the supported limit.");
         sql("UPDATE wallets SET cents=? WHERE uuid=?",next,owner);log(owner,delta,kind,detail);changed.add(owner);topDirty=true;
     }
@@ -189,6 +214,8 @@ final class MarketStore implements AutoCloseable {
     private long insert(String query,Object...args)throws SQLException{sql(query,args);return scalar("SELECT last_insert_rowid()");}
     private long scalar(String query,Object...args)throws SQLException{try(PreparedStatement p=prepare(query,args);ResultSet r=p.executeQuery()){return r.next()?r.getLong(1):0;}}
     private Account account(ResultSet r)throws SQLException{return new Account(UUID.fromString(r.getString("uuid")),r.getString("name"),r.getLong("cents"));}
+    private Challenge flipRow(ResultSet r)throws SQLException{String to=r.getString("recipient"),winner=r.getString("winner");return new Challenge(r.getLong("id"),UUID.fromString(r.getString("sender")),to==null||to.isBlank()?null:UUID.fromString(to),r.getLong("amount"),r.getLong("expires"),r.getString("state"),winner==null?null:UUID.fromString(winner),r.getLong("finish_at"));}
+    private Challenge readFlip(long id)throws SQLException{try(PreparedStatement p=prepare("SELECT * FROM flips WHERE id=?",id);ResultSet r=p.executeQuery()){return r.next()?flipRow(r):null;}}
     private void readBoard()throws SQLException{try(Statement s=db.createStatement();ResultSet r=s.executeQuery("SELECT * FROM board")){board=r.next()?new Board(UUID.fromString(r.getString("world")),r.getDouble("x"),r.getDouble("y"),r.getDouble("z")):null;}}
     private record MarketData(Map<Long,Listing> listings,Map<Long,Mail> mail,Map<Long,Challenge> challenges,Map<Long,InventoryOp> ops,Map<UUID,List<Mail>> byOwner,Map<UUID,List<InventoryOp>> pending){}
     private MarketData readMarket()throws SQLException{
@@ -196,7 +223,7 @@ final class MarketStore implements AutoCloseable {
         Map<UUID,List<Mail>> byOwner=new HashMap<>();Map<UUID,List<InventoryOp>> pending=new HashMap<>();
         try(Statement s=db.createStatement();ResultSet r=s.executeQuery("SELECT * FROM listings WHERE state IN ('ACTIVE','PENDING','REVIEW')")){while(r.next()){long id=r.getLong("id");ls.put(id,new Listing(id,UUID.fromString(r.getString("seller")),r.getBytes("item"),r.getString("material"),r.getLong("price"),r.getLong("expires"),r.getString("state")));}}
         try(Statement s=db.createStatement();ResultSet r=s.executeQuery("SELECT * FROM mail WHERE state IN ('READY','PENDING','REVIEW') ORDER BY id DESC")){while(r.next()){long id=r.getLong("id");Mail m=new Mail(id,UUID.fromString(r.getString("owner")),r.getBytes("item"),r.getString("detail"),r.getString("state"));ms.put(id,m);byOwner.computeIfAbsent(m.owner(),k->new ArrayList<>()).add(m);}}
-        try(Statement s=db.createStatement();ResultSet r=s.executeQuery("SELECT * FROM flips WHERE state='OPEN'")){while(r.next()){long id=r.getLong("id");cs.put(id,new Challenge(id,UUID.fromString(r.getString("sender")),UUID.fromString(r.getString("recipient")),r.getLong("amount"),r.getLong("expires")));}}
+        try(Statement s=db.createStatement();ResultSet r=s.executeQuery("SELECT * FROM flips WHERE state IN ('OPEN','WAITING','RUNNING')")){while(r.next()){Challenge c=flipRow(r);cs.put(c.id(),c);}}
         try(Statement s=db.createStatement();ResultSet r=s.executeQuery("SELECT * FROM inventory_ops")){while(r.next()){long id=r.getLong("id");InventoryOp o=new InventoryOp(id,UUID.fromString(r.getString("owner")),r.getString("kind"),r.getLong("ref"),r.getBytes("before"),r.getBytes("after"),r.getString("state"));os.put(id,o);pending.computeIfAbsent(o.owner(),k->new ArrayList<>()).add(o);}}
         byOwner.replaceAll((id,values)->List.copyOf(values));pending.replaceAll((id,values)->List.copyOf(values));return new MarketData(ls,ms,cs,os,Map.copyOf(byOwner),Map.copyOf(pending));
     }
@@ -219,5 +246,5 @@ final class MarketStore implements AutoCloseable {
     }
     private <T>CompletableFuture<T> task(SqlWork<T> work){return CompletableFuture.supplyAsync(()->{try{return work.run();}catch(Exception e){throw new CompletionException(e);}},worker);}
     @FunctionalInterface private interface SqlWork<T>{T run()throws Exception;}
-    @Override public void close(){try{task(()->{if(db!=null){transaction(()->{for(Challenge c:List.copyOf(challenges.values()))refund(c,"Server shutdown");return null;});db.close();}return null;}).join();}finally{worker.shutdown();}}
+    @Override public void close(){try{task(()->{if(db!=null){transaction(()->{for(Challenge c:List.copyOf(challenges.values())){if(c.state().equals("RUNNING"))settle(c);else refund(c,"Server shutdown");}return null;});db.close();}return null;}).join();}finally{worker.shutdown();}}
 }

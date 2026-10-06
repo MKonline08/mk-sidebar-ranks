@@ -185,7 +185,7 @@
               },
               {
                 "color": "gray",
-                "text": "-6 -60 -10"
+                "text": "-10 -60 7"
               }
             ],
             "text": ""
@@ -265,7 +265,7 @@
               },
               {
                 "color": "green",
-                "text": "18.5"
+                "text": "17.8"
               }
             ],
             "text": ""
@@ -284,7 +284,7 @@
               },
               {
                 "color": "yellow",
-                "text": "0m 34s"
+                "text": "0m 35s"
               }
             ],
             "text": ""
@@ -325,7 +325,7 @@
               },
               {
                 "color": "green",
-                "text": "3"
+                "text": "29"
               },
               {
                 "color": "gray",
@@ -550,7 +550,7 @@
               },
               {
                 "color": "gray",
-                "text": "4 -60 -9"
+                "text": "4 -60 7"
               }
             ],
             "text": ""
@@ -630,7 +630,7 @@
               },
               {
                 "color": "green",
-                "text": "18.5"
+                "text": "17.8"
               }
             ],
             "text": ""
@@ -649,7 +649,7 @@
               },
               {
                 "color": "yellow",
-                "text": "0m 34s"
+                "text": "0m 35s"
               }
             ],
             "text": ""
@@ -728,7 +728,7 @@
               },
               {
                 "color": "green",
-                "text": "3"
+                "text": "29"
               },
               {
                 "color": "gray",
@@ -915,7 +915,7 @@
               },
               {
                 "color": "gray",
-                "text": "5 -60 10"
+                "text": "-1 -60 10"
               }
             ],
             "text": ""
@@ -995,7 +995,7 @@
               },
               {
                 "color": "green",
-                "text": "18.3"
+                "text": "17.4"
               }
             ],
             "text": ""
@@ -1014,7 +1014,7 @@
               },
               {
                 "color": "yellow",
-                "text": "0m 33s"
+                "text": "0m 34s"
               }
             ],
             "text": ""
@@ -1093,7 +1093,7 @@
               },
               {
                 "color": "green",
-                "text": "3"
+                "text": "29"
               },
               {
                 "color": "gray",
@@ -1534,11 +1534,11 @@
         },
         {
           "order": 2,
-          "component": "server_tps: 19.6"
+          "component": "server_tps: 19.3"
         },
         {
           "order": 1,
-          "component": "server_uptime: 0m 47s"
+          "component": "server_uptime: 0m 48s"
         },
         {
           "order": 1,
@@ -1669,6 +1669,6 @@
     }
   ],
   "fixture": "isolated-local-smoke-fixture",
-  "version": "1.5.0",
-  "jarSha256": "b9d5a7ba765347cfc23f3039690915340846cd2ab1427f575d42428ea27ae717"
+  "version": "1.6.0",
+  "jarSha256": "d45e1dbd8d4c45af9077ac86bbadd38409ecdee1a0576bb79eebe687072ce21e"
 }

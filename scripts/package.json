@@ -1,6 +1,6 @@
 {
   "name": "mk-sidebar-ranks-smoke",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "private": true,
   "description": "Local Paper integration test using three protocol clients",
   "scripts": {

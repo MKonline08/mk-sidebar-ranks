@@ -1,5 +1,5 @@
 name: MKSidebarRanks
-version: '1.5.0'
+version: '1.6.0'
 main: io.github.mkonline08.sidebar.MKSidebarPlugin
 api-version: '1.21.11'
 description: Stylish sidebar, Tab ping and ranks, and automatic playtime promotions.
@@ -24,8 +24,8 @@ commands:
     description: Top ten money balances
     permission: mksidebar.market
   coinflip:
-    description: Challenge an online player to an equal-stakes coin flip
-    usage: /coinflip <player> <amount> or /coinflip accept|decline|cancel [ID]
+    description: Public coin flip lobby with animated matches
+    usage: /coinflip [create <amount>|cancel]
     permission: mksidebar.market
   mkmarket:
     description: Admin money, spawn leaderboard and recovery tools

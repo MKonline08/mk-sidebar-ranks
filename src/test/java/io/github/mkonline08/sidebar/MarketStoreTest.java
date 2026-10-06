@@ -68,19 +68,18 @@ class MarketStoreTest {
         fails(store.prepareListing(alex,new byte[]{7},"STONE",100,Long.MAX_VALUE,1,100,new byte[]{1},new byte[]{2}));store.finishInventory(op,false).join();assertTrue(store.listings().isEmpty());
     }
     @Test void flipsReserveAndPayOnceWithoutCreatingCurrency(){
-        long flip=store.challenge(alex,sam,10000,Long.MAX_VALUE).join();assertEquals(40000,store.balance(alex));fails(store.challenge(alex,lee,100,Long.MAX_VALUE));
-        assertEquals(sam,store.accept(sam,flip,false,0).join());fails(store.accept(sam,flip,true,0));
-        assertEquals(40000,store.balance(alex));assertEquals(60000,store.balance(sam));assertEquals(150000,store.balance(alex)+store.balance(sam)+store.balance(lee));
+        long id=store.createFlip(alex,10000,Long.MAX_VALUE).join();assertEquals(40000,store.balance(alex));fails(store.createFlip(alex,100,Long.MAX_VALUE));
+        var running=store.joinFlip(sam,id,false,0,5).join();assertEquals(sam,running.winner());assertEquals(40000,store.balance(sam));fails(store.settleFlip(id,4999));
+        store.settleFlip(id,5000).join();store.settleFlip(id,6000).join();fails(store.joinFlip(lee,id,true,0,5));assertEquals(40000,store.balance(alex));assertEquals(60000,store.balance(sam));assertEquals(150000,store.balance(alex)+store.balance(sam)+store.balance(lee));
     }
-    @Test void unaffordableAcceptanceDoesNotLoseReservedFunds(){
-        long id=store.challenge(alex,sam,10000,Long.MAX_VALUE).join();store.adjust(sam,-45000,"Console").join();fails(store.accept(sam,id,true,0));assertEquals(40000,store.balance(alex));
-        store.decline(sam,id,"declined").join();assertEquals(50000,store.balance(alex));
+    @Test void unaffordableJoinDoesNotLoseReservedFunds(){
+        long id=store.createFlip(alex,10000,Long.MAX_VALUE).join();store.adjust(sam,-45000,"Console").join();fails(store.joinFlip(sam,id,true,0,5));assertEquals(40000,store.balance(alex));store.decline(alex,id,"cancelled").join();assertEquals(50000,store.balance(alex));
     }
-    @Test void cancelledExpiredDisconnectedAndRestartedFlipsRefund(){
-        long first=store.challenge(alex,sam,10000,Long.MAX_VALUE).join();store.decline(sam,first,"decline").join();assertEquals(50000,store.balance(alex));
-        store.challenge(alex,sam,10000,1).join();store.expire(2).join();assertEquals(50000,store.balance(alex));
-        store.challenge(alex,sam,10000,Long.MAX_VALUE).join();store.disconnected(sam).join();assertEquals(50000,store.balance(alex));
-        store.challenge(alex,sam,10000,Long.MAX_VALUE).join();store.close();store=new MarketStore();store.open(dir.resolve("market.db")).join();assertEquals(50000,store.balance(alex));assertTrue(store.challenges().isEmpty());
+    @Test void unmatchedCancelledExpiredDisconnectedAndRestartedFlipsRefund(){
+        long id=store.createFlip(alex,10000,Long.MAX_VALUE).join();store.decline(alex,id,"cancel").join();assertEquals(50000,store.balance(alex));
+        store.createFlip(alex,10000,1).join();store.expire(2).join();assertEquals(50000,store.balance(alex));
+        store.createFlip(alex,10000,Long.MAX_VALUE).join();store.disconnected(alex).join();assertEquals(50000,store.balance(alex));
+        store.createFlip(alex,10000,Long.MAX_VALUE).join();store.close();store=new MarketStore();store.open(dir.resolve("market.db")).join();assertEquals(50000,store.balance(alex));assertTrue(store.challenges().isEmpty());
     }
     @Test void failingDiskTransactionRollsBackBothPaymentSidesAndListing(){
         long ref=listing(10000,Long.MAX_VALUE);

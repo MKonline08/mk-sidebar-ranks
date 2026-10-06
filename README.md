@@ -8,7 +8,9 @@ A standalone plugin for **Paper 1.21.11 · Java 21**, created by **MK**. Compact
 
 [Download the plugin](https://github.com/MKonline08/mk-sidebar-ranks/releases/latest) · [Placeholders](docs/PLACEHOLDERS.md) · [Configuration](src/main/resources/config.yml) · [Validation](docs/VALIDATION.md)
 
-**New in v1.5.0:** everyone gets a one-time **$500** wallet; `/auction` browses fixed-price listings with purchase confirmation, category/price filters and an offline item mailbox. `/money history` shows sale receipts and transactions, `/coinflip` offers equal-stakes player challenges, and `/baltop` shows the richest players. Admins can add/remove money and place/remove a persistent spawn leaderboard. Configurable chat reminders advertise the market and coin flips. All features live in this one jar. See [market instructions and commands](docs/MARKET.md).
+**New in v1.6.0:** `/coinflip create 50` opens a public $50 wager. Anyone can browse `/coinflip`, review a waiting player's stake, and join. Both players see a red/green animation that slows before showing the winner in green and loser in red. The saved 50/50 outcome pays the full pot once; closing a menu or disconnecting cannot reroll it. Waiting wagers have cancellation and automatic refunds. Tick/result sounds can be muted in the configuration.
+
+**Included since v1.5.0:** everyone gets a one-time **$500** wallet; `/auction` browses fixed-price listings with purchase confirmation, category/price filters and an offline item mailbox. `/money history` shows sale receipts and transactions, and `/baltop` shows the richest players. Admins can add/remove money and place/remove a persistent spawn leaderboard. Configurable chat reminders advertise the market and coin flips. All features live in this one jar. See [market instructions and commands](docs/MARKET.md).
 
 ![Market design concept](docs/market-concept.png)
 
@@ -16,7 +18,7 @@ The image is a design concept. Actual interfaces use native Minecraft inventory 
 
 ## Install
 
-1. Download **`mk-sidebar-ranks-1.5.0.jar`** from the release page.
+1. Download **`mk-sidebar-ranks-1.6.0.jar`** from the release page.
 2. Stop your Paper 1.21.11 server and replace the old MKSidebarRanks jar in **`plugins/`**. Install only one version.
 3. Keep the **`MKSidebarRanks`** folder when upgrading. Start the server; older configurations are backed up and new settings are added while preserving custom values.
 4. Run **`/mkrank set YourMinecraftName owner`** after you have joined. Your OWNER label will be bold red in your sidebar and Tab.
@@ -45,7 +47,7 @@ Sidebar refreshes are queued roughly once per second and spread across ticks. Ta
 
 ### Update from an earlier version
 
-Stop the server, replace the old plugin jar with v1.5.0, and restart. Keep the `MKSidebarRanks` folder so ranks, playtime, wallets, listings and mailbox data remain saved. Older configurations gain missing settings with a backup. Unchanged default layouts gain Hours and Money rows; custom layouts, custom ranks, server name and promotion settings remain intact. For a custom sidebar, add the Hours and `%player_balance%` lines if desired (maximum 15 lines).
+Stop the server, replace the old plugin jar with v1.6.0, and restart. Keep the `MKSidebarRanks` folder so ranks, playtime, wallets, listings and mailbox data remain saved. Older configurations gain missing settings with a backup. Unchanged default layouts gain Hours and Money rows; custom layouts, custom ranks, server name and promotion settings remain intact. For a custom sidebar, add the Hours and `%player_balance%` lines if desired (maximum 15 lines). Old pending directed coin flip challenges are refunded during migration. New public wagers use the lobby commands described in [MARKET.md](docs/MARKET.md).
 
 ## Commands
 
@@ -139,7 +141,7 @@ With JDK 21 and Maven 3.9+:
 mvn -B clean verify
 ```
 
-Installable output: `target/mk-sidebar-ranks-1.5.0.jar`. Do not install the `original-` jar. GitHub Actions builds and tests the project and provides the packaged jar as an artifact.
+Installable output: `target/mk-sidebar-ranks-1.6.0.jar`. Do not install the `original-` jar. GitHub Actions builds and tests the project and provides the packaged jar as an artifact.
 
 For the local Paper integration fixture, see [validation instructions](docs/VALIDATION.md).
 

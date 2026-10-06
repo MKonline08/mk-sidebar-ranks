@@ -1,6 +1,6 @@
 # Performance checks
 
-The local fixture connects 64 Minecraft protocol clients to Paper 1.21.11, waits for warm-up, and samples four 30-second scenarios: displays disabled, displays enabled with stationary players, displays enabled with eight moving players, and active market commands with a placed leaderboard. Every client must remain connected, the update backlog must stay bounded, and unchanged Tab footers and overhead team data must not be resent. Scheduled plugin work must average below 2 ms/tick in every recorded sample for the fixture to pass.
+The local fixture connects 64 Minecraft protocol clients to Paper 1.21.11, waits for warm-up, and samples five 30-second scenarios: displays disabled, displays enabled with stationary players, displays enabled with eight moving players, active market commands with a placed leaderboard, and batches of simultaneous animated coin flips. Every client must remain connected, the update backlog must stay bounded, and unchanged Tab footers and overhead team data must not be resent. Scheduled plugin work must average below 2 ms/tick in every recorded sample for the fixture to pass.
 
 Metrics from `/mksb performance` cover the scheduled update/rank loop, excluding initial joins, configuration reloads, database worker work, and the diagnostics command. The server's overall average tick time is a separate metric. Each plugin sample covers the most recent 200 ticks; six samples per scenario overlap. The disabled scenario still runs playtime tracking and the queue, so it is a display comparison rather than a server without the plugin installed.
 
@@ -54,3 +54,21 @@ Active-market main-thread diagnostics: `MK market work: avg=0.056ms p95=0.228ms 
 The separate survival market fixture includes saved item transfers: `MK market work: avg=0.620ms p95=2.723ms max=18.415ms server=2.543ms/tick tps=19.84 (last 200 commands, clicks, callbacks and maintenance calls; excludes database worker) inventory-saves=5 save-max=9.533ms (since enable)`. Main-thread inventory persistence is bounded to one handoff per tick, but one operation can still exceed the routine update budget. These are overlapping, bounded samples on the same local PC; other isolated functional fixtures may be running during early warm-up. They are not a production capacity or zero-lag promise.
 
 Raw report: [performance-report-v1.5.0.json](performance-report-v1.5.0.json). Previous reports retain their original version identities.
+
+## Recorded v1.6.0 results
+
+Verified October 6, 2026: 64 clients, Paper 1.21.11 build 132, Java 21, 2 GiB heap, Windows, AMD Ryzen 5 9600X 6-Core Processor. All clients stayed connected. Exact release jar SHA-256: `d45e1dbd8d4c45af9077ac86bbadd38409ecdee1a0576bb79eebe687072ce21e`.
+
+| Scenario | Scheduled loop average ms/tick | Largest loop sample ms | One-minute TPS range |
+| --- | ---: | ---: | ---: |
+| displays-disabled | 0.015–0.019 | 0.306 | 19.660–19.800 |
+| enabled-static | 0.131–0.172 | 4.024 | 20.000–20.000 |
+| enabled-moving | 0.129–0.137 | 1.091 | 20.000–20.000 |
+| enabled-market-activity | 0.115–0.132 | 1.134 | 20.000–20.000 |
+| enabled-animated-coinflips | 0.116–0.130 | 1.147 | 20.000–20.000 |
+
+The animation phase exercised 4 batches of 16 simultaneous matches through actual lobby/confirmation screens. Scheduled-loop metrics above exclude the market/animation task. Separate main-thread market diagnostics after this phase: `MK market work: avg=0.125ms p95=0.457ms max=1.352ms server=0.982ms/tick tps=20.00 (last 200 commands, clicks, callbacks and maintenance calls; excludes database worker) inventory-saves=0 save-max=0.000ms (since enable)`. These cover the last 200 commands, clicks, callbacks, animation pulses and maintenance calls, not an entire-phase average.
+
+The survival fixture includes actual saved inventory transfers: `MK market work: avg=0.126ms p95=0.382ms max=10.143ms server=0.678ms/tick tps=20.00 (last 200 commands, clicks, callbacks and maintenance calls; excludes database worker) inventory-saves=5 save-max=10.745ms (since enable)`. At most one inventory handoff is saved per tick, but an individual save may exceed the routine update budget on slower storage.
+
+These overlapping samples use loopback clients on one local PC; other isolated functional fixtures may run during early warm-up. They do not establish production capacity or internet ping. Unchanged Tab credits and team updates remained zero during sampling. [Raw v1.6.0 report](performance-report-v1.6.0.json). Historical measurements above remain unchanged.

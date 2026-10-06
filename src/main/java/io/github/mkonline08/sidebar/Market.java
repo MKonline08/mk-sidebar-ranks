@@ -32,7 +32,7 @@ final class Market implements Listener,CommandExecutor,TabCompleter,AutoCloseabl
     private final Set<UUID> busy=new HashSet<>(),recovering=new HashSet<>();
     private final Map<UUID,Long> cooldown=new HashMap<>();
     private final ArrayDeque<Runnable> inventoryTransfers=new ArrayDeque<>();
-    private final SecureRandom random=new SecureRandom();
+    private Coinflips coinflips;
     private boolean stopping;
     private int seconds,reminder;
     private long inventorySaveMax;
@@ -45,6 +45,7 @@ final class Market implements Listener,CommandExecutor,TabCompleter,AutoCloseabl
             PluginCommand c=Objects.requireNonNull(plugin.getCommand(name));c.setExecutor(this);c.setTabCompleter(this);
         }
         plugin.getServer().getPluginManager().registerEvents(this,plugin);
+        coinflips=new Coinflips(plugin,store,settings,this::available,this::main,timings::add);
         if(!settings.leaderboard()||store.board()==null)board.removeLoaded();
         plugin.getServer().getScheduler().runTaskTimer(plugin,this::maintenance,20,20);
         plugin.getServer().getScheduler().runTaskTimer(plugin,this::inventoryTick,1,1);
@@ -53,10 +54,10 @@ final class Market implements Listener,CommandExecutor,TabCompleter,AutoCloseabl
     Component balance(UUID id){return Component.text(store.hasAccount(id)?Money.format(store.balance(id)):"…",NamedTextColor.YELLOW);}
     void joined(Player p){
         if(!store.operations(p.getUniqueId()).isEmpty())busy.add(p.getUniqueId());
-        complete(store.ensure(p.getUniqueId(),p.getName(),settings.starter()),p,v->{recover(p);},()->busy.remove(p.getUniqueId()));
+        complete(store.ensure(p.getUniqueId(),p.getName(),settings.starter()),p,v->{recover(p);coinflips.joined(p);},()->busy.remove(p.getUniqueId()));
     }
-    void quit(Player p){complete(store.disconnected(p.getUniqueId()),null,v->{},null);cooldown.remove(p.getUniqueId());}
-    void reload(MarketSettings candidate){boolean turnedOff=settings.leaderboard()&&!candidate.leaderboard();settings=candidate;seconds=0;if(turnedOff)board.removeLoaded();syncBoard();}
+    void quit(Player p){coinflips.quit(p);complete(store.disconnected(p.getUniqueId()),null,v->{},null);cooldown.remove(p.getUniqueId());}
+    void reload(MarketSettings candidate){boolean turnedOff=settings.leaderboard()&&!candidate.leaderboard();settings=candidate;coinflips.reload(candidate);seconds=0;if(turnedOff)board.removeLoaded();syncBoard();}
     private void maintenance(){
         long start=System.nanoTime();int now=++seconds;
         complete(store.expire(System.currentTimeMillis()),null,v->{},null);
@@ -114,7 +115,7 @@ final class Market implements Listener,CommandExecutor,TabCompleter,AutoCloseabl
                 case "money" -> {if(args.length==0)say(p,"Balance: "+Money.format(store.balance(p.getUniqueId())));else if(args[0].equalsIgnoreCase("history")&&args.length<=2)history(p,args.length==2?positiveInt(args[1])-1:0);else throw new IllegalArgumentException("Use /money or /money history [page].");}
                 case "pay" -> {available(p);if(args.length!=2)throw new IllegalArgumentException("Use /pay <player|UUID> <amount>.");UUID id=target(args[0]);long amount=Money.parse(args[1]);complete(store.pay(p.getUniqueId(),id,amount),p,v->{say(p,"Sent "+Money.format(amount)+" to "+store.name(id)+".");Player recipient=plugin.getServer().getPlayer(id);if(recipient!=null)say(recipient,"Received "+Money.format(amount)+" from "+p.getName()+".");},null);}
                 case "auction" -> auction(p,args);
-                case "coinflip" -> flip(p,args);
+                case "coinflip" -> coinflips.command(p,args);
                 default -> throw new IllegalArgumentException("Unknown market command.");
             }
         }catch(IllegalArgumentException e){report(sender,e);}finally{timings.add(System.nanoTime()-start);}
@@ -209,34 +210,6 @@ final class Market implements Listener,CommandExecutor,TabCompleter,AutoCloseabl
     private void top(CommandSender s){complete(store.refreshTop(),s,rows->{
         say(s,"Top balances");int i=1;for(var row:rows)s.sendMessage(Component.text(i+++". ",NamedTextColor.GOLD).append(Component.text(row.name()+"  ",NamedTextColor.WHITE)).append(Component.text(Money.format(row.cents()),NamedTextColor.YELLOW)));if(rows.isEmpty())say(s,"No wallets yet.");
     },null);}
-    private void flip(Player p,String[] args){
-        available(p);
-        if(args.length==0){say(p,"Challenge a player: /coinflip <player> <amount>. Accept or decline: /coinflip accept|decline [ID]. Cancel: /coinflip cancel.");return;}
-        if(Set.of("accept","decline","cancel").contains(args[0].toLowerCase(Locale.ROOT))){
-            if(args.length>2)throw new IllegalArgumentException("Use /coinflip accept|decline|cancel [ID].");
-            var rows=store.challenges().stream().filter(c->args[0].equalsIgnoreCase("cancel")?c.from().equals(p.getUniqueId()):c.to().equals(p.getUniqueId())).toList();
-            var c=args.length==2?rows.stream().filter(row->row.id()==positiveLong(args[1])).findFirst().orElse(null):rows.stream().findFirst().orElse(null);
-            if(c==null)throw new IllegalArgumentException("You have no matching coin flip challenge.");
-            if(args[0].equalsIgnoreCase("accept")){
-                Player other=plugin.getServer().getPlayer(c.from());if(other==null)throw new IllegalArgumentException("The challenger has disconnected. The wager will be refunded.");
-                complete(store.accept(p.getUniqueId(),c.id(),random.nextBoolean(),System.currentTimeMillis()),p,winner->{
-                    String text=store.name(winner)+" won "+Money.format(c.amount()*2)+" in coin flip #"+c.id()+"!";
-                    for(UUID id:List.of(c.from(),c.to())){Player viewer=plugin.getServer().getPlayer(id);if(viewer!=null){say(viewer,text);viewer.playSound(viewer.getLocation(),Sound.BLOCK_NOTE_BLOCK_BELL,0.5f,winner.equals(id)?1.5f:0.8f);}}
-                },null);
-            }else complete(store.decline(p.getUniqueId(),c.id(),args[0]),p,v->{say(p,"Challenge closed; the held wager was refunded.");Player other=plugin.getServer().getPlayer(c.from().equals(p.getUniqueId())?c.to():c.from());if(other!=null)say(other,"Coin flip #"+c.id()+" was closed; the held wager was refunded.");},null);
-            return;
-        }
-        if(args.length!=2)throw new IllegalArgumentException("Use /coinflip <player> <amount>.");
-        Player recipient=plugin.getServer().getPlayerExact(args[0]);if(recipient==null)throw new IllegalArgumentException("Challenge a player who is online.");available(recipient);
-        if(!recipient.hasPermission("mksidebar.market"))throw new IllegalArgumentException("That player cannot use coin flips.");
-        long amount=Money.parse(args[1]);if(amount<settings.minWager()||amount>settings.maxWager())throw new IllegalArgumentException("Wagers must be between "+Money.format(settings.minWager())+" and "+Money.format(settings.maxWager())+".");
-        complete(store.challenge(p.getUniqueId(),recipient.getUniqueId(),amount,System.currentTimeMillis()+settings.challengeSeconds()*1000L),p,id->{
-            if(!p.isOnline()||!recipient.isOnline()){complete(store.decline(p.getUniqueId(),id,"Player disconnected"),null,v->{},null);return;}
-            say(p,"Challenged "+recipient.getName()+" for "+Money.format(amount)+". Your wager is held until the challenge ends.");
-            say(recipient,p.getName()+" challenged you! Wager: "+Money.format(amount)+" each; pot: "+Money.format(amount*2)+". Expires in "+settings.challengeSeconds()+" seconds.");
-            recipient.sendMessage(Component.text("[ACCEPT]",NamedTextColor.GREEN).clickEvent(ClickEvent.runCommand("/coinflip accept "+id)).append(Component.text("  ")).append(Component.text("[DECLINE]",NamedTextColor.RED).clickEvent(ClickEvent.runCommand("/coinflip decline "+id))));
-        },null);
-    }
     private void admin(CommandSender s,String[] args){
         if(args.length==0){say(s,"/mkmarket money add|remove <player|UUID> <amount> • leaderboard place|remove • recovery • performance");return;}
         switch(args[0].toLowerCase(Locale.ROOT)){
@@ -330,8 +303,9 @@ final class Market implements Listener,CommandExecutor,TabCompleter,AutoCloseabl
         else if(!s.hasPermission("mksidebar.market"))return List.of();
         else if(c.getName().equals("auction")&&a.length==1)choices.addAll(List.of("sell","mail","mine","cancel"));
         else if(c.getName().equals("money")&&a.length==1)choices.add("history");
-        else if(a.length==1&&(c.getName().equals("pay")||c.getName().equals("coinflip"))){plugin.getServer().getOnlinePlayers().forEach(p->choices.add(p.getName()));if(c.getName().equals("coinflip"))choices.addAll(List.of("accept","decline","cancel"));}
+        else if(a.length==1&&c.getName().equals("pay"))plugin.getServer().getOnlinePlayers().forEach(p->choices.add(p.getName()));
+        else if(a.length==1&&c.getName().equals("coinflip"))choices.addAll(List.of("create","cancel"));
         String prefix=a.length==0?"":a[a.length-1].toLowerCase(Locale.ROOT);return choices.stream().filter(v->v.toLowerCase(Locale.ROOT).startsWith(prefix)).sorted().toList();
     }
-    @Override public void close(){stopping=true;inventoryTransfers.clear();for(Player p:plugin.getServer().getOnlinePlayers())if(p.getOpenInventory().getTopInventory().getHolder() instanceof Menu)p.closeInventory();board.detach();store.close();}
+    @Override public void close(){stopping=true;if(coinflips!=null)coinflips.close();inventoryTransfers.clear();for(Player p:plugin.getServer().getOnlinePlayers())if(p.getOpenInventory().getTopInventory().getHolder() instanceof Menu)p.closeInventory();board.detach();store.close();}
 }

@@ -1,5 +1,5 @@
 {
-  "version": "1.5.0",
+  "version": "1.6.0",
   "result": "PASS",
   "paper": "1.21.11 build 132",
   "results": [
@@ -17,12 +17,21 @@
     "Offline sellers receive proceeds without losing their wallet or receiving starter money again",
     "Transaction history includes sale receipts",
     "Market category filters and navigation open as native inventory menus",
-    "Coin flip challenge holds one stake; declining refunds it",
-    "Accepted coin flip pays one winner the exact pot; repeat acceptance cannot pay again",
-    "Expired coin flips refund held money automatically",
-    "Disconnecting closes pending coin flips and returns held funds",
+    "Public lobby shows waiting heads and stakes; confirmation/back and shift-click cannot take items or charge money",
+    "One waiting wager per player and self-join protection; command cancellation refunds the stake",
+    "Cancel My Flip button refunds unmatched wagers",
+    "Joining saves one 50/50 winner and reserves both stakes; payout does not happen immediately",
+    "A stale confirmation cannot start a second match or charge a third player",
+    "Red/green animation ends with matching winner/loser frames, exact pot payout and one win receipt; closing/reopening cannot reroll",
+    "Completed match provides a Back to lobby button and enabled sounds reach both players",
+    "Expired public wagers refund held money automatically",
+    "Waiting host disconnect refunds the wager without another starter grant",
+    "Disconnecting during an animation preserves the winner and pays normally, including offline wallets",
+    "Reloaded sound-disabled setting mutes ticking and result sounds without changing payout",
     "Admin can place a persistent in-world text leaderboard at spawn",
-    "Configurable rotating chat reminders advertise auction, coin flips and public leaderboard",
+    "Configurable chat reminders advertise auction and public coin flips",
+    "Paper upgrades v1.5 config with a backup, preserves custom expiry/mute, and adds lobby defaults",
+    "Shutdown during an animation completes the saved winner once and restart preserves both balances",
     "Recovery reconciles real inventory snapshots before and after removal without replaying an item transfer",
     "Wallets, offline mail and spawn leaderboard persist across full restart without duplicate $500 grants",
     "Admin removal deletes the in-world board and saved location"
@@ -740,7 +749,7 @@
         ],
         [
           "mk_line_3",
-          "XYZ: -10 -60 9"
+          "XYZ: 6 -60 3"
         ],
         [
           "mk_line_4",
@@ -764,7 +773,7 @@
         ],
         [
           "mk_line_9",
-          "Uptime: 0m 37s"
+          "Uptime: 0m 39s"
         ]
       ]
     },
@@ -1099,7 +1108,7 @@
         ],
         [
           "mk_line_3",
-          "XYZ: -10 -60 9"
+          "XYZ: 6 -60 3"
         ],
         [
           "mk_line_4",
@@ -1123,7 +1132,7 @@
         ],
         [
           "mk_line_9",
-          "Uptime: 0m 37s"
+          "Uptime: 0m 39s"
         ]
       ]
     },
@@ -1744,7 +1753,7 @@
         ],
         [
           "mk_line_3",
-          "XYZ: 6 -60 9"
+          "XYZ: 3 -60 5"
         ],
         [
           "mk_line_4",
@@ -1768,19 +1777,2019 @@
         ],
         [
           "mk_line_9",
-          "Uptime: 0m 49s"
+          "Uptime: 0m 51s"
+        ]
+      ]
+    },
+    {
+      "label": "coinflip-lobby",
+      "window": {
+        "title": "MK COIN FLIPS • $355.00",
+        "items": [
+          {
+            "itemCount": 1,
+            "itemId": 1235,
+            "addedComponentCount": 2,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "MarketAlex"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "lore",
+                "data": [
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Flip #1 • Waiting for a player"
+                      }
+                    }
+                  },
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Wager: $50.00"
+                      }
+                    }
+                  },
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Pot: $100.00"
+                      }
+                    }
+                  },
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "50% chance for each player"
+                      }
+                    }
+                  },
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Click to review and join"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 1,
+            "itemId": 895,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Previous page"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 899,
+            "addedComponentCount": 2,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "green"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Create a flip"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "lore",
+                "data": [
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Use /coinflip create <amount>"
+                      }
+                    }
+                  },
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Example: /coinflip create 50"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 1,
+            "itemId": 1054,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Refresh • Page 1"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 895,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Next page"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 560,
+            "addedComponentCount": 2,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "red"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Cancel My Flip"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "lore",
+                "data": [
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Refund your unmatched wager"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 1,
+            "itemId": 1028,
+            "addedComponentCount": 2,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "yellow"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Fair coin flips"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "lore",
+                "data": [
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Equal stakes • 50/50 chance"
+                      }
+                    }
+                  },
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Once joined, the saved match finishes"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 502,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "red"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Close"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 16,
+            "itemId": 898,
+            "addedComponentCount": 0,
+            "removedComponentCount": 0,
+            "components": [],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          }
+        ]
+      },
+      "messages": [
+        "MK » Purchase complete. Collect your item with /auction mail.",
+        "MK » Make room for this whole stack in your inventory first.",
+        "chat.type.advancement.task",
+        "MK » Item claimed from your mailbox.",
+        "chat.type.advancement.task",
+        "multiplayer.player.left",
+        "MK » Purchase complete. Collect your item with /auction mail.",
+        "multiplayer.player.joined"
+      ],
+      "lines": [
+        [
+          "mk_line_0",
+          "Name: MarketSam"
+        ],
+        [
+          "mk_line_1",
+          "Rank: New Player"
+        ],
+        [
+          "mk_line_2",
+          "Health: 20.0/20.0"
+        ],
+        [
+          "mk_line_3",
+          "XYZ: 6 -60 3"
+        ],
+        [
+          "mk_line_4",
+          "Hours: 0.01"
+        ],
+        [
+          "mk_line_5",
+          "Money: $355.00"
+        ],
+        [
+          "mk_line_6",
+          ""
+        ],
+        [
+          "mk_line_7",
+          "Online: 3/20"
+        ],
+        [
+          "mk_line_8",
+          "TPS: 19.7"
+        ],
+        [
+          "mk_line_9",
+          "Uptime: 0m 53s"
+        ]
+      ]
+    },
+    {
+      "label": "coinflip-confirmation",
+      "window": {
+        "title": "CONFIRM COIN FLIP",
+        "items": [
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 1,
+            "itemId": 899,
+            "addedComponentCount": 2,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "green"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Join for $50.00"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "lore",
+                "data": [
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Your money is reserved until payout"
+                      }
+                    }
+                  },
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "A started match cannot be cancelled"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 1,
+            "itemId": 1235,
+            "addedComponentCount": 2,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "MarketAlex"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "lore",
+                "data": [
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Match wager: $50.00"
+                      }
+                    }
+                  },
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Winner's pot: $100.00"
+                      }
+                    }
+                  },
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "50% chance for each player"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 1,
+            "itemId": 502,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "red"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Back"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 16,
+            "itemId": 898,
+            "addedComponentCount": 0,
+            "removedComponentCount": 0,
+            "components": [],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          }
+        ]
+      },
+      "messages": [
+        "MK » Purchase complete. Collect your item with /auction mail.",
+        "MK » Make room for this whole stack in your inventory first.",
+        "chat.type.advancement.task",
+        "MK » Item claimed from your mailbox.",
+        "chat.type.advancement.task",
+        "multiplayer.player.left",
+        "MK » Purchase complete. Collect your item with /auction mail.",
+        "multiplayer.player.joined"
+      ],
+      "lines": [
+        [
+          "mk_line_0",
+          "Name: MarketSam"
+        ],
+        [
+          "mk_line_1",
+          "Rank: New Player"
+        ],
+        [
+          "mk_line_2",
+          "Health: 20.0/20.0"
+        ],
+        [
+          "mk_line_3",
+          "XYZ: 6 -60 3"
+        ],
+        [
+          "mk_line_4",
+          "Hours: 0.01"
+        ],
+        [
+          "mk_line_5",
+          "Money: $355.00"
+        ],
+        [
+          "mk_line_6",
+          ""
+        ],
+        [
+          "mk_line_7",
+          "Online: 3/20"
+        ],
+        [
+          "mk_line_8",
+          "TPS: 19.7"
+        ],
+        [
+          "mk_line_9",
+          "Uptime: 0m 53s"
+        ]
+      ]
+    },
+    {
+      "label": "coinflip-result",
+      "window": {
+        "title": "MK COIN FLIP #3",
+        "items": [
+          {
+            "itemCount": 1,
+            "itemId": 559,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "green"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "WINNER"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 559,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "green"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "WINNER"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 559,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "green"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "WINNER"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 1,
+            "itemId": 560,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "red"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "LOSER"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 560,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "red"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "LOSER"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 560,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "red"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "LOSER"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 559,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "green"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "WINNER"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 1235,
+            "addedComponentCount": 2,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "green"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "WINNER • MarketAlex"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "lore",
+                "data": [
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Paid $100.00"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 559,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "green"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "WINNER"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 1,
+            "itemId": 1118,
+            "addedComponentCount": 2,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "gold"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Winner: MarketAlex"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "lore",
+                "data": [
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Pot paid: $100.00"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 1,
+            "itemId": 560,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "red"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "LOSER"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 1235,
+            "addedComponentCount": 2,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "red"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "LOSER • MarketSam"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "lore",
+                "data": [
+                  {
+                    "type": "compound",
+                    "value": {
+                      "italic": {
+                        "type": "byte",
+                        "value": 0
+                      },
+                      "color": {
+                        "type": "string",
+                        "value": "gray"
+                      },
+                      "text": {
+                        "type": "string",
+                        "value": "Lost wager: $50.00"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 560,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "red"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "LOSER"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 559,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "green"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "WINNER"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 559,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "green"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "WINNER"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 559,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "green"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "WINNER"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 1,
+            "itemId": 895,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "aqua"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "Back to lobby"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 1,
+            "itemId": 560,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "red"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "LOSER"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 560,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "red"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "LOSER"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 1,
+            "itemId": 560,
+            "addedComponentCount": 1,
+            "removedComponentCount": 0,
+            "components": [
+              {
+                "type": "custom_name",
+                "data": {
+                  "type": "compound",
+                  "value": {
+                    "italic": {
+                      "type": "byte",
+                      "value": 0
+                    },
+                    "color": {
+                      "type": "string",
+                      "value": "red"
+                    },
+                    "text": {
+                      "type": "string",
+                      "value": "LOSER"
+                    }
+                  }
+                }
+              }
+            ],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 16,
+            "itemId": 898,
+            "addedComponentCount": 0,
+            "removedComponentCount": 0,
+            "components": [],
+            "removeComponents": []
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          },
+          {
+            "itemCount": 0
+          }
+        ]
+      },
+      "messages": [
+        "MK » Item claimed from your mailbox.",
+        "chat.type.advancement.task",
+        "multiplayer.player.left",
+        "MK » Purchase complete. Collect your item with /auction mail.",
+        "multiplayer.player.joined",
+        "MK » Coin flip #3 started. Both wagers are held during the flip.",
+        "MK » Buy and sell items with /auction! Open the coin flip lobby: /coinflip",
+        "MK » MarketAlex won $100.00 in coin flip #3!"
+      ],
+      "lines": [
+        [
+          "mk_line_0",
+          "Name: MarketSam"
+        ],
+        [
+          "mk_line_1",
+          "Rank: New Player"
+        ],
+        [
+          "mk_line_2",
+          "Health: 20.0/20.0"
+        ],
+        [
+          "mk_line_3",
+          "XYZ: 6 -60 3"
+        ],
+        [
+          "mk_line_4",
+          "Hours: 0.01"
+        ],
+        [
+          "mk_line_5",
+          "Money: $305.00"
+        ],
+        [
+          "mk_line_6",
+          ""
+        ],
+        [
+          "mk_line_7",
+          "Online: 3/20"
+        ],
+        [
+          "mk_line_8",
+          "TPS: 19.8"
+        ],
+        [
+          "mk_line_9",
+          "Uptime: 1m 4s"
         ]
       ]
     },
     {
       "label": "market-timing-with-inventory-saves",
-      "text": "MK market work: avg=0.620ms p95=2.723ms max=18.415ms server=2.543ms/tick tps=19.84 (last 200 commands, clicks, callbacks and maintenance calls; excludes database worker) inventory-saves=5 save-max=9.533ms (since enable)"
+      "text": "MK market work: avg=0.126ms p95=0.382ms max=10.143ms server=0.678ms/tick tps=20.00 (last 200 commands, clicks, callbacks and maintenance calls; excludes database worker) inventory-saves=5 save-max=10.745ms (since enable)"
     },
     {
       "label": "market-main-thread-timing",
-      "text": "MK market work: avg=0.186ms p95=1.911ms max=2.519ms server=1.230ms/tick tps=20.00 (last 200 commands, clicks, callbacks and maintenance calls; excludes database worker) inventory-saves=0 save-max=0.000ms (since enable)"
+      "text": "MK market work: avg=0.094ms p95=0.481ms max=2.643ms server=1.232ms/tick tps=19.93 (last 200 commands, clicks, callbacks and maintenance calls; excludes database worker) inventory-saves=0 save-max=0.000ms (since enable)"
     }
   ],
   "fixture": "isolated-local-market-fixture",
-  "jarSha256": "b9d5a7ba765347cfc23f3039690915340846cd2ab1427f575d42428ea27ae717"
+  "jarSha256": "d45e1dbd8d4c45af9077ac86bbadd38409ecdee1a0576bb79eebe687072ce21e"
 }

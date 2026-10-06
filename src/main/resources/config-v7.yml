@@ -1,7 +1,7 @@
 # MK Sidebar & Ranks | Created by MK
 # Colors use MiniMessage: <gold>text</gold>, <bold>text</bold>, or <#ff5555>text</#ff5555>.
 # See docs/PLACEHOLDERS.md for all available %placeholders%.
-config-version: 8
+config-version: 7
 server-name: 'My Server'
 sidebar:
   enabled: true
@@ -65,9 +65,7 @@ auction:
 coinflip:
   minimum: 1
   maximum: 10000
-  waiting-seconds: 300
-  animation-seconds: 5
-  sound-enabled: true
+  challenge-seconds: 60
 money-leaderboard:
   enabled: true
   refresh-seconds: 60
@@ -75,5 +73,5 @@ market-reminders:
   enabled: true
   interval-seconds: 120
   messages:
-    - '<gold><bold>MK »</bold></gold> <white>Buy and sell items with</white> <click:run_command:/auction><aqua>/auction</aqua></click><white>! Open the coin flip lobby:</white> <click:run_command:/coinflip><aqua>/coinflip</aqua></click>'
-    - '<gold><bold>MK »</bold></gold> <white>Create a public wager:</white> <aqua>/coinflip create 50</aqua><white>, or browse</white> <click:run_command:/coinflip><aqua>/coinflip</aqua></click><white>. Trade items with</white> <click:run_command:/auction><aqua>/auction</aqua></click><white>!</white>'
+    - '<gold><bold>MK »</bold></gold> <white>Buy and sell items with</white> <click:run_command:/auction><aqua>/auction</aqua></click><white>! Challenge a player:</white> <aqua>/coinflip Alex 50</aqua>'
+    - '<gold><bold>MK »</bold></gold> <white>Challenge a player:</white> <aqua>/coinflip Alex 50</aqua><white>. Check the richest players with</white> <click:run_command:/baltop><aqua>/baltop</aqua></click><white>! Trade items with</white> <click:run_command:/auction><aqua>/auction</aqua></click><white>.</white>'

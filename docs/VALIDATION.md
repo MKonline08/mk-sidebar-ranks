@@ -1,23 +1,25 @@
 # Validation
 
-## Release verification — v1.5.0
+## Release verification — v1.6.0
 
 Verified October 6, 2026 with the exact release jar:
 
-- **64 automated tests passed**, zero failures/errors/skips.
-- **67 real Paper scenarios passed**: 44 existing rank/display checks and 23 market checks, using three protocol players and full restarts.
-- **64-client load fixture passed**, with wallet/sidebar updates, eight payments and four market opens per second during the active phase, and a placed spawn leaderboard.
+- **74 automated tests passed**, zero failures/errors/skips.
+- **76 real Paper scenarios passed**: 44 rank/display regression checks and 32 market/coin flip checks, using three protocol players and full restarts.
+- **64-client load fixture passed** across five scenarios, including 4 batches of **16 simultaneous animated coin flips**, active payments/market menus, and a placed leaderboard.
 - Paper 1.21.11 build 132, Java 21, bundled SQLite 3.53.4.0.
-- SHA-256: `b9d5a7ba765347cfc23f3039690915340846cd2ab1427f575d42428ea27ae717`.
-- [Rank/display results](validation-report.json), [market results](market-validation-report.json), [performance results](performance-report-v1.5.0.json).
+- SHA-256: `d45e1dbd8d4c45af9077ac86bbadd38409ecdee1a0576bb79eebe687072ce21e`.
+- [Rank/display results](validation-report.json), [market results](market-validation-report.json), [performance results](performance-report-v1.6.0.json).
 
-Market checks cover one-time $500 grants, balances, payments and admin permissions, purchase confirmation and cancellation, exact item escrow/delivery, full-inventory rejection, cancelled listing returns, offline seller payouts, history, filters, all coin flip closing/refund paths, repeated acceptance, rotating reminders, spawn-board placement/removal, mailbox/wallet persistence, and reconnect recovery of real serialized inventory snapshots. The recovery fixture injects pending journal records into the **stopped temporary database** for both before/after inventory-removal stages; it does not claim to simulate every filesystem/power-loss failure.
+Coin flip checks cover public player heads, confirmation/back, menu item protection, single-match/self-join limits, command/button refunds, held stakes before payout, stale confirmations, red/green frames and final result colors, closing/reopening without rerolling, expiry, waiting disconnects, started-match offline payout, muted/enabled sounds, shutdown during animation, and Paper configuration migration from v1.5 with a backup.
 
-Unit checks also cover concurrent purchases/spending, fee calculations, failed-save rollback, insufficient funds, listing limits, persisted review records, money bounds, and configuration migration. Critical inventory handoffs are queued to at most one per tick and are measured by the market diagnostics. [MARKET.md](MARKET.md) describes the recovery path for inventory changes caused by external plugins or administrators.
+Unit tests cover concurrent joins, insufficient funds, save-failure rollback/retry, one-time settlement, payout-cap protection, v1.5 database migration, and startup recovery from a persisted RUNNING state. The startup test restores that committed state in a stopped database; it does not simulate every filesystem or power-loss failure.
 
-Existing rank/name-tag/Tab/promotion functionality passes the complete regression fixture. Historical v1.2.0 and v1.3.0 load data remain associated with their original jars in [PERFORMANCE.md](PERFORMANCE.md); they are not measurements of v1.5.0.
+Market regression checks cover $500 grants, transfers/admin permissions, fixed-price purchases, exact item escrow/mail delivery, full inventories, cancellations, offline sellers, receipts/filters, reminders, board placement/removal, and wallet/mail persistence. Inventory recovery injects pending journals into the **stopped temporary database** for before/after inventory-removal stages. Item handoffs remain queued to one per tick; [MARKET.md](MARKET.md) explains ambiguous inventory review.
 
-This verifies isolated local fixtures, not the owner's production host or internet latency. Installation is a server restart with the old jar replaced and the MKSidebarRanks folder retained.
+Ranks, name tags, Tab, sidebar and promotions pass the complete regression fixture. Historical v1.2.0, v1.3.0 and v1.5.0 load reports remain measurements of their original releases in [PERFORMANCE.md](PERFORMANCE.md).
+
+These are isolated local fixtures, not a measurement of the production host or internet latency. Install by replacing the jar during a server restart and retaining the MKSidebarRanks folder.
 
 ## Automated tests
 
