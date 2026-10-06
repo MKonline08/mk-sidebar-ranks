@@ -46,6 +46,20 @@ class PlayersTest {
         assertThrows(IllegalArgumentException.class,()->players.resolve("Alex",false)); assertThrows(IllegalArgumentException.class,()->players.resolve("Unknown",true));
         assertThrows(IllegalArgumentException.class,()->players.resolve(UUID.randomUUID().toString(),false));
     }
+    @Test void resolvesDuplicateNameToTheCurrentSessionWithoutChangingOldRecords() throws Exception {
+        UUID oldId=UUID.randomUUID(),currentId=UUID.randomUUID();
+        PlayerRecord old=new PlayerRecord(oldId,"Alex",48_000,"owner",false,true,false);
+        PlayerRecord current=new PlayerRecord(currentId,"Alex",72_000,null,false,true,false);
+        Players players=new Players(Map.of(oldId,old,currentId,current),System::nanoTime);
+        assertThrows(IllegalArgumentException.class,()->players.resolve("Alex",false));
+        players.join(player(currentId,"Alex",0),SettingsTest.defaults());
+        assertEquals(currentId,players.resolve("alex",false).uuid());
+        assertEquals(currentId,players.resolve("Alex",true).uuid());
+        assertEquals(oldId,players.resolve(oldId.toString(),false).uuid());
+        assertEquals(old,players.get(oldId));
+        players.quit(currentId);
+        assertThrows(IllegalArgumentException.class,()->players.resolve("Alex",false));
+    }
     @Test void startFreshDoesNotImportAndSubMillisecondTimeIsRetained() throws Exception {
         var yaml=SettingsTest.yaml(); yaml.set("promotion.import-existing-playtime",false); UUID id=UUID.randomUUID(); AtomicLong clock=new AtomicLong(); Players players=new Players(Map.of(),clock::get);
         players.join(player(id,"Alex",72_000),Settings.read(yaml)); assertEquals(0,players.get(id).playMillis());

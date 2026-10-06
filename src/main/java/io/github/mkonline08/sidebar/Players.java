@@ -54,6 +54,10 @@ public final class Players {
             if (input.length() == 36) throw new IllegalArgumentException("Unknown or invalid player UUID.");
         }
         List<PlayerRecord> matches = records.values().stream().filter(r -> r.name().equalsIgnoreCase(input)).toList();
+        // A name can have old UUID records after an authentication or server-mode change.
+        // Prefer the player who is actually connected; never guess between offline records.
+        List<PlayerRecord> connected = matches.stream().filter(r -> sessions.containsKey(r.uuid())).toList();
+        if (connected.size() == 1) return connected.getFirst();
         if (matches.size() != 1) throw new IllegalArgumentException(matches.isEmpty() ? "Unknown player. They must join first, or use their UUID." : "That name matches multiple records. Use a UUID.");
         return matches.getFirst();
     }

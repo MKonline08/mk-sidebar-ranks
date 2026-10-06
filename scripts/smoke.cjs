@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const os = require('node:os');
 const crypto = require('node:crypto');
-const { spawn } = require('node:child_process');
+const { spawn, spawnSync } = require('node:child_process');
 const assert = require('node:assert/strict');
 const mc = require('minecraft-protocol');
 const nbt = require('prismarine-nbt');
@@ -14,7 +14,7 @@ if (!paper || !fs.existsSync(paper)) throw new Error('Set PAPER_JAR to a Paper 1
 const port = Number(process.env.MK_SMOKE_PORT || 25586);
 fs.mkdirSync(path.join(dir, 'plugins', 'MKSidebarRanks'), { recursive: true });
 fs.copyFileSync(paper, path.join(dir, 'paper.jar'));
-fs.copyFileSync(path.join(repo, 'target', 'mk-sidebar-ranks-1.3.0.jar'), path.join(dir, 'plugins', 'mk-sidebar-ranks.jar'));
+fs.copyFileSync(path.join(repo, 'target', 'mk-sidebar-ranks-1.3.1.jar'), path.join(dir, 'plugins', 'mk-sidebar-ranks.jar'));
 const defaultConfig = fs.readFileSync(path.join(repo, 'src/main/resources/config.yml'), 'utf8');
 const configPath = path.join(dir, 'plugins/MKSidebarRanks/config.yml');
 fs.writeFileSync(configPath, fs.readFileSync(path.join(repo, 'src/main/resources/config-v3.yml'), 'utf8'));
@@ -99,7 +99,7 @@ function snapshot(state, label) { observations.push({ label, name: state.name, f
 (async () => {
   try {
     await boot();
-    assert(fs.readdirSync(path.dirname(configPath)).some(name=>name.startsWith('config-before-v1.3.0-')));
+    assert(fs.readdirSync(path.dirname(configPath)).some(name=>name.startsWith('config-before-v1.3.1-')));
     assert(fs.readFileSync(configPath,'utf8').includes('MK/108e'));
     pass('Existing v1.1.1 default config upgraded and backed up automatically');
     const owner = await connect('OwnerTester'), fresh = await connect('NewTester');
@@ -207,6 +207,9 @@ function snapshot(state, label) { observations.push({ label, name: state.name, f
     pass('Reset triggering an automatic promotion plays one sound without duplication');
     command('mkrank set OwnerTester owner');await waitFor(()=>line(owner,1).includes('OWNER') && rankSounds(owner)===8 && rankSounds(fresh)===8,'restore OWNER');
     await stop();
+    const oldId=crypto.randomUUID();
+    const duplicate=spawnSync(process.env.JAVA_BIN||'java',['-cp',path.join(repo,'target/mk-sidebar-ranks-1.3.1.jar'),path.join(__dirname,'insert-duplicate.java'),path.join(dir,'plugins/MKSidebarRanks/players.db'),oldId,'OwnerTester'],{encoding:'utf8',windowsHide:true});
+    assert.equal(duplicate.status,0,duplicate.stderr||duplicate.stdout);
     await boot(); const owner2 = await connect('OwnerTester');
     const hidden = { name: 'NewTester', client: mc.createClient({ host: '127.0.0.1', port, username: 'NewTester', auth: 'offline', version: '1.21.11' }), teams:new Map(),messages: [], tabs: new Map(), lines: new Map() }; clients.push(hidden);trackTeams(hidden);
     hidden.client.on('error', e => { hidden.error = e; }); hidden.client.on('position', p => hidden.client.write('teleport_confirm', { teleportId: p.teleportId }));
@@ -218,6 +221,11 @@ function snapshot(state, label) { observations.push({ label, name: state.name, f
     await waitFor(()=>headText(hidden,'OwnerTester')==='[OWNER] OwnerTester' && headText(owner2,'VeteranTester')==='[VIP] VeteranTester','restored nametags');pass('Overhead ranks restore after restart, including offline rank assignments');
     assert.equal(rankSounds(owner2),0);assert.equal(rankSounds(veteran2),0);assert.equal(text(owner2.footer),'Credits: MK/108e');
     pass('Restart preserves OWNER, OG, offline custom assignments, hidden sidebar, and announcement markers');
+    command('mkrank info OwnerTester');await waitFor(()=>fullLog.includes(`OwnerTester | ${offlineUuid('OwnerTester')}`),'online info selects current UUID');
+    command('mkrank set OwnerTester vip');await waitFor(()=>line(owner2,1).includes('VIP') && headText(veteran2,'OwnerTester')==='[VIP] OwnerTester','online rank assignment with duplicate saved name');
+    assert(!fullLog.includes('That name matches multiple records. Use a UUID.'));
+    command('mkrank set OwnerTester owner');await waitFor(()=>line(owner2,1).includes('OWNER'),'restore OWNER after duplicate-name check');
+    pass('Online name commands choose the connected UUID when historical duplicate records exist');
     hidden.client.write('chat_command', { command: 'mksb toggle' }); await waitFor(() => hidden.lines.size >= 9, 'restored sidebar');
     const noTags=fs.readFileSync(configPath,'utf8').replace('nametags:\n  enabled: true','nametags:\n  enabled: false');fs.writeFileSync(configPath,noTags);command('mksb reload');await waitFor(()=>!head(owner2,'VeteranTester')&&!head(veteran2,'OwnerTester'),'nametags independently disabled');assert.match(line(owner2,1),/OWNER/);pass('Independent nametag switch removes owned teams while retaining sidebar and Tab');
     // Disabling formatting restores original Tab names and clears our sidebar.

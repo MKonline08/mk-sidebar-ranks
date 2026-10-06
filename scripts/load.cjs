@@ -7,7 +7,7 @@ assert(Number.isInteger(count)&&count>=1&&count<=200,'MK_LOAD_PLAYERS must be 1â
 assert(process.env.PAPER_JAR&&fs.existsSync(process.env.PAPER_JAR),'Set PAPER_JAR to a Paper 1.21.11 jar. Running this local test accepts the Minecraft EULA.');
 const config=fs.readFileSync(path.join(repo,'src/main/resources/config.yml'),'utf8');
 fs.mkdirSync(path.join(dir,'plugins/MKSidebarRanks'),{recursive:true});fs.copyFileSync(process.env.PAPER_JAR,path.join(dir,'paper.jar'));
-fs.copyFileSync(path.join(repo,'target/mk-sidebar-ranks-1.3.0.jar'),path.join(dir,'plugins/mk-sidebar-ranks.jar'));
+fs.copyFileSync(path.join(repo,'target/mk-sidebar-ranks-1.3.1.jar'),path.join(dir,'plugins/mk-sidebar-ranks.jar'));
 const cfg=path.join(dir,'plugins/MKSidebarRanks/config.yml');fs.writeFileSync(cfg,config);
 if(process.env.MK_LOAD_CACHE)for(const name of ['libraries','versions','cache']){const source=path.join(process.env.MK_LOAD_CACHE,name);if(fs.existsSync(source))fs.cpSync(source,path.join(dir,name),{recursive:true});}
 fs.writeFileSync(path.join(dir,'eula.txt'),'eula=true\n');
@@ -54,7 +54,7 @@ async function sample(label){
     fs.writeFileSync(cfg,config);command('mksb reload');await sleep(12000);await sample('enabled-static');
     let step=0;movement=setInterval(()=>{for(let i=0;i<clients.length;i+=8){let s=clients[i],p=s.position;if(p&&!s.ended)s.client.write('position',{x:p.x+Math.sin(step/3)*4,y:p.y,z:p.z+Math.cos(step/3)*4,flags:{onGround:false,hasHorizontalCollision:false}});}step++;},500);
     await sleep(12000);await sample('enabled-moving');clearInterval(movement);movement=null;
-    const report={version:'1.3.0',result:'PASS',paper:'1.21.11 build 132',fixture:dir,players:count,cpu:os.cpus()[0].model,javaHeapMiB:2048,measurements,limitations:'Loopback protocol clients in a flat spectator world on the same Windows PC; no production-host or internet-latency guarantee. Metrics cover the scheduled plugin update loop, excluding initial joins, configuration reloads, database worker work, and the diagnostics command itself.'};
+    const report={version:'1.3.1',result:'PASS',paper:'1.21.11 build 132',fixture:dir,players:count,cpu:os.cpus()[0].model,javaHeapMiB:2048,measurements,limitations:'Loopback protocol clients in a flat spectator world on the same Windows PC; no production-host or internet-latency guarantee. Metrics cover the scheduled plugin update loop, excluding initial joins, configuration reloads, database worker work, and the diagnostics command itself.'};
     fs.writeFileSync(path.join(dir,'load-report.json'),JSON.stringify(report,null,2));if(process.env.MK_LOAD_REPORT)fs.writeFileSync(process.env.MK_LOAD_REPORT,JSON.stringify(report,null,2));console.log('LOAD TEST PASSED');
   }catch(error){console.error(error.stack);process.exitCode=1;}
   finally{if(movement)clearInterval(movement);clients.forEach(s=>s.client.end());if(child&&child.exitCode==null){command('stop');try{await wait(()=>child.exitCode!=null,'shutdown',60000);}catch(e){console.error(e.message);child.kill();}}fs.writeFileSync(path.join(dir,'load-server.log'),log);}

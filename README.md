@@ -10,7 +10,7 @@ A standalone plugin for **Paper 1.21.11 · Java 21**, created by **MK**. Compact
 
 ## Install
 
-1. Download **`mk-sidebar-ranks-1.3.0.jar`** from the release page.
+1. Download **`mk-sidebar-ranks-1.3.1.jar`** from the release page.
 2. Stop your Paper 1.21.11 server and copy the jar into its **`plugins/`** folder.
 3. Start the server. Settings appear in **`plugins/MKSidebarRanks/config.yml`**.
 4. Run **`/mkrank set YourMinecraftName owner`** after you have joined. Your OWNER label will be bold red in your sidebar and Tab.
@@ -33,9 +33,11 @@ Sidebar refreshes are queued roughly once per second and spread across ticks. Ta
 
 **New in v1.3.0:** overhead rank badges and a compact **Hours** row. Badges follow automatic promotions, manual assignments, custom colors, joins, and restarts. Hiding the sidebar keeps overhead badges active. Unchanged badges send no repeated team updates.
 
+**New in v1.3.1:** if multiple saved UUID records share a username, `/mkrank set`, `/mkrank reset`, and `/mkrank info` choose the currently connected player when given that name. Old records remain saved. For an ambiguous offline name, specify the exact UUID.
+
 ### Update from an earlier version
 
-Stop the server, remove the old plugin jar, install the v1.3.0 jar, and restart. Keep the `MKSidebarRanks` folder so ranks and playtime remain saved. Older configurations gain missing settings with a backup. Unchanged default layouts gain the Hours row; custom layouts, custom ranks, server name, and promotion settings remain intact. For a custom sidebar, add `'<white>Hours:</white> <aqua>%player_playtime_hours%</aqua>'` to its lines if desired (maximum 15 lines).
+Stop the server, remove the old plugin jar, install the v1.3.1 jar, and restart. Keep the `MKSidebarRanks` folder so ranks and playtime remain saved. Older configurations gain missing settings with a backup. Unchanged default layouts gain the Hours row; custom layouts, custom ranks, server name, and promotion settings remain intact. For a custom sidebar, add `'<white>Hours:</white> <aqua>%player_playtime_hours%</aqua>'` to its lines if desired (maximum 15 lines).
 
 ## Commands
 
@@ -121,7 +123,7 @@ With JDK 21 and Maven 3.9+:
 mvn -B clean verify
 ```
 
-Installable output: `target/mk-sidebar-ranks-1.3.0.jar`. Do not install the `original-` jar. GitHub Actions builds and tests the project and provides the packaged jar as an artifact.
+Installable output: `target/mk-sidebar-ranks-1.3.1.jar`. Do not install the `original-` jar. GitHub Actions builds and tests the project and provides the packaged jar as an artifact.
 
 For the local Paper integration fixture, see [validation instructions](docs/VALIDATION.md).
 

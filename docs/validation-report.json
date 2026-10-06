@@ -1,11 +1,11 @@
 {
   "verifiedOn": "2026-10-05",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "paper": "1.21.11 build 132",
   "result": "PASS",
-  "jarSha256": "176fd520015f4be555ba49263122c956fd2a238e97427b30bb7a7c11ca55f610",
+  "jarSha256": "a87098c3cf33eea36d7fd162348522e88890e38bee54324ade0b3571629a3431",
   "automatedTests": {
-    "total": 39,
+    "total": 40,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -41,6 +41,7 @@
     "Reset triggering an automatic promotion plays one sound without duplication",
     "Overhead ranks restore after restart, including offline rank assignments",
     "Restart preserves OWNER, OG, offline custom assignments, hidden sidebar, and announcement markers",
+    "Online name commands choose the connected UUID when historical duplicate records exist",
     "Independent nametag switch removes owned teams while retaining sidebar and Tab",
     "Independent configuration switches release sidebar and Tab ownership"
   ],
@@ -182,7 +183,7 @@
               },
               {
                 "color": "gray",
-                "text": "-3 -60 9"
+                "text": "-1 -60 -3"
               }
             ],
             "text": ""
@@ -528,7 +529,7 @@
               },
               {
                 "color": "gray",
-                "text": "4 -60 5"
+                "text": "10 -60 -6"
               }
             ],
             "text": ""
@@ -874,7 +875,7 @@
               },
               {
                 "color": "gray",
-                "text": "-8 -60 -5"
+                "text": "-4 -60 6"
               }
             ],
             "text": ""
@@ -935,7 +936,7 @@
               },
               {
                 "color": "green",
-                "text": "19.4"
+                "text": "19.2"
               }
             ],
             "text": ""
@@ -954,7 +955,7 @@
               },
               {
                 "color": "yellow",
-                "text": "0m 21s"
+                "text": "0m 20s"
               }
             ],
             "text": ""
@@ -1478,7 +1479,7 @@
         },
         {
           "order": 1,
-          "component": "server_uptime: 0m 35s"
+          "component": "server_uptime: 0m 36s"
         },
         {
           "order": 1,
